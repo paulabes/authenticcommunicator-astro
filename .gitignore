@@ -1,4 +1,18 @@
+# Environment & secrets
 .env
+
+# Python
 venv/
 __pycache__/
+*.pyc
+
+# Generated content
 output/*.md
+
+# IDE & tooling
+.claude/settings.local.json
+.playwright-mcp/
+
+# Screenshots & temp
+*.png
+*.jpg
