@@ -16,7 +16,8 @@ OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file
 def get_posts():
     """Load all markdown files from output/ and return sorted post list."""
     posts = []
-    md_files = glob.glob(os.path.join(OUTPUT_DIR, "*.md"))
+    md_files = [f for f in glob.glob(os.path.join(OUTPUT_DIR, "*.md"))
+                if not f.endswith(".audit.md")]
 
     for filepath in md_files:
         filename = os.path.basename(filepath)
@@ -102,6 +103,8 @@ def post(slug):
     with open(post_data["filepath"], "r", encoding="utf-8") as f:
         content = f.read()
 
+    # Strip the first H1 (already displayed in the page hero)
+    content = re.sub(r"^#\s+.+\n*", "", content, count=1).strip()
     html_content = markdown.markdown(content, extensions=["tables", "fenced_code"])
     return render_template("post.html", post=post_data, content=html_content)
 

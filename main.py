@@ -51,15 +51,15 @@ def main():
     filename = f"{date.today().isoformat()}-{slugify(topic)}.md"
     filepath = OUTPUT_DIR / filename
 
-    output = (
-        f"# {topic}\n\n"
-        f"{draft}\n\n"
-        f"---\n\n"
-        f"## Audit Report\n\n{audit_report}\n"
-    )
-    filepath.write_text(output, encoding="utf-8")
+    # Save article (clean, client-facing)
+    filepath.write_text(draft + "\n", encoding="utf-8")
 
-    print(f"📄  Saved to {filepath}")
+    # Save audit report separately
+    audit_path = OUTPUT_DIR / f"{date.today().isoformat()}-{slugify(topic)}.audit.md"
+    audit_path.write_text(f"# Audit Report: {topic}\n\n{audit_report}\n", encoding="utf-8")
+
+    print(f"📄  Article saved to {filepath}")
+    print(f"📋  Audit saved to {audit_path}")
     print("    Done!\n")
 
 
