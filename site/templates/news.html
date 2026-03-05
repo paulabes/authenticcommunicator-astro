@@ -158,7 +158,8 @@ function generateArticle() {
                 <div class="h-4 bg-gray-100 rounded w-5/6"></div>
                 <div class="h-4 bg-gray-100 rounded w-2/3"></div>
             </div>
-            <p class="text-xs text-gray-400 mt-6 font-light">${modeLabel} ${area}…</p>
+            <p class="text-xs text-gray-400 mt-6 font-light">${modeLabel} ${area}</p>
+                <p id="loading-stage" class="text-xs text-[#C4A470] mt-2 font-medium tracking-wide">Starting…</p>
         </div>
     `;
     grid.insertBefore(placeholder, grid.firstChild);
@@ -181,12 +182,34 @@ function generateArticle() {
     });
 }
 
+const stageLabels = {
+    'Researching': 'Researching via Gemini…',
+    'Writing': 'Writing article via Claude…',
+    'Auditing': 'Fact-checking via Gemini…',
+    'Saving': 'Saving final article…',
+};
+
 function pollStatus(taskId) {
     const interval = setInterval(() => {
         fetch('/api/generate/' + taskId)
         .then(r => r.json())
         .then(data => {
-            if (data.status === 'running') return;
+            if (data.status === 'running') {
+                // Update stage indicator in loading card
+                const stageEl = document.getElementById('loading-stage');
+                if (stageEl && data.stage) {
+                    let label;
+                    if (data.stage.startsWith('Rewriting')) {
+                        label = 'Audit failed — rewriting draft…';
+                    } else if (data.stage.startsWith('Auditing (')) {
+                        label = 'Re-checking after rewrite…';
+                    } else {
+                        label = stageLabels[data.stage] || data.stage;
+                    }
+                    stageEl.textContent = label;
+                }
+                return;
+            }
             clearInterval(interval);
 
             const placeholder = document.getElementById('loading-card');

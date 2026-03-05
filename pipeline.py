@@ -61,22 +61,26 @@ def clean_sources(sources_text: str) -> str:
     return "\n".join(lines)
 
 
-def run_pipeline(topic: str, mode: str = "original") -> dict:
+def run_pipeline(topic: str, mode: str = "original", on_stage=None) -> dict:
     """Run the full Scout/Scribe/Critic pipeline and return post metadata.
 
     mode: "original" — write from scratch on the topic
           "outrank"  — find top competitor article, write a better one
+    on_stage: optional callback(stage_str) called at each pipeline step
     """
     load_dotenv()
+    _stage = lambda s: on_stage(s) if on_stage else None
 
     # 1. Scout
     label = "Outrank" if mode == "outrank" else "Scout"
     print(f"\n[{label}] Researching '{topic}' via Gemini ...")
+    _stage("Researching")
     brief = research(topic, mode=mode)
     print("    Research brief ready.\n")
 
     # 2. Scribe
     print("[Scribe] Drafting article via Claude ...")
+    _stage("Writing")
     draft = write(topic, brief)
     print("    Draft complete.\n")
 
@@ -84,6 +88,7 @@ def run_pipeline(topic: str, mode: str = "original") -> dict:
     attempt = 1
     while True:
         print(f"[Critic] Auditing draft via Gemini (attempt {attempt}) ...")
+        _stage(f"Auditing (attempt {attempt})" if attempt > 1 else "Auditing")
         audit_report = audit(brief, draft)
         print("    Audit complete.\n")
 
@@ -96,11 +101,13 @@ def run_pipeline(topic: str, mode: str = "original") -> dict:
 
         # Rewrite using audit feedback
         print(f"[Scribe] Rewriting based on audit feedback (attempt {attempt + 1}) ...")
+        _stage(f"Rewriting (attempt {attempt + 1})")
         draft = rewrite(topic, brief, draft, audit_report)
         print("    Rewrite complete.\n")
         attempt += 1
 
     # 4. Parse and save
+    _stage("Saving")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     slug = slugify(topic)
     today = date.today()

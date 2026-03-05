@@ -188,7 +188,11 @@ def _run_generation(task_id, area, mode):
     """Run the pipeline in a background thread."""
     try:
         from pipeline import run_pipeline
-        result = run_pipeline(area, mode=mode)
+
+        def _on_stage(stage):
+            _tasks[task_id]["stage"] = stage
+
+        result = run_pipeline(area, mode=mode, on_stage=_on_stage)
         _tasks[task_id] = {"status": "done", "post": result}
     except Exception as e:
         _tasks[task_id] = {"status": "error", "message": str(e)}
