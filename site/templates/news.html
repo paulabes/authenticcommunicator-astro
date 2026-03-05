@@ -152,14 +152,25 @@ function generateArticle() {
             <span class="text-[10px] uppercase tracking-widest text-gray-500">&nbsp;</span>
         </div>
         <div class="p-8">
-            <div class="animate-pulse space-y-4">
-                <div class="h-6 bg-gray-200 rounded w-3/4"></div>
-                <div class="h-4 bg-gray-100 rounded w-full"></div>
-                <div class="h-4 bg-gray-100 rounded w-5/6"></div>
-                <div class="h-4 bg-gray-100 rounded w-2/3"></div>
+            <p class="text-sm font-medium text-[#050615] mb-4">${modeLabel} <span class="text-[#C4A470]">${area}</span></p>
+            <div id="loading-steps" class="space-y-2 text-xs">
+                <div data-step="Researching" class="flex items-center gap-2 text-gray-300">
+                    <span class="step-icon w-4 text-center">○</span>
+                    <span>Research via Gemini</span>
+                </div>
+                <div data-step="Writing" class="flex items-center gap-2 text-gray-300">
+                    <span class="step-icon w-4 text-center">○</span>
+                    <span>Write article via Claude</span>
+                </div>
+                <div data-step="Auditing" class="flex items-center gap-2 text-gray-300">
+                    <span class="step-icon w-4 text-center">○</span>
+                    <span>Fact-check via Gemini</span>
+                </div>
+                <div data-step="Saving" class="flex items-center gap-2 text-gray-300">
+                    <span class="step-icon w-4 text-center">○</span>
+                    <span>Save article</span>
+                </div>
             </div>
-            <p class="text-xs text-gray-400 mt-6 font-light">${modeLabel} ${area}</p>
-                <p id="loading-stage" class="text-xs text-[#C4A470] mt-2 font-medium tracking-wide">Starting…</p>
         </div>
     `;
     grid.insertBefore(placeholder, grid.firstChild);
@@ -182,12 +193,78 @@ function generateArticle() {
     });
 }
 
-const stageLabels = {
-    'Researching': 'Researching via Gemini…',
-    'Writing': 'Writing article via Claude…',
-    'Auditing': 'Fact-checking via Gemini…',
-    'Saving': 'Saving final article…',
-};
+// Ordered base steps for the timeline
+const baseSteps = ['Researching', 'Writing', 'Auditing', 'Saving'];
+let lastStage = null;
+
+function updateTimeline(stage) {
+    if (!stage || stage === lastStage) return;
+    lastStage = stage;
+
+    const container = document.getElementById('loading-steps');
+    if (!container) return;
+
+    // Determine the base step name (e.g. "Auditing (attempt 2)" → "Auditing")
+    const baseStep = stage.split(' (')[0];
+
+    // Handle rewrite/retry: insert extra rows dynamically
+    if (baseStep === 'Rewriting') {
+        // Mark the audit step as failed
+        const auditEl = container.querySelector('[data-step="Auditing"]');
+        if (auditEl) {
+            auditEl.querySelector('.step-icon').textContent = '✗';
+            auditEl.className = 'flex items-center gap-2 text-red-400';
+            auditEl.querySelector('span:last-child').textContent = 'Audit failed';
+        }
+        // Add a rewrite row if not already there
+        if (!container.querySelector('[data-step="Rewriting"]')) {
+            const row = document.createElement('div');
+            row.dataset.step = 'Rewriting';
+            row.className = 'flex items-center gap-2 text-[#C4A470] font-medium';
+            row.innerHTML = '<span class="step-icon w-4 text-center animate-pulse">●</span><span>Rewriting draft…</span>';
+            // Insert before Saving
+            const savingEl = container.querySelector('[data-step="Saving"]');
+            container.insertBefore(row, savingEl);
+        }
+        return;
+    }
+
+    // If we hit Auditing again after a rewrite, mark rewrite done and update audit row
+    if (stage.startsWith('Auditing') && container.querySelector('[data-step="Rewriting"]')) {
+        const rwEl = container.querySelector('[data-step="Rewriting"]');
+        rwEl.querySelector('.step-icon').textContent = '✓';
+        rwEl.className = 'flex items-center gap-2 text-green-500';
+
+        // Reset audit row for re-check
+        const auditEl = container.querySelector('[data-step="Auditing"]');
+        if (auditEl) {
+            auditEl.querySelector('.step-icon').textContent = '●';
+            auditEl.className = 'flex items-center gap-2 text-[#C4A470] font-medium';
+            auditEl.querySelector('span:last-child').textContent = 'Re-checking…';
+        }
+        return;
+    }
+
+    // Normal flow: mark previous steps done, current step active
+    for (const step of baseSteps) {
+        const el = container.querySelector(`[data-step="${step}"]`);
+        if (!el) continue;
+
+        if (step === baseStep) {
+            // Active
+            el.querySelector('.step-icon').textContent = '●';
+            el.className = 'flex items-center gap-2 text-[#C4A470] font-medium';
+            el.querySelector('.step-icon').classList.add('animate-pulse');
+        } else if (baseSteps.indexOf(step) < baseSteps.indexOf(baseStep)) {
+            // Completed (only if not already marked as failed)
+            if (!el.classList.contains('text-red-400')) {
+                el.querySelector('.step-icon').textContent = '✓';
+                el.querySelector('.step-icon').classList.remove('animate-pulse');
+                el.className = 'flex items-center gap-2 text-green-500';
+            }
+        }
+    }
+}
 
 function pollStatus(taskId) {
     const interval = setInterval(() => {
@@ -195,19 +272,7 @@ function pollStatus(taskId) {
         .then(r => r.json())
         .then(data => {
             if (data.status === 'running') {
-                // Update stage indicator in loading card
-                const stageEl = document.getElementById('loading-stage');
-                if (stageEl && data.stage) {
-                    let label;
-                    if (data.stage.startsWith('Rewriting')) {
-                        label = 'Audit failed — rewriting draft…';
-                    } else if (data.stage.startsWith('Auditing (')) {
-                        label = 'Re-checking after rewrite…';
-                    } else {
-                        label = stageLabels[data.stage] || data.stage;
-                    }
-                    stageEl.textContent = label;
-                }
+                updateTimeline(data.stage);
                 return;
             }
             clearInterval(interval);
@@ -249,6 +314,7 @@ function resetControls() {
     btn.textContent = 'GENERATE ARTICLE';
     btn.disabled = !select.value;
     select.disabled = false;
+    lastStage = null;
 }
 </script>
 
