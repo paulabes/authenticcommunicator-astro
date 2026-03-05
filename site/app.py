@@ -178,6 +178,17 @@ def post(slug):
         editor_raw = re.sub(r"^\*\*\[.*?\]\*\*\s*$", "", editor_raw, flags=re.MULTILINE)
         editor_raw = re.sub(r"^\*\*\[.*?\]:\*\*\s*$", "", editor_raw, flags=re.MULTILINE)
         editor_html = markdown.markdown(editor_raw, extensions=["tables", "fenced_code"])
+        # Style the audit verdict banner green/red
+        editor_html = editor_html.replace(
+            '<blockquote>\n<p>✅',
+            '<div style="background:#ecfdf5;border-left:4px solid #10b981;border-radius:0.375rem;padding:0.75rem 1rem;margin-bottom:1.5rem;font-size:0.875rem;color:#065f46"><p>✅'
+        ).replace(
+            '<blockquote>\n<p>❌',
+            '<div style="background:#fef2f2;border-left:4px solid #ef4444;border-radius:0.375rem;padding:0.75rem 1rem;margin-bottom:1.5rem;font-size:0.875rem;color:#991b1b"><p>❌'
+        )
+        # Close the div instead of blockquote for the audit banners
+        if '<div style="background:#ecfdf5' in editor_html or '<div style="background:#fef2f2' in editor_html:
+            editor_html = editor_html.replace('</blockquote>', '</div>', 1)
 
     return render_template("post.html", post=post_data, content=html_content, editor_html=editor_html)
 

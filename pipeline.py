@@ -125,6 +125,12 @@ def run_pipeline(topic: str, mode: str = "original", on_stage=None) -> dict:
     # Build editor file — structured for the client
     editor_parts = [f"# Editor Notes: {topic}\n"]
 
+    # --- 0. Audit verdict banner ---
+    if audit_passed:
+        editor_parts.append("> ✅ **AUDIT PASSED**\n")
+    else:
+        editor_parts.append(f"> ❌ **AUDIT FAILED** after {attempt} attempt(s) — this article needs manual review\n")
+
     # --- 1. Target article (outrank mode only) ---
     target = extract_brief_section(brief, "TARGET_ARTICLE")
     if target:
