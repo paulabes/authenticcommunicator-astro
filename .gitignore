@@ -6,8 +6,8 @@ venv/
 __pycache__/
 *.pyc
 
-# Generated content
-output/*.md
+# Generated content (tracked for deployment)
+# output/*.md
 
 # IDE & tooling
 .claude/settings.local.json
