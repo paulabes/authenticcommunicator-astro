@@ -32,7 +32,7 @@ def audit(research_brief: str, draft: str) -> str:
         config=types.GenerateContentConfig(
             system_instruction=AUDIT_INSTRUCTION,
             temperature=0.1,
-            max_output_tokens=1024,
+            max_output_tokens=2048,
         ),
     )
     return response.text
