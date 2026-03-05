@@ -171,13 +171,22 @@ def post(slug):
             editor_raw = f.read()
         # Strip the top-level "# Editor Notes: ..." heading
         editor_raw = re.sub(r"^#\s+Editor Notes:.*\n*", "", editor_raw, count=1).strip()
+
+        # Strip any leftover raw [TAG]: markers from research brief
+        editor_raw = re.sub(r"^\*{0,2}\[[\w_]+\]\*{0,2}\s*:?\s*$", "", editor_raw, flags=re.MULTILINE)
+
         # Promote plain-text labels from the Scribe's SEO output to headings
         for label in ["Meta Description", "Word Count", "Schema FAQ", "Editor Notes", "AEO Snippet"]:
             editor_raw = re.sub(rf"^(\*?\*?{label}\*?\*?):\s*", rf"### \1\n\n", editor_raw, flags=re.MULTILINE)
-        # Clean stray bold markers around section tags
-        editor_raw = re.sub(r"^\*\*\[.*?\]\*\*\s*$", "", editor_raw, flags=re.MULTILINE)
-        editor_raw = re.sub(r"^\*\*\[.*?\]:\*\*\s*$", "", editor_raw, flags=re.MULTILINE)
+
+        # Strip stray standalone bold markers (e.g. "**\n")
+        editor_raw = re.sub(r"^\*{2,}\s*$", "", editor_raw, flags=re.MULTILINE)
+
+        # Collapse triple+ blank lines to double
+        editor_raw = re.sub(r"\n{3,}", "\n\n", editor_raw)
+
         editor_html = markdown.markdown(editor_raw, extensions=["tables", "fenced_code"])
+
         # Style the audit verdict banner green/red
         editor_html = editor_html.replace(
             '<blockquote>\n<p>✅',
@@ -186,7 +195,6 @@ def post(slug):
             '<blockquote>\n<p>❌',
             '<div style="background:#fef2f2;border-left:4px solid #ef4444;border-radius:0.375rem;padding:0.75rem 1rem;margin-bottom:1.5rem;font-size:0.875rem;color:#991b1b"><p>❌'
         )
-        # Close the div instead of blockquote for the audit banners
         if '<div style="background:#ecfdf5' in editor_html or '<div style="background:#fef2f2' in editor_html:
             editor_html = editor_html.replace('</blockquote>', '</div>', 1)
 

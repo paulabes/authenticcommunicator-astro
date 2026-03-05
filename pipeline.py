@@ -31,8 +31,13 @@ def extract_section(text: str, tag: str) -> str:
 
 
 def extract_brief_section(brief: str, tag: str) -> str:
-    """Extract a [TAG] block from researcher output."""
-    match = re.search(rf"\[{re.escape(tag)}\]\s*:?\s*(.*?)(?:\n\[|$)", brief, re.DOTALL)
+    """Extract a [TAG] block from researcher output.
+
+    Handles both plain [TAG]: and bold **[TAG]:** formats from Gemini.
+    Stops at the next [TAG] marker (with or without bold wrapping).
+    """
+    pattern = rf"(?:\*\*\s*)?\[{re.escape(tag)}\](?:\s*\*\*)?\s*:?\s*(.*?)(?=\n\s*(?:\*\*\s*)?\[|$)"
+    match = re.search(pattern, brief, re.DOTALL)
     return match.group(1).strip() if match else ""
 
 
@@ -125,63 +130,78 @@ def run_pipeline(topic: str, mode: str = "original", on_stage=None) -> dict:
     # Build editor file — structured for the client
     editor_parts = [f"# Editor Notes: {topic}\n"]
 
-    # --- 0. Audit verdict banner ---
+    # --- 0. Audit verdict ---
     if audit_passed:
         editor_parts.append("> ✅ **AUDIT PASSED**\n")
     else:
-        editor_parts.append(f"> ❌ **AUDIT FAILED** after {attempt} attempt(s) — this article needs manual review\n")
+        editor_parts.append(f"> ❌ **AUDIT FAILED** after {attempt} attempt(s) — needs manual review\n")
 
-    # --- 1. Target article (outrank mode only) ---
-    target = extract_brief_section(brief, "TARGET_ARTICLE")
-    if target:
-        # Clean out any vertex redirect URLs
-        target = re.sub(r"https?://vertexaisearch\.cloud\.google\.com\S*", "[URL not captured — search manually]", target)
-        editor_parts.append("## Competitor Article We're Beating")
-        editor_parts.append(target)
+    # --- 1. SEO & Post Data (top of file for easy access) ---
+    if editor:
+        editor_parts.append("## Post Data\n")
+        editor_parts.append(editor)
         editor_parts.append("")
 
-    # --- 2. Sources (with URLs and dates) ---
+    # Helper: convert verbose text to bullet list
+    def _to_bullets(text):
+        """Strip bold numbering/labels and collapse to clean bullet lines."""
+        lines = []
+        for line in text.strip().splitlines():
+            line = line.strip()
+            if not line or line == "**":
+                continue
+            # Strip leading numbering like "1. **Hard Truth 1: ...**"
+            line = re.sub(r"^\d+\.\s*", "", line)
+            # Strip bold wrappers like "**Title:** rest"
+            line = re.sub(r"^\*\*(.+?)\*\*\s*", r"\1 ", line)
+            # Ensure bullet prefix
+            if not line.startswith("-") and not line.startswith("*"):
+                line = f"- {line}"
+            lines.append(line)
+        return "\n".join(lines)
+
+    # --- 2. Key Statistics ---
+    stats = extract_brief_section(brief, "DATA_STATS")
+    if stats:
+        editor_parts.append("## Key Statistics\n")
+        editor_parts.append(_to_bullets(stats))
+        editor_parts.append("")
+
+    # --- 3. Legislation ---
+    legal = extract_brief_section(brief, "LEGAL_PILLAR")
+    if legal:
+        editor_parts.append("## Legislation\n")
+        editor_parts.append(_to_bullets(legal))
+        editor_parts.append("")
+
+    # --- 4. Hard Truths ---
+    truths = extract_brief_section(brief, "HARD_TRUTHS")
+    if truths:
+        editor_parts.append("## Hard Truths\n")
+        editor_parts.append(_to_bullets(truths))
+        editor_parts.append("")
+
+    # --- 5. Sources ---
     sources = extract_brief_section(brief, "SOURCES")
     if sources:
         cleaned = clean_sources(sources)
         if cleaned:
-            editor_parts.append("## Sources Referenced")
+            editor_parts.append("## Sources\n")
             editor_parts.append(cleaned)
             editor_parts.append("")
 
-    # --- 3. Key Statistics ---
-    stats = extract_brief_section(brief, "DATA_STATS")
-    if stats:
-        editor_parts.append("## Key Statistics")
-        editor_parts.append(stats)
+    # --- 6. Competitor (outrank mode only) ---
+    target = extract_brief_section(brief, "TARGET_ARTICLE")
+    if target:
+        target = re.sub(r"https?://vertexaisearch\.cloud\.google\.com\S*", "[search manually]", target)
+        editor_parts.append("## Competitor Article\n")
+        editor_parts.append(_to_bullets(target))
         editor_parts.append("")
 
-    # --- 4. Legislation & Practice Directions ---
-    legal = extract_brief_section(brief, "LEGAL_PILLAR")
-    if legal:
-        editor_parts.append("## Legislation & Practice Directions")
-        editor_parts.append(legal)
-        editor_parts.append("")
-
-    # --- 5. Hard Truths ---
-    truths = extract_brief_section(brief, "HARD_TRUTHS")
-    if truths:
-        editor_parts.append("## Hard Truths")
-        editor_parts.append(truths)
-        editor_parts.append("")
-
-    # --- 6. Audit Report ---
-    editor_parts.append("## Audit Report")
+    # --- 7. Audit Report (full detail at bottom) ---
+    editor_parts.append("## Audit Report\n")
     editor_parts.append(audit_report)
     editor_parts.append("")
-
-    # --- 7. SEO Assets (meta, schema — at the end for the client) ---
-    if editor:
-        editor_parts.append("---")
-        editor_parts.append("")
-        editor_parts.append("## SEO Assets")
-        editor_parts.append("")
-        editor_parts.append(editor)
 
     editor_path = OUTPUT_DIR / f"{base}.editor.md"
     editor_path.write_text("\n".join(editor_parts) + "\n", encoding="utf-8")
