@@ -224,4 +224,5 @@ def run_pipeline(topic: str, mode: str = "original", on_stage=None) -> dict:
         "excerpt": excerpt,
         "category": category,
         "filepath": str(article_path),
+        "audit_passed": audit_passed,
     }

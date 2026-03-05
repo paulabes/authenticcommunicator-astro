@@ -281,6 +281,7 @@ function pollStatus(taskId) {
 
             if (data.status === 'done') {
                 const post = data.post;
+                const auditFailed = post.audit_passed === false;
                 const card = document.createElement('a');
                 card.href = '/news/' + post.slug;
                 card.className = 'group block bg-white border border-gray-200 rounded-sm overflow-hidden hover:shadow-xl transition-all duration-300';
@@ -292,6 +293,7 @@ function pollStatus(taskId) {
                     <div class="p-8">
                         <h3 class="text-xl font-serif text-[#050615] mb-4 group-hover:text-[#C4A470] transition-colors leading-tight">${post.title}</h3>
                         <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">${post.excerpt}</p>
+                        ${auditFailed ? '<span class="inline-block text-[10px] uppercase tracking-widest font-medium text-red-500 border border-red-300 rounded px-2 py-1 mb-3">Audit Failed — Needs Review</span><br>' : ''}
                         <span class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#C4A470] group-hover:text-[#050615] transition-colors">Read Article &rarr;</span>
                     </div>
                 `;
