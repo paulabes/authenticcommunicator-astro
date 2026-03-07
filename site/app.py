@@ -8,11 +8,13 @@ import uuid
 import shutil
 import threading
 from datetime import datetime
-from flask import Flask, render_template, abort, request, jsonify
+from flask import Flask, render_template, abort, request, jsonify, session, redirect, url_for
 import markdown
 
 SITE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, template_folder=os.path.join(SITE_DIR, "templates"))
+app.secret_key = os.environ.get("SECRET_KEY", "parachute-law-dev-key-change-me")
+SITE_PASSWORD = os.environ.get("SITE_PASSWORD", "jibberjabber")
 
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "output")
 
@@ -142,6 +144,25 @@ def get_posts():
     _posts_cache["mtime"] = current_mtime
     _posts_cache["posts"] = posts
     return posts
+
+
+@app.before_request
+def require_login():
+    if request.endpoint in ("login", "static"):
+        return
+    if not session.get("authenticated"):
+        return redirect(url_for("login"))
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    error = None
+    if request.method == "POST":
+        if request.form.get("password") == SITE_PASSWORD:
+            session["authenticated"] = True
+            return redirect(url_for("home"))
+        error = "Incorrect password"
+    return render_template("login.html", error=error)
 
 
 @app.route("/")
