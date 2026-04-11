@@ -92,20 +92,22 @@ import GoogleReview from '../../components/GoogleReview.astro';
 
 <!-- Row 2: What You'll Take Away (white) -->
 <section class="py-24 bg-white text-[#050615]">
-    <div class="max-w-[1200px] mx-auto px-6">
+    <div class="max-w-[860px] mx-auto px-6">
         <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-12 text-center">What You'll Take Away</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div class="divide-y divide-[var(--pkg-accent)]/25">
             {[
                 { icon: 'solar:clock-circle-bold', title: 'Walk In Ready', desc: 'Leave with the exact tools you need for the specific moment ahead.' },
                 { icon: 'solar:heart-pulse-bold', title: 'Nerves Managed', desc: 'Practical in-the-moment techniques for when your heart starts pounding.' },
                 { icon: 'solar:notebook-bold', title: 'A Follow-Up Kit', desc: 'Written notes and exercises emailed so the work lives on past the session.' },
             ].map(o => (
-                <div>
-                    <div class="w-24 h-24 flex items-center justify-center text-white bg-[var(--pkg-accent)] mb-6">
-                        <iconify-icon icon={o.icon} width="44"></iconify-icon>
+                <div class="flex gap-8 items-start py-8 first:pt-0 last:pb-0">
+                    <div class="w-20 h-20 shrink-0 flex items-center justify-center text-white bg-[var(--pkg-accent)]">
+                        <iconify-icon icon={o.icon} width="40"></iconify-icon>
                     </div>
-                    <h3 class="font-serif text-lg text-[#050615] mb-2">{o.title}</h3>
-                    <p class="text-sm text-gray-600 font-light leading-relaxed">{o.desc}</p>
+                    <div class="flex-1 pt-1">
+                        <h3 class="font-serif text-xl text-[#050615] mb-2">{o.title}</h3>
+                        <p class="text-gray-600 font-light leading-relaxed">{o.desc}</p>
+                    </div>
                 </div>
             ))}
         </div>
