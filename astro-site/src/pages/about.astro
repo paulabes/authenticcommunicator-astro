@@ -77,12 +77,12 @@ import GoogleReview from '../components/GoogleReview.astro';
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-                { icon: 'solar:microphone-3-linear', title: 'Public Speaking', desc: 'From keynotes to boardroom presentations, I\'ll help you command any room with confidence and clarity.' },
-                { icon: 'solar:chat-round-dots-linear', title: 'Pronunciation & Accent', desc: 'Refine your UK English pronunciation and speak with clarity, whether English is your first or additional language.' },
-                { icon: 'solar:diploma-linear', title: 'Media Training', desc: 'Prepare for interviews, podcasts, and media appearances with techniques that keep you composed and compelling.' },
-                { icon: 'solar:music-note-2-linear', title: 'Vocal Technique', desc: 'Drawing on opera training, I\'ll help you develop projection, resonance, and a voice that carries authority.' },
-                { icon: 'solar:shield-check-linear', title: 'Performance Anxiety', desc: 'Practical, proven techniques to manage nerves and perform at your best when the stakes are highest.' },
-                { icon: 'solar:users-group-rounded-linear', title: 'Corporate & Group', desc: 'Bespoke workshops and group sessions for teams who want to elevate their collective communication.' },
+                { icon: 'solar:microphone-3-bold', title: 'Public Speaking', desc: 'From keynotes to boardroom presentations, I\'ll help you command any room with confidence and clarity.' },
+                { icon: 'solar:chat-round-dots-bold', title: 'Pronunciation & Accent', desc: 'Refine your UK English pronunciation and speak with clarity, whether English is your first or additional language.' },
+                { icon: 'solar:diploma-bold', title: 'Media Training', desc: 'Prepare for interviews, podcasts, and media appearances with techniques that keep you composed and compelling.' },
+                { icon: 'solar:music-note-2-bold', title: 'Vocal Technique', desc: 'Drawing on opera training, I\'ll help you develop projection, resonance, and a voice that carries authority.' },
+                { icon: 'solar:shield-check-bold', title: 'Performance Anxiety', desc: 'Practical, proven techniques to manage nerves and perform at your best when the stakes are highest.' },
+                { icon: 'solar:users-group-rounded-bold', title: 'Corporate & Group', desc: 'Bespoke workshops and group sessions for teams who want to elevate their collective communication.' },
             ].map(e => (
                 <div class="border border-white/10 rounded-sm p-8 hover:border-[#C4A470]/30 transition-colors">
                     <iconify-icon icon={e.icon} width="28" class="text-[#C4A470] mb-4"></iconify-icon>
@@ -94,7 +94,7 @@ import GoogleReview from '../components/GoogleReview.astro';
     </div>
 </section>
 
-<GoogleReview size="large" />
+<GoogleReview />
 
 <!-- CTA -->
 <section class="py-24 bg-white">

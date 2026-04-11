@@ -1,20 +1,21 @@
 ---
 import { reviews } from '../data/reviews';
-const size = Astro.props.size ?? 'large';
+const { text, author, date } = Astro.props;
+const fixed = !!text;
 ---
 
-<section class="py-24 bg-[#0c1a3a]" data-review-section>
-    <div class={`${size === 'large' ? 'max-w-[900px]' : 'max-w-[800px]'} mx-auto px-6 text-center`}>
+<section class="py-24 bg-[#0c1a3a]" data-review-section={fixed ? undefined : ''}>
+    <div class="max-w-[900px] mx-auto px-6 text-center">
         <div class="flex items-center justify-center gap-2 mb-4">
-            <iconify-icon icon="mdi:google" width={size === 'large' ? '20' : '18'} class="text-white"></iconify-icon>
+            <iconify-icon icon="mdi:google" width="20" class="text-white"></iconify-icon>
             <span class="text-[10px] uppercase tracking-widest text-gray-400 font-medium">Google Review - 5.0 / 14 Reviews</span>
         </div>
         <div class="flex justify-center gap-1 mb-8">
-            {Array(5).fill(0).map(() => <iconify-icon icon="solar:star-bold" width={size === 'large' ? '24' : '20'} class="text-[#C4A470]"></iconify-icon>)}
+            {Array(5).fill(0).map(() => <iconify-icon icon="solar:star-bold" width="24" class="text-[#C4A470]"></iconify-icon>)}
         </div>
-        <blockquote class={`${size === 'large' ? 'text-lg md:text-xl mb-8' : 'text-base md:text-lg mb-6'} text-gray-300 leading-relaxed font-light italic`} data-review-text></blockquote>
-        <p class={`font-medium text-white ${size === 'large' ? '' : 'text-sm'}`} data-review-name></p>
-        <p class={`${size === 'large' ? 'text-sm' : 'text-xs'} text-gray-500`} data-review-date></p>
+        <blockquote class="text-lg md:text-xl mb-8 text-gray-300 leading-relaxed font-light italic" data-review-text>{fixed ? `\u201C${text}\u201D` : ''}</blockquote>
+        <p class="font-medium text-white" data-review-name>{fixed ? author : ''}</p>
+        <p class="text-sm text-gray-500" data-review-date>{fixed ? date : ''}</p>
     </div>
 </section>
 

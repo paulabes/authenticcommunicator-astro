@@ -29,24 +29,24 @@ import Base from '../../layouts/Base.astro';
     <div class="max-w-[1200px] mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-                { icon: 'solar:microphone-3-linear', title: 'Confident Speaker Package', desc: 'Mastering the art of public speaking. A structured programme to build your confidence, refine your delivery, and help you connect with any audience.', features: ['Vocal technique & projection', 'Managing nerves & performance anxiety', 'Engaging storytelling & structure', 'Body language & presence'], img: '/images/confident-speaker-package.jpg', href: '/packages/confident-speaker', accent: '#B5654A' },
-                { icon: 'solar:chat-round-dots-linear', title: 'Confident Pronunciation Package', desc: 'Confident UK English pronunciation. Speak clearly and be understood with ease - whether English is your first language or an additional one.', features: ['Accent refinement & clarity', 'Articulation & intonation patterns', 'Professional vocabulary & phrasing', 'Personalised exercises & practice plans'], img: '/images/confident-pronunciation-package.jpg', href: '/packages/confident-pronunciation', accent: '#6B8E85' },
-                { icon: 'solar:clock-circle-linear', title: 'Intensive 90-Minute Session', desc: 'Transform your confidence in a single online session. Perfect for professionals preparing for an important presentation, interview, or media appearance.', features: ['Targeted coaching for your specific needs', 'Practical techniques you can use immediately', 'Online via Zoom - anywhere in the world', 'Follow-up notes & exercises included'], img: '/images/intensive-90-minute-session.jpg', href: '/packages/intensive-session', accent: '#7A4E5E' },
+                { icon: 'solar:microphone-3-bold', title: 'Confident Speaker Package', desc: 'Mastering the art of public speaking. A structured programme to build your confidence, refine your delivery, and help you connect with any audience.', features: ['Vocal technique & projection', 'Managing nerves & performance anxiety', 'Engaging storytelling & structure', 'Body language & presence'], img: '/images/confident-speaker-package.jpg', href: '/packages/confident-speaker', accent: '#B5654A' },
+                { icon: 'solar:chat-round-dots-bold', title: 'Confident Pronunciation Package', desc: 'Confident UK English pronunciation. Speak clearly and be understood with ease - whether English is your first language or an additional one.', features: ['Accent refinement & clarity', 'Articulation & intonation patterns', 'Professional vocabulary & phrasing', 'Personalised exercises & practice plans'], img: '/images/confident-pronunciation-package.jpg', href: '/packages/confident-pronunciation', accent: '#6B8E85' },
+                { icon: 'solar:clock-circle-bold', title: 'Intensive 90-Minute Session', desc: 'Transform your confidence in a single online session. Perfect for professionals preparing for an important presentation, interview, or media appearance.', features: ['Targeted coaching for your specific needs', 'Practical techniques you can use immediately', 'Online via Zoom - anywhere in the world', 'Follow-up notes & exercises included'], img: '/images/intensive-90-minute-session.jpg', href: '/packages/intensive-session', accent: '#7A4E5E' },
             ].map(s => (
-                <a href={s.href} style={`--pkg-accent: ${s.accent}`} class="bg-[#FAFAF8] border border-gray-200 rounded-sm overflow-hidden group hover:shadow-2xl transition-all duration-500 block">
+                <a href={s.href} style={`--pkg-accent: ${s.accent}`} class="bg-[#F8F3EA]/60 border border-gray-200 rounded-sm overflow-hidden group hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
                     <img src={s.img} alt={s.title} class="w-full">
-                    <div class="p-10">
-                        <div class="w-12 h-12 rounded-full border border-gray-200 group-hover:border-[var(--pkg-accent)] flex items-center justify-center text-[var(--pkg-accent)] mb-6 transition-colors">
+                    <div class="p-10 flex-1 flex flex-col">
+                        <div class="w-12 h-12 flex items-center justify-center text-[var(--pkg-accent)] mb-6">
                             <iconify-icon icon={s.icon} width="24"></iconify-icon>
                         </div>
                         <h3 class="text-2xl font-serif mb-4 group-hover:text-[var(--pkg-accent)] transition-colors">{s.title}</h3>
                         <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">{s.desc}</p>
                         <ul class="space-y-2 mb-8 text-sm text-gray-500 font-light">
                             {s.features.map(f => (
-                                <li class="flex items-start gap-2"><iconify-icon icon="solar:check-circle-linear" width="16" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>{f}</li>
+                                <li class="flex items-start gap-2"><iconify-icon icon="solar:check-circle-bold" width="16" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>{f}</li>
                             ))}
                         </ul>
-                        <span class="text-[10px] uppercase tracking-[0.2em] font-medium text-[var(--pkg-accent)] group-hover:text-[#050615] transition-colors">Learn More &rarr;</span>
+                        <span class="mt-auto self-start inline-flex items-center justify-center px-6 py-3 text-[10px] uppercase tracking-[0.2em] font-medium text-white bg-[var(--pkg-accent)] border-2 border-[var(--pkg-accent)] group-hover:bg-transparent group-hover:text-[var(--pkg-accent)] transition-all">Learn More &rarr;</span>
                     </div>
                 </a>
             ))}

@@ -30,17 +30,17 @@ import Base from '../layouts/Base.astro';
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div class="bg-[#050615] p-8 md:p-12 rounded-sm shadow-2xl border border-white/10">
                 <h2 class="text-2xl font-serif mb-6 text-white">Get in Touch</h2>
-                <form class="space-y-5">
+                <form id="contact-form" class="space-y-5" novalidate>
                     <div class="grid grid-cols-2 gap-5">
-                        <div class="col-span-2 md:col-span-1"><label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Full Name *</label><input type="text" class="w-full bg-white/10 border border-white/15 p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm"></div>
-                        <div class="col-span-2 md:col-span-1"><label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Email *</label><input type="email" class="w-full bg-white/10 border border-white/15 p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm"></div>
+                        <div class="col-span-2 md:col-span-1"><label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Full Name *</label><input name="name" type="text" required class="w-full bg-white/10 border border-white/15 p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm"></div>
+                        <div class="col-span-2 md:col-span-1"><label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Email *</label><input name="email" type="email" required class="w-full bg-white/10 border border-white/15 p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm"></div>
                     </div>
                     <div class="grid grid-cols-2 gap-5">
-                        <div class="col-span-2 md:col-span-1"><label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Phone</label><input type="tel" class="w-full bg-white/10 border border-white/15 p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm"></div>
+                        <div class="col-span-2 md:col-span-1"><label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Phone</label><input name="phone" type="tel" class="w-full bg-white/10 border border-white/15 p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm"></div>
                         <div class="col-span-2 md:col-span-1">
                             <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">I'm interested in</label>
                             <div class="relative">
-                                <select class="w-full bg-[#0a0e1f] border border-white/15 p-3 text-gray-300 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm appearance-none">
+                                <select name="service" class="w-full bg-[#0a0e1f] border border-white/15 p-3 text-gray-300 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm appearance-none">
                                     <option>Select a service...</option>
                                     <option>Confident Speaker Package</option>
                                     <option>Confident Pronunciation Package</option>
@@ -48,34 +48,76 @@ import Base from '../layouts/Base.astro';
                                     <option>Corporate / Group Coaching</option>
                                     <option>Not sure yet</option>
                                 </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><iconify-icon icon="solar:alt-arrow-down-linear" width="12"></iconify-icon></div>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><iconify-icon icon="solar:alt-arrow-down-bold" width="12"></iconify-icon></div>
                             </div>
                         </div>
                     </div>
-                    <div><label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Your Message *</label><textarea rows="5" class="w-full bg-white/10 border border-white/15 p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm resize-none" placeholder="Tell me about what you'd like to achieve..."></textarea></div>
+                    <div><label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Your Message *</label><textarea name="message" rows="5" required class="w-full bg-white/10 border border-white/15 p-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm resize-none" placeholder="Tell me about what you'd like to achieve..."></textarea></div>
                     <div>
                         <label class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Preferred Session Format</label>
                         <div class="relative">
-                            <select class="w-full bg-[#0a0e1f] border border-white/15 p-3 text-gray-300 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm appearance-none">
+                            <select name="format" class="w-full bg-[#0a0e1f] border border-white/15 p-3 text-gray-300 focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm appearance-none">
                                 <option>Online (Zoom)</option>
                                 <option>In-Person (London)</option>
                                 <option>No preference</option>
                             </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><iconify-icon icon="solar:alt-arrow-down-linear" width="12"></iconify-icon></div>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500"><iconify-icon icon="solar:alt-arrow-down-bold" width="12"></iconify-icon></div>
                         </div>
                     </div>
-                    <button type="button" class="w-full bg-[#C4A470] text-white font-bold uppercase tracking-[0.15em] text-xs py-4 hover:bg-[#a38656] transition-colors duration-300 mt-2">Send Message</button>
+                    <button id="contact-submit" type="submit" class="w-full bg-[#C4A470] text-white font-bold uppercase tracking-[0.15em] text-xs py-4 hover:bg-[#a38656] transition-colors duration-300 mt-2 disabled:opacity-60 disabled:cursor-not-allowed">Send Message</button>
+                    <p id="contact-status" class="hidden text-xs text-center pt-2"></p>
                     <p class="text-[10px] text-gray-500 text-center pt-2 italic">I personally respond to every enquiry within 24 hours.</p>
                 </form>
             </div>
+
+            <script is:inline>
+              (function () {
+                const form = document.getElementById('contact-form');
+                if (!form) return;
+                const btn = document.getElementById('contact-submit');
+                const status = document.getElementById('contact-status');
+                const defaultLabel = btn.textContent;
+
+                function setStatus(msg, kind) {
+                  status.textContent = msg;
+                  status.classList.remove('hidden', 'text-red-400', 'text-[#C4A470]');
+                  status.classList.add(kind === 'error' ? 'text-red-400' : 'text-[#C4A470]');
+                }
+
+                form.addEventListener('submit', async (e) => {
+                  e.preventDefault();
+                  const data = Object.fromEntries(new FormData(form).entries());
+                  btn.disabled = true;
+                  btn.textContent = 'Sending...';
+                  status.classList.add('hidden');
+                  try {
+                    const res = await fetch('/api/contact', {
+                      method: 'POST',
+                      headers: { 'content-type': 'application/json' },
+                      body: JSON.stringify(data),
+                    });
+                    const body = await res.json().catch(() => ({}));
+                    if (!res.ok) throw new Error(body.error || 'Failed to send');
+                    form.reset();
+                    btn.textContent = defaultLabel;
+                    setStatus('Message sent - I\u2019ll be in touch within 24 hours.', 'ok');
+                  } catch (err) {
+                    btn.textContent = defaultLabel;
+                    setStatus(err.message || 'Something went wrong. Please try again.', 'error');
+                  } finally {
+                    btn.disabled = false;
+                  }
+                });
+              })();
+            </script>
 
             <div class="flex flex-col justify-between">
                 <div>
                     <img src="/images/Alice-Deville-London.jpg" alt="Alice Deville" class="w-full rounded-sm mb-8">
                     <div class="space-y-6 mb-10">
                         {[
-                            { icon: 'solar:map-point-linear', label: 'Location', content: '<p class="text-[#050615] text-sm">London, United Kingdom<br><span class="text-gray-500">Sessions available worldwide via Zoom</span></p>' },
-                            { icon: 'solar:clock-circle-linear', label: 'Availability', content: '<p class="text-[#050615] text-sm">Mon – Fri: 9:00 AM – 6:00 PM GMT<br><span class="text-gray-500">Flexible hours for international clients</span></p>' },
+                            { icon: 'solar:map-point-bold', label: 'Location', content: '<p class="text-[#050615] text-sm">London, United Kingdom<br><span class="text-gray-500">Sessions available worldwide via Zoom</span></p>' },
+                            { icon: 'solar:clock-circle-bold', label: 'Availability', content: '<p class="text-[#050615] text-sm">Mon – Fri: 9:00 AM – 6:00 PM GMT<br><span class="text-gray-500">Flexible hours for international clients</span></p>' },
                         ].map(item => (
                             <div class="flex items-start gap-4">
                                 <div class="text-[#C4A470] mt-1"><iconify-icon icon={item.icon} width="22"></iconify-icon></div>

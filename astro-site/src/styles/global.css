@@ -18,6 +18,22 @@ select option {
   color: #d1d5db;
 }
 
+/* Keep autofilled fields visually consistent - Chrome paints a yellow/white background on autofill and when values are restored; these rules preserve the field's original translucent background and text color. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill {
+  -webkit-text-fill-color: inherit;
+  caret-color: currentColor;
+  transition: background-color 9999s ease-in-out 0s, color 9999s ease-in-out 0s;
+  box-shadow: 0 0 0 1000px transparent inset;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+}
+
 /* Primary button: solid gold, outline on hover */
 .btn-primary {
   display: inline-flex;
@@ -31,7 +47,6 @@ select option {
   letter-spacing: 0.2em;
   font-weight: 500;
   border: 2px solid #C4A470;
-  border-radius: 2px;
   transition: all 0.3s;
 }
 .btn-primary:hover {
@@ -50,7 +65,6 @@ select option {
   letter-spacing: 0.2em;
   font-weight: 500;
   border: 2px solid;
-  border-radius: 2px;
   transition: all 0.3s;
 }
 .btn-secondary-light {
@@ -99,8 +113,13 @@ button, a, select, input, [role="button"] {
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #0a0a0a; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: #333; }
 ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+/* Zero border-radius site-wide: all buttons, form fields, cards, and elements have square corners. */
+*, *::before, *::after {
+  border-radius: 0 !important;
+}
 
 .fade-enter {
   opacity: 0;

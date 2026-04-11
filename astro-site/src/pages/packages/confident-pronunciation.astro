@@ -45,47 +45,85 @@ import GoogleReview from '../../components/GoogleReview.astro';
     </div>
 </section>
 
-<!-- Details: bullets + how it works + edge -->
-<section class="py-24 bg-[#FAFAF8] text-[#050615]">
-    <div class="max-w-[820px] mx-auto px-6">
-        <h3 class="text-2xl font-serif text-[#050615] mb-8">What's Included</h3>
-        <ul class="space-y-4 mb-16">
-            {[
-                'Accent refinement & clarity  - speak clearly without losing your identity',
-                'Articulation & intonation patterns  - the music of professional English',
-                'Vowel and consonant precision  - targeted work on specific sounds',
-                'Professional vocabulary & phrasing  - sound confident in any context',
-                'Rhythm, stress & connected speech  - natural-sounding fluency',
-                'Personalised exercises & practice plans to use between sessions',
-            ].map(item => (
-                <li class="flex items-start gap-3 text-gray-600 font-light">
-                    <iconify-icon icon="solar:check-circle-linear" width="20" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>
-                    {item}
-                </li>
-            ))}
-        </ul>
+<!-- Row 1: What's Included | How It Works (cream) -->
+<section class="py-24 bg-[#F8F3EA] text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-8">What's Included</h2>
+                <ul class="space-y-4">
+                    {[
+                        'Accent refinement & clarity  - speak clearly without losing your identity',
+                        'Articulation & intonation patterns  - the music of professional English',
+                        'Vowel and consonant precision  - targeted work on specific sounds',
+                        'Professional vocabulary & phrasing  - sound confident in any context',
+                        'Rhythm, stress & connected speech  - natural-sounding fluency',
+                        'Personalised exercises & practice plans to use between sessions',
+                    ].map(item => (
+                        <li class="flex items-start gap-3 text-gray-600 font-light">
+                            <iconify-icon icon="solar:check-circle-bold" width="20" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>
+                            {item}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-8">How It Works</h2>
+                <div class="space-y-6">
+                    {[
+                        { step: '01', title: 'Discovery Call', desc: 'A free 15-minute conversation to understand your pronunciation goals.' },
+                        { step: '02', title: 'Assessment', desc: 'Alice listens to your speech patterns and identifies areas for improvement.' },
+                        { step: '03', title: 'Targeted Sessions', desc: 'Focused coaching on the specific sounds, patterns, and habits that matter most.' },
+                        { step: '04', title: 'Practice & Progress', desc: 'Custom exercises to reinforce learning between sessions.' },
+                    ].map(s => (
+                        <div class="flex gap-4">
+                            <span class="text-[var(--pkg-accent)] font-serif text-2xl font-medium w-10 flex-shrink-0">{s.step}</span>
+                            <div>
+                                <h4 class="font-medium text-[#050615] mb-1">{s.title}</h4>
+                                <p class="text-sm text-gray-500 font-light">{s.desc}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <h3 class="text-2xl font-serif text-[#050615] mb-8">How It Works</h3>
-        <div class="space-y-6 mb-16">
+<!-- Row 2: What You'll Take Away (white) -->
+<section class="py-24 bg-white text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-12 text-center">What You'll Take Away</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
-                { step: '01', title: 'Discovery Call', desc: 'A free 15-minute conversation to understand your pronunciation goals.' },
-                { step: '02', title: 'Assessment', desc: 'Alice listens to your speech patterns and identifies areas for improvement.' },
-                { step: '03', title: 'Targeted Sessions', desc: 'Focused coaching on the specific sounds, patterns, and habits that matter most.' },
-                { step: '04', title: 'Practice & Progress', desc: 'Custom exercises to reinforce learning between sessions.' },
-            ].map(s => (
-                <div class="flex gap-4">
-                    <span class="text-[var(--pkg-accent)] font-serif text-2xl font-medium w-10 flex-shrink-0">{s.step}</span>
-                    <div>
-                        <h4 class="font-medium text-[#050615] mb-1">{s.title}</h4>
-                        <p class="text-sm text-gray-500 font-light">{s.desc}</p>
+                { icon: 'solar:volume-loud-bold', title: 'Clearly Understood', desc: 'Articulation that lands every word the first time.' },
+                { icon: 'solar:music-note-2-bold', title: 'Naturally Fluent', desc: 'Rhythm and intonation that sound effortless, not rehearsed.' },
+                { icon: 'solar:microphone-bold', title: 'Speak Up Without Hesitation', desc: 'No more holding back in meetings, calls, or presentations.' },
+            ].map(o => (
+                <div>
+                    <div class="w-24 h-24 flex items-center justify-center text-white bg-[var(--pkg-accent)] mb-6">
+                        <iconify-icon icon={o.icon} width="44"></iconify-icon>
                     </div>
+                    <h3 class="font-serif text-lg text-[#050615] mb-2">{o.title}</h3>
+                    <p class="text-sm text-gray-600 font-light leading-relaxed">{o.desc}</p>
                 </div>
             ))}
         </div>
+    </div>
+</section>
 
-        <h3 class="text-2xl font-serif text-[#050615] mb-6">Alice's Edge</h3>
-        <p class="text-gray-600 font-light leading-relaxed mb-2">As an opera-trained singer, Alice has a finely tuned ear for voice, accent, articulation and intonation that goes far beyond typical pronunciation coaching.</p>
-        <p class="text-gray-600 font-light leading-relaxed">Available online via Zoom (worldwide) or in-person in London. Sessions are typically 60 minutes.</p>
+<!-- Row 3: Alice's Edge + Alice photo (cream) -->
+<section class="py-24 bg-[#F8F3EA] text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+            <div>
+                <span class="text-[11px] tracking-[0.25em] text-[var(--pkg-accent)] uppercase font-medium block mb-4">Alice's Edge</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-6 leading-tight">An opera-trained ear hears what others miss.</h2>
+                <p class="text-gray-600 font-light leading-relaxed mb-4">As an opera-trained singer, Alice has a finely tuned ear for voice, accent, articulation and intonation that goes far beyond typical pronunciation coaching. She can hear precisely where a word bends, where a vowel narrows, where a rhythm trips  -  and show you exactly how to fix it.</p>
+                <p class="text-gray-600 font-light leading-relaxed">Available online via Zoom (worldwide) or in-person in London. Sessions are typically 60 minutes.</p>
+            </div>
+            <img src="/images/about-alice-deville.jpg" alt="Alice Deville - voice and pronunciation coach" class="w-full rounded-sm">
+        </div>
     </div>
 </section>
 
@@ -107,7 +145,7 @@ import GoogleReview from '../../components/GoogleReview.astro';
                 <details class="group border border-white/10 rounded-sm">
                     <summary class="flex items-center justify-between p-6 cursor-pointer">
                         <span class="font-medium text-white pr-4">{faq.q}</span>
-                        <iconify-icon icon="solar:alt-arrow-down-linear" width="16" class="text-[var(--pkg-accent)] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
+                        <iconify-icon icon="solar:alt-arrow-down-bold" width="16" class="text-[var(--pkg-accent)] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
                     </summary>
                     <div class="px-6 pb-6 pt-0">
                         <p class="text-sm text-gray-400 font-light leading-relaxed">{faq.a}</p>
@@ -119,7 +157,7 @@ import GoogleReview from '../../components/GoogleReview.astro';
     </div>
 </section>
 
-<GoogleReview size="small" />
+<GoogleReview text="Alice's expertise in English RP pronunciation has been invaluable. She demonstrated a keen ability to identify my weaknesses and tailor her lessons to meet my specific needs. My confidence in speaking English has soared, and I feel much more at ease in both professional and social settings." author="Maria Luisa F" date="1 year ago" />
 
 <!-- CTA -->
 <section class="py-20 bg-white">

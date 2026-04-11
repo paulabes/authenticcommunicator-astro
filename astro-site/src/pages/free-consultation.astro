@@ -34,11 +34,11 @@ import Base from '../layouts/Base.astro';
                 <div class="border border-gray-200 rounded-sm overflow-hidden">
                     <div class="bg-[#050615] px-6 py-5 flex items-center justify-between">
                         <button id="cal-prev" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:border-[#C4A470] hover:text-[#C4A470] transition-colors">
-                            <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:arrow-left-bold" width="16"></iconify-icon>
                         </button>
                         <h2 id="cal-month" class="text-lg font-serif text-white"></h2>
                         <button id="cal-next" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:border-[#C4A470] hover:text-[#C4A470] transition-colors">
-                            <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:arrow-right-bold" width="16"></iconify-icon>
                         </button>
                     </div>
                     <div class="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
@@ -54,7 +54,7 @@ import Base from '../layouts/Base.astro';
             <div class="lg:col-span-4">
                 <!-- No date selected -->
                 <div id="slots-empty" class="flex flex-col items-center justify-center h-full text-center py-12">
-                    <iconify-icon icon="solar:calendar-linear" width="48" class="text-gray-200 mb-4"></iconify-icon>
+                    <iconify-icon icon="solar:calendar-bold" width="48" class="text-gray-200 mb-4"></iconify-icon>
                     <p class="text-gray-400 font-light">Select a date to see available times</p>
                 </div>
 
@@ -73,7 +73,7 @@ import Base from '../layouts/Base.astro';
                     <!-- Selected slot confirmation -->
                     <div id="slot-confirm" class="hidden border border-[#C4A470]/30 bg-[#C4A470]/5 rounded-sm p-5 mt-4">
                         <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="solar:clock-circle-linear" width="20" class="text-[#C4A470]"></iconify-icon>
+                            <iconify-icon icon="solar:clock-circle-bold" width="20" class="text-[#C4A470]"></iconify-icon>
                             <p class="font-medium text-[#050615]" id="confirm-datetime"></p>
                         </div>
                         <p class="text-sm text-gray-500 font-light mb-4">30-minute video call via Zoom</p>
@@ -101,7 +101,7 @@ import Base from '../layouts/Base.astro';
 
                 <!-- Date selected  - no slots -->
                 <div id="slots-none" class="hidden flex flex-col items-center justify-center h-full text-center py-12">
-                    <iconify-icon icon="solar:calendar-minimalistic-linear" width="48" class="text-gray-200 mb-4"></iconify-icon>
+                    <iconify-icon icon="solar:calendar-minimalistic-bold" width="48" class="text-gray-200 mb-4"></iconify-icon>
                     <p class="text-gray-500 font-light mb-1">No availability on this date</p>
                     <p class="text-sm text-gray-400 font-light">Try another day</p>
                 </div>
@@ -120,15 +120,15 @@ import Base from '../layouts/Base.astro';
 
                     <div class="space-y-3 mb-6 pb-6 border-b border-gray-200">
                         <div class="flex items-center gap-3">
-                            <iconify-icon icon="solar:clock-circle-linear" width="16" class="text-[#C4A470]"></iconify-icon>
+                            <iconify-icon icon="solar:clock-circle-bold" width="16" class="text-[#C4A470]"></iconify-icon>
                             <span class="text-sm text-[#050615]">30 minutes</span>
                         </div>
                         <div class="flex items-center gap-3">
-                            <iconify-icon icon="solar:videocamera-record-linear" width="16" class="text-[#C4A470]"></iconify-icon>
+                            <iconify-icon icon="solar:videocamera-record-bold" width="16" class="text-[#C4A470]"></iconify-icon>
                             <span class="text-sm text-[#050615]">Zoom video call</span>
                         </div>
                         <div class="flex items-center gap-3">
-                            <iconify-icon icon="solar:tag-price-linear" width="16" class="text-[#C4A470]"></iconify-icon>
+                            <iconify-icon icon="solar:tag-price-bold" width="16" class="text-[#C4A470]"></iconify-icon>
                             <span class="text-sm text-[#050615]">Completely free</span>
                         </div>
                     </div>
@@ -142,7 +142,7 @@ import Base from '../layouts/Base.astro';
                             'Zero pressure  - no obligation whatsoever',
                         ].map(item => (
                             <div class="flex items-start gap-2">
-                                <iconify-icon icon="solar:check-circle-linear" width="14" class="text-[#C4A470] mt-0.5 flex-shrink-0"></iconify-icon>
+                                <iconify-icon icon="solar:check-circle-bold" width="14" class="text-[#C4A470] mt-0.5 flex-shrink-0"></iconify-icon>
                                 <p class="text-xs text-gray-500 font-light leading-relaxed">{item}</p>
                             </div>
                         ))}

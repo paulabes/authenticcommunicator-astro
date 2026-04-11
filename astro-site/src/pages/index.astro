@@ -75,24 +75,24 @@ import GoogleReview from '../components/GoogleReview.astro';
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-                { icon: 'solar:microphone-3-linear', title: 'Confident Speaker Package', desc: 'Mastering the art of public speaking. A structured programme to build your confidence, refine your delivery, and help you connect with any audience.', features: ['Vocal technique & projection', 'Managing nerves & performance anxiety', 'Engaging storytelling & structure', 'Body language & presence'], img: '/images/confident-speaker-package.jpg', cta: 'Learn More', href: '/packages/confident-speaker', accent: '#B5654A' },
-                { icon: 'solar:chat-round-dots-linear', title: 'Confident Pronunciation Package', desc: 'Confident UK English pronunciation. Speak clearly and be understood with ease  - whether English is your first language or an additional one.', features: ['Accent refinement & clarity', 'Articulation & intonation patterns', 'Professional vocabulary & phrasing', 'Personalised exercises & practice plans'], img: '/images/confident-pronunciation-package.jpg', cta: 'Learn More', href: '/packages/confident-pronunciation', accent: '#6B8E85' },
-                { icon: 'solar:clock-circle-linear', title: 'Intensive 90-Minute Session', desc: 'Transform your confidence in a single online session. Perfect for professionals preparing for an important presentation, interview, or media appearance.', features: ['Targeted coaching for your specific needs', 'Practical techniques you can use immediately', 'Online via Zoom  - anywhere in the world', 'Follow-up notes & exercises included'], img: '/images/intensive-90-minute-session.jpg', cta: 'Book Now', href: '/packages/intensive-session', accent: '#7A4E5E' },
+                { icon: 'solar:microphone-3-bold', title: 'Confident Speaker Package', desc: 'Mastering the art of public speaking. A structured programme to build your confidence, refine your delivery, and help you connect with any audience.', features: ['Vocal technique & projection', 'Managing nerves & performance anxiety', 'Engaging storytelling & structure', 'Body language & presence'], img: '/images/confident-speaker-package.jpg', cta: 'Learn More', href: '/packages/confident-speaker', accent: '#B5654A' },
+                { icon: 'solar:chat-round-dots-bold', title: 'Confident Pronunciation Package', desc: 'Confident UK English pronunciation. Speak clearly and be understood with ease  - whether English is your first language or an additional one.', features: ['Accent refinement & clarity', 'Articulation & intonation patterns', 'Professional vocabulary & phrasing', 'Personalised exercises & practice plans'], img: '/images/confident-pronunciation-package.jpg', cta: 'Learn More', href: '/packages/confident-pronunciation', accent: '#6B8E85' },
+                { icon: 'solar:clock-circle-bold', title: 'Intensive 90-Minute Session', desc: 'Transform your confidence in a single online session. Perfect for professionals preparing for an important presentation, interview, or media appearance.', features: ['Targeted coaching for your specific needs', 'Practical techniques you can use immediately', 'Online via Zoom  - anywhere in the world', 'Follow-up notes & exercises included'], img: '/images/intensive-90-minute-session.jpg', cta: 'Book Now', href: '/packages/intensive-session', accent: '#7A4E5E' },
             ].map(s => (
-                <div style={`--pkg-accent: ${s.accent}`} class="bg-[#FAFAF8] border border-gray-200 rounded-sm overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                <div style={`--pkg-accent: ${s.accent}`} class="bg-[#F8F3EA]/60 border border-gray-200 rounded-sm overflow-hidden group hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
                     <img src={s.img} alt={s.title} class="w-full">
-                    <div class="p-10">
-                        <div class="w-12 h-12 rounded-full border border-gray-200 group-hover:border-[var(--pkg-accent)] flex items-center justify-center text-[var(--pkg-accent)] mb-6 transition-colors">
+                    <div class="p-10 flex-1 flex flex-col">
+                        <div class="w-12 h-12 flex items-center justify-center text-[var(--pkg-accent)] mb-6">
                             <iconify-icon icon={s.icon} width="24"></iconify-icon>
                         </div>
                         <h3 class="text-2xl font-serif mb-4 group-hover:text-[var(--pkg-accent)] transition-colors">{s.title}</h3>
                         <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">{s.desc}</p>
                         <ul class="space-y-2 mb-8 text-sm text-gray-500 font-light">
                             {s.features.map(f => (
-                                <li class="flex items-start gap-2"><iconify-icon icon="solar:check-circle-linear" width="16" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>{f}</li>
+                                <li class="flex items-start gap-2"><iconify-icon icon="solar:check-circle-bold" width="16" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>{f}</li>
                             ))}
                         </ul>
-                        <a href={s.href} class="text-[10px] uppercase tracking-[0.2em] font-medium text-[var(--pkg-accent)] hover:text-[#050615] transition-colors">{s.cta} &rarr;</a>
+                        <a href={s.href} class="mt-auto self-start inline-flex items-center justify-center px-6 py-3 text-[10px] uppercase tracking-[0.2em] font-medium text-white bg-[var(--pkg-accent)] border-2 border-[var(--pkg-accent)] hover:bg-transparent hover:text-[var(--pkg-accent)] transition-all">{s.cta} &rarr;</a>
                     </div>
                 </div>
             ))}
@@ -128,16 +128,16 @@ import GoogleReview from '../components/GoogleReview.astro';
             <div class="w-16 h-[1px] bg-[#C4A470] mx-auto"></div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-            <div class="border border-red-200/50 rounded-sm p-10 bg-red-50/50">
-                <div class="flex items-center gap-3 mb-6"><iconify-icon icon="solar:close-circle-linear" width="24" class="text-red-400"></iconify-icon><h3 class="text-lg font-serif text-[#050615]">Without Coaching</h3></div>
+            <div class="border border-red-200/50 rounded-sm p-10 bg-red-50/60">
+                <div class="flex items-center gap-3 mb-6"><iconify-icon icon="solar:close-circle-bold" width="24" class="text-red-400"></iconify-icon><h3 class="text-lg font-serif text-[#050615]">Without Coaching</h3></div>
                 <ul class="space-y-4 text-sm text-gray-700">
                     {['Nerves take over - your voice shakes, your mind goes blank', 'Your message gets lost in filler words and hesitation', "Audiences disengage - you feel it but can't fix it", 'Self-doubt holds you back from opportunities', 'You avoid speaking up in meetings and presentations'].map(t => (
                         <li class="flex items-start gap-3"><span class="text-red-400 mt-0.5">&times;</span>{t}</li>
                     ))}
                 </ul>
             </div>
-            <div class="border border-[#C4A470]/30 rounded-sm p-10 bg-[#C4A470]/5">
-                <div class="flex items-center gap-3 mb-6"><iconify-icon icon="solar:check-circle-linear" width="24" class="text-[#C4A470]"></iconify-icon><h3 class="text-lg font-serif text-[#050615]">With Alice</h3></div>
+            <div class="border border-[#C4A470]/30 rounded-sm p-10 bg-[#C4A470]/15">
+                <div class="flex items-center gap-3 mb-6"><iconify-icon icon="solar:check-circle-bold" width="24" class="text-[#C4A470]"></iconify-icon><h3 class="text-lg font-serif text-[#050615]">With Alice</h3></div>
                 <ul class="space-y-4 text-sm text-gray-700">
                     {['You speak with calm authority  - even under pressure', 'Your voice carries warmth, clarity and conviction', 'Audiences lean in  - you command the room naturally', 'Confidence becomes your default, not your exception', 'You become the speaker people remember'].map(t => (
                         <li class="flex items-start gap-3"><span class="text-[#C4A470] mt-0.5">&check;</span>{t}</li>
@@ -148,7 +148,7 @@ import GoogleReview from '../components/GoogleReview.astro';
     </div>
 </section>
 
-<GoogleReview size="large" />
+<GoogleReview />
 
 <!-- FAQ -->
 <section class="py-24 bg-[#050615]">
@@ -170,7 +170,7 @@ import GoogleReview from '../components/GoogleReview.astro';
                 <details class="group border border-white/10 rounded-sm">
                     <summary class="flex items-center justify-between p-6 cursor-pointer">
                         <span class="font-medium text-white pr-4">{faq.q}</span>
-                        <iconify-icon icon="solar:alt-arrow-down-linear" width="16" class="text-[#C4A470] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
+                        <iconify-icon icon="solar:alt-arrow-down-bold" width="16" class="text-[#C4A470] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
                     </summary>
                     <div class="px-6 pb-6 pt-0">
                         <p class="text-sm text-gray-400 font-light leading-relaxed">{faq.a}</p>

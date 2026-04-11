@@ -45,47 +45,85 @@ import GoogleReview from '../../components/GoogleReview.astro';
     </div>
 </section>
 
-<!-- Details: bullets + how it works + format -->
-<section class="py-24 bg-[#FAFAF8] text-[#050615]">
-    <div class="max-w-[820px] mx-auto px-6">
-        <h3 class="text-2xl font-serif text-[#050615] mb-8">What's Included</h3>
-        <ul class="space-y-4 mb-16">
-            {[
-                'Vocal technique & projection  - learn to fill a room without straining',
-                'Managing nerves & performance anxiety  - practical tools that work under pressure',
-                'Engaging storytelling & structure  - craft talks that hold attention from start to finish',
-                'Body language & stage presence  - own the space with natural authority',
-                'Pace, pausing & emphasis  - the rhythm that makes speakers magnetic',
-                'Personalised feedback on your real presentations and pitches',
-            ].map(item => (
-                <li class="flex items-start gap-3 text-gray-600 font-light">
-                    <iconify-icon icon="solar:check-circle-linear" width="20" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>
-                    {item}
-                </li>
-            ))}
-        </ul>
+<!-- Row 1: What's Included | How It Works (cream) -->
+<section class="py-24 bg-[#F8F3EA] text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-8">What's Included</h2>
+                <ul class="space-y-4">
+                    {[
+                        'Vocal technique & projection  - learn to fill a room without straining',
+                        'Managing nerves & performance anxiety  - practical tools that work under pressure',
+                        'Engaging storytelling & structure  - craft talks that hold attention from start to finish',
+                        'Body language & stage presence  - own the space with natural authority',
+                        'Pace, pausing & emphasis  - the rhythm that makes speakers magnetic',
+                        'Personalised feedback on your real presentations and pitches',
+                    ].map(item => (
+                        <li class="flex items-start gap-3 text-gray-600 font-light">
+                            <iconify-icon icon="solar:check-circle-bold" width="20" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>
+                            {item}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-8">How It Works</h2>
+                <div class="space-y-6">
+                    {[
+                        { step: '01', title: 'Discovery Call', desc: 'A free 15-minute conversation to understand your goals and challenges.' },
+                        { step: '02', title: 'Tailored Programme', desc: 'A coaching plan designed around your specific speaking contexts and objectives.' },
+                        { step: '03', title: 'Coaching Sessions', desc: 'Focused sessions combining technique work, practice, and real-time feedback.' },
+                        { step: '04', title: 'Ongoing Support', desc: 'Follow-up notes, exercises, and support between sessions.' },
+                    ].map(s => (
+                        <div class="flex gap-4">
+                            <span class="text-[var(--pkg-accent)] font-serif text-2xl font-medium w-10 flex-shrink-0">{s.step}</span>
+                            <div>
+                                <h4 class="font-medium text-[#050615] mb-1">{s.title}</h4>
+                                <p class="text-sm text-gray-500 font-light">{s.desc}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <h3 class="text-2xl font-serif text-[#050615] mb-8">How It Works</h3>
-        <div class="space-y-6 mb-16">
+<!-- Row 2: What You'll Take Away (white) -->
+<section class="py-24 bg-white text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-12 text-center">What You'll Take Away</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
-                { step: '01', title: 'Discovery Call', desc: 'A free 15-minute conversation to understand your goals and challenges.' },
-                { step: '02', title: 'Tailored Programme', desc: 'A coaching plan designed around your specific speaking contexts and objectives.' },
-                { step: '03', title: 'Coaching Sessions', desc: 'Focused sessions combining technique work, practice, and real-time feedback.' },
-                { step: '04', title: 'Ongoing Support', desc: 'Follow-up notes, exercises, and support between sessions.' },
-            ].map(s => (
-                <div class="flex gap-4">
-                    <span class="text-[var(--pkg-accent)] font-serif text-2xl font-medium w-10 flex-shrink-0">{s.step}</span>
-                    <div>
-                        <h4 class="font-medium text-[#050615] mb-1">{s.title}</h4>
-                        <p class="text-sm text-gray-500 font-light">{s.desc}</p>
+                { icon: 'solar:mountains-bold', title: 'Command the Room', desc: 'Stand, breathe, and own the space before you\'ve said a word.' },
+                { icon: 'solar:shield-check-bold', title: 'Steady Under Pressure', desc: 'Tools that hold up when the stakes and stress are high.' },
+                { icon: 'solar:star-fall-bold', title: 'Memorable Delivery', desc: 'Stories, structure and pacing audiences remember long after.' },
+            ].map(o => (
+                <div>
+                    <div class="w-24 h-24 flex items-center justify-center text-white bg-[var(--pkg-accent)] mb-6">
+                        <iconify-icon icon={o.icon} width="44"></iconify-icon>
                     </div>
+                    <h3 class="font-serif text-lg text-[#050615] mb-2">{o.title}</h3>
+                    <p class="text-sm text-gray-600 font-light leading-relaxed">{o.desc}</p>
                 </div>
             ))}
         </div>
+    </div>
+</section>
 
-        <h3 class="text-2xl font-serif text-[#050615] mb-6">Format</h3>
-        <p class="text-gray-600 font-light leading-relaxed mb-2">Available online via Zoom (worldwide) or in-person in London.</p>
-        <p class="text-gray-600 font-light leading-relaxed">Sessions are typically 60 minutes. Package length is tailored to your needs.</p>
+<!-- Row 3: Format + Alice photo (cream) -->
+<section class="py-24 bg-[#F8F3EA] text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+            <div>
+                <span class="text-[11px] tracking-[0.25em] text-[var(--pkg-accent)] uppercase font-medium block mb-4">Format</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-6 leading-tight">Online, in-person, or both - tailored around you.</h2>
+                <p class="text-gray-600 font-light leading-relaxed mb-4">Available online via Zoom (worldwide) or in-person in London. Sessions are typically 60 minutes.</p>
+                <p class="text-gray-600 font-light leading-relaxed">Package length is tailored to your goals and calendar. Most clients work with me over four to eight sessions, but I'll design the right shape for you on our first call.</p>
+            </div>
+            <img src="/images/Alice-Deville-London.jpg" alt="Alice Deville coaching in London" class="w-full rounded-sm">
+        </div>
     </div>
 </section>
 
@@ -107,7 +145,7 @@ import GoogleReview from '../../components/GoogleReview.astro';
                 <details class="group border border-white/10 rounded-sm">
                     <summary class="flex items-center justify-between p-6 cursor-pointer">
                         <span class="font-medium text-white pr-4">{faq.q}</span>
-                        <iconify-icon icon="solar:alt-arrow-down-linear" width="16" class="text-[var(--pkg-accent)] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
+                        <iconify-icon icon="solar:alt-arrow-down-bold" width="16" class="text-[var(--pkg-accent)] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
                     </summary>
                     <div class="px-6 pb-6 pt-0">
                         <p class="text-sm text-gray-400 font-light leading-relaxed">{faq.a}</p>
@@ -119,7 +157,7 @@ import GoogleReview from '../../components/GoogleReview.astro';
     </div>
 </section>
 
-<GoogleReview size="small" />
+<GoogleReview text="Working with Alice was a game-changer. She helped me sharpen my public speaking for both in-person and the virtual. Her methods are practical and easy to replicate in any setting. If you want to level up your delivery, Alice is the one to see!" author="Shane Buckley" date="1 month ago" />
 
 <!-- CTA -->
 <section class="py-20 bg-white">
