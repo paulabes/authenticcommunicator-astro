@@ -27,10 +27,10 @@ import Base from '../layouts/Base.astro';
 <!-- Booking Section -->
 <section class="py-16 bg-white text-[#050615]">
     <div class="max-w-[1200px] mx-auto px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-            <!-- Calendar (5 cols) -->
-            <div class="lg:col-span-5">
+            <!-- Calendar -->
+            <div>
                 <div class="border border-gray-200 rounded-sm overflow-hidden">
                     <div class="bg-[#050615] px-6 py-5 flex items-center justify-between">
                         <button id="cal-prev" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:border-[#C4A470] hover:text-[#C4A470] transition-colors">
@@ -50,8 +50,8 @@ import Base from '../layouts/Base.astro';
                 </div>
             </div>
 
-            <!-- Time Slots (4 cols) -->
-            <div class="lg:col-span-4">
+            <!-- Time Slots -->
+            <div>
                 <!-- No date selected -->
                 <div id="slots-empty" class="flex flex-col items-center justify-center h-full text-center py-12">
                     <iconify-icon icon="solar:calendar-bold" width="48" class="text-gray-200 mb-4"></iconify-icon>
@@ -60,7 +60,7 @@ import Base from '../layouts/Base.astro';
 
                 <!-- Date selected  - loading -->
                 <div id="slots-loading" class="hidden flex flex-col items-center justify-center h-full text-center py-12">
-                    <div class="w-8 h-8 border-2 border-[#C4A470] border-t-transparent rounded-full animate-spin mb-4"></div>
+                    <div class="w-8 h-8 border-2 border-[#C4A470] border-t-transparent animate-spin mb-4"></div>
                     <p class="text-gray-400 font-light text-sm">Loading available times&hellip;</p>
                 </div>
 
@@ -68,30 +68,7 @@ import Base from '../layouts/Base.astro';
                 <div id="slots-panel" class="hidden">
                     <h3 id="slots-date" class="font-serif text-lg text-[#050615] mb-1"></h3>
                     <p class="text-xs text-gray-400 uppercase tracking-widest mb-5">Available times (GMT)</p>
-                    <div id="slots-grid" class="grid grid-cols-2 gap-2 mb-6"></div>
-
-                    <!-- Selected slot confirmation -->
-                    <div id="slot-confirm" class="hidden border border-[#C4A470]/30 bg-[#C4A470]/5 rounded-sm p-5 mt-4">
-                        <div class="flex items-center gap-3 mb-3">
-                            <iconify-icon icon="solar:clock-circle-bold" width="20" class="text-[#C4A470]"></iconify-icon>
-                            <p class="font-medium text-[#050615]" id="confirm-datetime"></p>
-                        </div>
-                        <p class="text-sm text-gray-500 font-light mb-4">30-minute video call via Zoom</p>
-
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">Name *</label>
-                                <input id="book-name" type="text" class="w-full bg-white border border-gray-200 p-2.5 text-sm text-black focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">Email *</label>
-                                <input id="book-email" type="email" class="w-full bg-white border border-gray-200 p-2.5 text-sm text-black focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm">
-                            </div>
-                            <button id="book-submit" class="w-full bg-[#050615] text-white font-bold uppercase tracking-[0.15em] text-[11px] py-3.5 hover:bg-[#C4A470] transition-colors duration-300 rounded-sm mt-2">
-                                Confirm Booking
-                            </button>
-                        </div>
-                    </div>
+                    <div id="slots-grid" class="grid grid-cols-2 gap-2 mb-4"></div>
 
                     <!-- No API yet message (hidden once API connected) -->
                     <div id="slots-no-api" class="hidden text-center py-4">
@@ -107,49 +84,68 @@ import Base from '../layouts/Base.astro';
                 </div>
             </div>
 
-            <!-- Info Panel (3 cols) -->
-            <div class="lg:col-span-3">
+            <!-- Booking form -->
+            <div>
                 <div class="sticky top-32">
-                    <div class="flex items-center gap-4 mb-6">
-                        <img src="/images/Alice-Deville.png" alt="Alice Deville" class="w-12 h-12 rounded-full object-cover flex-shrink-0">
-                        <div>
-                            <h3 class="font-serif text-[#050615]">Alice Deville</h3>
-                            <p class="text-xs text-gray-500 font-light">Voice & Communication Coach</p>
-                        </div>
+                    <!-- Selected slot (appears once user picks a time) -->
+                    <div id="selected-slot" class="hidden mb-4 p-3 bg-[#C4A470]/10 border border-[#C4A470]/40">
+                        <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-1">Selected</p>
+                        <p class="text-sm font-medium text-[#050615]" id="confirm-datetime"></p>
                     </div>
 
-                    <div class="space-y-3 mb-6 pb-6 border-b border-gray-200">
-                        <div class="flex items-center gap-3">
-                            <iconify-icon icon="solar:clock-circle-bold" width="16" class="text-[#C4A470]"></iconify-icon>
-                            <span class="text-sm text-[#050615]">30 minutes</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <iconify-icon icon="solar:videocamera-record-bold" width="16" class="text-[#C4A470]"></iconify-icon>
-                            <span class="text-sm text-[#050615]">Zoom video call</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <iconify-icon icon="solar:tag-price-bold" width="16" class="text-[#C4A470]"></iconify-icon>
-                            <span class="text-sm text-[#050615]">Completely free</span>
-                        </div>
-                    </div>
-
-                    <h4 class="text-[10px] uppercase tracking-widest text-gray-400 font-medium mb-3">What to expect</h4>
                     <div class="space-y-3">
-                        {[
-                            'A relaxed chat about your communication goals',
-                            'An honest assessment of how coaching can help',
-                            'A tailored recommendation for your needs',
-                            'Zero pressure  - no obligation whatsoever',
-                        ].map(item => (
-                            <div class="flex items-start gap-2">
-                                <iconify-icon icon="mdi:check" width="14" class="text-[#C4A470] mt-0.5 flex-shrink-0"></iconify-icon>
-                                <p class="text-xs text-gray-500 font-light leading-relaxed">{item}</p>
-                            </div>
-                        ))}
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">Name *</label>
+                            <input id="book-name" type="text" class="w-full bg-white border border-gray-200 p-2.5 text-sm text-black focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">Email *</label>
+                            <input id="book-email" type="email" class="w-full bg-white border border-gray-200 p-2.5 text-sm text-black focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all">
+                        </div>
+                        <button id="book-submit" disabled class="w-full bg-[#050615] text-white font-bold uppercase tracking-[0.15em] text-[11px] py-3.5 hover:bg-[#C4A470] transition-colors duration-300 mt-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#050615]">
+                            Confirm Booking
+                        </button>
+                        <p id="book-hint" class="text-[10px] text-gray-400 italic text-center">Pick a date and time to enable booking.</p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- What to Expect (cream) -->
+<section class="py-24 bg-[#F8F3EA] text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {[
+                { icon: 'solar:clock-circle-bold', label: '30 minutes' },
+                { icon: 'solar:videocamera-record-bold', label: 'Zoom video call' },
+                { icon: 'solar:tag-price-bold', label: 'Completely free' },
+            ].map(stat => (
+                <div class="flex items-center justify-center gap-3">
+                    <iconify-icon icon={stat.icon} width="22" class="text-[#C4A470] flex-shrink-0"></iconify-icon>
+                    <span class="text-[#050615]">{stat.label}</span>
+                </div>
+            ))}
+        </div>
+
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-6">What to Expect</h2>
+            <div class="w-16 h-[1px] bg-[#C4A470] mx-auto"></div>
+        </div>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5 max-w-[900px] mx-auto">
+            {[
+                'A relaxed chat about your communication goals',
+                'An honest assessment of how coaching can help',
+                'A tailored recommendation for your needs',
+                'Zero pressure  - no obligation whatsoever',
+            ].map(item => (
+                <li class="flex items-start gap-3">
+                    <iconify-icon icon="mdi:check" width="18" class="text-[#C4A470] mt-1 flex-shrink-0"></iconify-icon>
+                    <p class="text-gray-600 font-light leading-relaxed">{item}</p>
+                </li>
+            ))}
+        </ul>
     </div>
 </section>
 
@@ -243,8 +239,13 @@ import Base from '../layouts/Base.astro';
         const dateLabel = $('slots-date');
         if (dateLabel) dateLabel.textContent = formatted;
 
-        const confirm = $('slot-confirm');
-        if (confirm) confirm.classList.add('hidden');
+        // Reset selected-slot panel + disable submit until a time is picked
+        const selectedSlotEl = $('selected-slot');
+        if (selectedSlotEl) selectedSlotEl.classList.add('hidden');
+        const bookBtn = $('book-submit');
+        if (bookBtn) bookBtn.disabled = true;
+        const bookHint = $('book-hint');
+        if (bookHint) bookHint.classList.remove('hidden');
 
         if (USE_API) {
             fetchSlots(dateStr);
@@ -277,27 +278,30 @@ import Base from '../layouts/Base.astro';
     function selectSlot(dateStr, time, btn) {
         selectedSlot = time;
 
-        // Highlight selected
+        // Highlight selected slot button
         const grid = $('slots-grid');
         if (grid) {
             grid.querySelectorAll('button').forEach(function(b) {
                 if (b === btn) {
-                    b.className = 'py-2.5 px-3 border-2 border-[#C4A470] bg-[#C4A470]/10 rounded-sm text-sm font-bold text-[#050615] transition-all duration-200 text-center';
+                    b.className = 'py-2.5 px-3 border-2 border-[#C4A470] bg-[#C4A470]/10 text-sm font-bold text-[#050615] transition-all duration-200 text-center';
                 } else {
-                    b.className = 'py-2.5 px-3 border border-gray-200 rounded-sm text-sm font-medium text-[#050615] hover:border-[#C4A470] hover:bg-[#C4A470]/5 transition-all duration-200 text-center';
+                    b.className = 'py-2.5 px-3 border border-gray-200 text-sm font-medium text-[#050615] hover:border-[#C4A470] hover:bg-[#C4A470]/5 transition-all duration-200 text-center';
                 }
             });
         }
 
-        // Show confirmation
-        const confirm = $('slot-confirm');
+        // Show selected summary + enable submit button in the right column
+        const selectedSlotEl = $('selected-slot');
         const dt = $('confirm-datetime');
-        if (confirm && dt) {
+        if (selectedSlotEl && dt) {
             const date = new Date(dateStr + 'T12:00:00');
             dt.textContent = date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }) + ' at ' + time;
-            confirm.classList.remove('hidden');
-            confirm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            selectedSlotEl.classList.remove('hidden');
         }
+        const bookBtn = $('book-submit');
+        if (bookBtn) bookBtn.disabled = false;
+        const bookHint = $('book-hint');
+        if (bookHint) bookHint.classList.add('hidden');
     }
 
     // ═══════════════════════════════════════════════════════════
