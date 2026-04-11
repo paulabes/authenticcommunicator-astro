@@ -1,6 +1,0 @@
-google-genai
-anthropic
-python-dotenv
-flask
-markdown
-gunicorn

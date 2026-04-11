@@ -1,67 +1,71 @@
-# Parachute Law Content Engine
+# Authentic Communicator Global
 
-CLI tool that automates the "Scout & Scribe" workflow for [ParachuteLaw.co.uk](https://parachutelaw.co.uk). Uses Gemini for UK legal research and Claude for empathetic blog content generation.
+Marketing site for [authenticcommunicatorglobal.com](https://www.authenticcommunicatorglobal.com) — Alice Deville's voice and communication coaching business.
 
-## Setup
+Astro static site, deployed to Vercel, with a Resend-backed contact form.
 
-```bash
-git clone https://github.com/paulabes/parachutelaw-blog.git
-cd parachutelaw-blog
-pip install -r requirements.txt
-cp .env.example .env   # then add your API keys
-```
+## Stack
 
-You need two API keys in `.env`:
-- `GEMINI_API_KEY` — from [Google AI Studio](https://aistudio.google.com/apikey)
-- `ANTHROPIC_API_KEY` — from [Anthropic Console](https://console.anthropic.com/settings/keys)
+- **Astro 6** with Tailwind 4
+- **Vercel** hosting via `@astrojs/vercel` adapter (static build + one serverless endpoint for the contact form)
+- **Resend** for transactional email from the contact form
+- **Iconify** (`iconify-icon` web component) for the Solar icon set
 
-## Generate a Blog Post
+## Run locally
 
 ```bash
-python main.py --topic "Pension Sharing"
+cd astro-site
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # dist/
+npm run preview
 ```
 
-Output is saved to `output/YYYY-MM-DD-topic-slug.md`.
+The `/localhost` slash command in `.claude/commands/localhost.md` starts the dev server from inside Claude Code.
 
-## How It Works
+## Deploy
 
-1. **Scout** (Gemini) — researches 2026 UK legal data using `prompts/research_dna.md`
-2. **Scribe** (Claude) — writes a ~1,200-word article using `prompts/brand_voice.md`
-3. **Critic** (Gemini) — audits the draft for hallucinated laws or stats
-4. **Save** — final article saved to `output/`
+Pushed to `main` → Vercel builds automatically.
 
-## Demo Website
+**Project settings:**
+- Root Directory: `astro-site`
+- Framework preset: Astro (auto-detected)
+- Environment variables (see below)
 
-A Flask-powered preview site with a premium dark theme, adapted for the Parachute Law brand.
+**Domains:** add both `authenticcommunicatorglobal.com` and `www.authenticcommunicatorglobal.com` in Vercel, mark www as primary.
 
-```bash
-python site/app.py
-```
+## Environment variables
 
-Open [http://localhost:5000](http://localhost:5000) to view:
+Set in Vercel → Project → Settings → Environment Variables:
 
-| Page | URL | Description |
-|---|---|---|
-| Home | `/` | Landing page with services, testimonials, booking form |
-| Contact | `/contact` | Contact form, office details, Google Maps |
-| News | `/news` | Blog listing — auto-discovers posts from `output/` |
-| Article | `/news/<slug>` | Full rendered blog post |
+| Key | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Resend API key for the contact form |
+| `CONTACT_TO` | Address that receives form submissions (e.g. `alice@authenticcommunicatorglobal.com`) |
+| `CONTACT_FROM` | Verified Resend sender (e.g. `Authentic Communicator <contact@authenticcommunicatorglobal.com>`) — or the sandbox `onboarding@resend.dev` while the domain isn't verified |
 
-Generate articles with the content engine and they appear on `/news` automatically.
+See `.env.example` for a local template.
 
-## Project Structure
+## Pages
 
-```
-main.py                Entry point (--topic argument)
-agents/
-  researcher.py        Scout — Gemini research
-  writer.py            Scribe — Claude writing
-  auditor.py           Critic — Gemini audit
-prompts/
-  research_dna.md      System instructions for legal research
-  brand_voice.md       Parachute Law tone & conversion guide
-site/
-  app.py               Flask demo website
-  templates/           Jinja2 templates (base, home, contact, news, post)
-output/                Generated articles (.md)
-```
+| URL | Page |
+|---|---|
+| `/` | Home |
+| `/about` | About Alice |
+| `/packages` | Packages overview |
+| `/packages/confident-speaker` | Confident Speaker Package |
+| `/packages/confident-pronunciation` | Confident Pronunciation Package |
+| `/packages/intensive-session` | Intensive 90-Minute Session |
+| `/inspiration` | Articles index |
+| `/inspiration/[slug]` | Individual article |
+| `/contact` | Contact form (Resend) |
+| `/free-consultation` | Discovery call booking |
+| `/privacy` · `/terms` | Legal |
+
+## Design system
+
+- Navy `#050615` chrome, gold `#C4A470` accents (site chrome only — section eyebrows, dividers, hover states)
+- Cream `#F8F3EA` for alternating section backgrounds
+- Per-package accent colours via `--pkg-accent` CSS variable: rust `#B5654A` (Speaker), sage `#6B8E85` (Pronunciation), plum `#7A4E5E` (Intensive)
+- Zero border-radius site-wide (see `global.css`)
+- Adjacent sections always use different background colours

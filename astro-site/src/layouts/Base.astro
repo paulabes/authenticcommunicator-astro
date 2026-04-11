@@ -13,15 +13,64 @@ const { title = 'Authentic Communicator Global' } = Astro.props;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <title>{title} | Voice & Communication Coaching</title>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" async defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <script is:inline>
+      (function () {
+        try {
+          if (localStorage.getItem('ac_unlocked_2026') !== 'alice2026wonderland') {
+            document.documentElement.setAttribute('data-locked', '');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      html[data-locked] body > :not(#ac-gate) { display: none !important; }
+      html[data-locked] #ac-gate { display: flex !important; }
+      html:not([data-locked]) #ac-gate { display: none !important; }
+    </style>
 </head>
 
 <body class="bg-[#050615] text-white antialiased selection:bg-white selection:text-black overflow-x-hidden">
+
+    <!-- Preview-period password gate -->
+    <div id="ac-gate" class="fixed inset-0 z-[9999] bg-[#050615] text-white items-center justify-center">
+        <div class="max-w-sm w-full px-8 text-center">
+            <h1 class="font-serif text-3xl mb-3">Authentic <span class="text-[#C4A470] italic">Communicator</span></h1>
+            <p class="text-xs tracking-widest uppercase text-gray-400 mb-8">Site Preview</p>
+            <form id="ac-gate-form" class="flex flex-col gap-3">
+                <input id="ac-gate-pw" type="password" autocomplete="off" placeholder="Password" class="w-full bg-white/10 border border-white/20 p-3 text-white text-center placeholder-gray-500 focus:outline-none focus:border-[#C4A470]">
+                <button type="submit" class="bg-[#C4A470] text-white uppercase tracking-widest text-xs py-3 font-medium border-2 border-[#C4A470] hover:bg-transparent hover:text-[#C4A470] transition-colors">Enter</button>
+                <p id="ac-gate-error" class="text-xs text-red-400 hidden">Incorrect password.</p>
+            </form>
+        </div>
+    </div>
+    <script is:inline>
+      (function () {
+        if (!document.documentElement.hasAttribute('data-locked')) return;
+        var form = document.getElementById('ac-gate-form');
+        var pwField = document.getElementById('ac-gate-pw');
+        var errMsg = document.getElementById('ac-gate-error');
+        if (!form || !pwField) return;
+        pwField.focus();
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (pwField.value === 'alice2026wonderland') {
+            try { localStorage.setItem('ac_unlocked_2026', 'alice2026wonderland'); } catch (e) {}
+            document.documentElement.removeAttribute('data-locked');
+          } else {
+            errMsg.classList.remove('hidden');
+            pwField.value = '';
+            pwField.focus();
+          }
+        });
+      })();
+    </script>
 
     <!-- Navigation -->
     <header class="fixed transition-all duration-300 backdrop-blur-md z-50 w-full border-white/5 border-b top-0 bg-[#050615]/80" id="main-header">

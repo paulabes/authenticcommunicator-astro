@@ -1,18 +1,27 @@
-# Environment & secrets
+# Secrets
 .env
+.env.*
+!.env.example
 
-# Python
-venv/
-__pycache__/
-*.pyc
+# Node
+node_modules/
 
-# Generated content (tracked for deployment)
-# output/*.md
+# Astro build output
+astro-site/dist/
+astro-site/.astro/
+astro-site/.vercel/
+
+# Playwright MCP cache
+.playwright-mcp/
+
+# Screenshots left behind by local QA runs
+*.png
+!astro-site/public/**/*.png
 
 # IDE & tooling
 .claude/settings.local.json
-.playwright-mcp/
+.vscode/
 
-# Screenshots & temp
-*.png
-*.jpg
+# OS files
+.DS_Store
+Thumbs.db

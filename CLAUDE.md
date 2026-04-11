@@ -1,123 +1,105 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working in this workspace.
+Guidance for Claude Code working in this repo.
 
----
+## What this is
 
-## What This Is
+Marketing site for **Authentic Communicator Global** (Alice Deville, voice and communication coach). Astro 6 + Tailwind 4, deployed to Vercel, with a Resend-backed contact form.
 
-The **Parachute Law Content Engine** — a CLI tool that automates the "Scout & Scribe" workflow for ParachuteLaw.co.uk. Uses Gemini for UK legal research and Claude for empathetic blog content generation.
+Alice trained as an opera singer at the Guildhall School of Music and Drama, has 10+ years of coaching experience, and has worked with executives from BlackRock, Deloitte, JP Morgan, and Google — and has coached at 10 Downing Street.
 
-See `parachute_spec.md` for the full project spec.
-
----
-
-## Workspace Structure
+## Layout
 
 ```
 .
-├── CLAUDE.md              # This file — core context, always loaded
-├── parachute_spec.md      # Full project specification
-├── .claude/
-│   └── commands/          # Slash commands (/prime, /create-plan, /implement)
-├── main.py                # CLI entry point: accepts --topic argument
-├── pipeline.py            # Shared pipeline function (used by CLI + web API)
-├── agents/
-│   ├── __init__.py
-│   ├── researcher.py      # Gemini Logic (Scout)
-│   ├── writer.py          # Claude Logic (Scribe)
-│   └── auditor.py         # Gemini Logic (Fact-Check)
-├── prompts/
-│   ├── research_dna.md    # System instructions for legal research
-│   └── brand_voice.md     # Parachute Law tone & conversion guidelines
-├── output/                # Generated articles saved here
-└── site/
-    ├── app.py             # Flask demo website (localhost:5000)
-    └── templates/
-        ├── base.html      # Shared layout (nav, footer, Tailwind/fonts)
-        ├── home.html      # Landing page with all conversion sections
-        ├── contact.html   # Contact form + office details
-        ├── news.html      # Blog listing (reads from output/)
-        └── post.html      # Single article view
+├── .claude/commands/localhost.md   # /localhost slash command (starts dev server)
+├── .env.example                    # Resend env vars template
+├── astro-site/                     # the whole site
+│   ├── astro.config.mjs            # Vercel adapter wired, site=www.authenticcommunicatorglobal.com
+│   ├── package.json
+│   ├── public/
+│   │   ├── favicon.svg             # serif A (white) + C (gold) on navy
+│   │   ├── logos/                  # client logo SVGs
+│   │   ├── images/                 # Alice photos, package imagery
+│   │   └── robots.txt
+│   └── src/
+│       ├── components/GoogleReview.astro   # dark navy testimonial band (can take fixed text/author/date or pick a random review)
+│       ├── content/blog/                   # inspiration articles land here
+│       ├── data/reviews.ts                 # canonical list of Google reviews
+│       ├── layouts/Base.astro              # nav, footer, robots meta, password gate
+│       ├── pages/
+│       │   ├── index.astro
+│       │   ├── about.astro
+│       │   ├── contact.astro               # form posts to /api/contact
+│       │   ├── free-consultation.astro
+│       │   ├── privacy.astro · terms.astro · 404.astro
+│       │   ├── api/contact.ts              # Resend endpoint (prerender=false)
+│       │   ├── inspiration/index.astro · [slug].astro
+│       │   └── packages/
+│       │       ├── index.astro                       # listing
+│       │       ├── confident-speaker.astro           # rust accent
+│       │       ├── confident-pronunciation.astro     # sage accent
+│       │       └── intensive-session.astro           # plum accent
+│       └── styles/global.css
+├── CLAUDE.md
+└── README.md
 ```
 
----
-
-## Launch Modes: `cr` and `cs`
-
-Two shell aliases for launching Claude Code in this workspace:
-
-| Alias | Mode | What it does |
-|---|---|---|
-| `cr` | **Regular** | Claude asks for confirmation before risky actions (default safe mode) |
-| `cs` | **Skip confirmations** | Claude executes everything without asking — full auto-approve |
-
-### Setup
-
-Add these to your shell profile (`~/.bashrc` or `~/.bash_profile`):
+## Running the site
 
 ```bash
-# Parachute Law workspace — regular mode (asks for confirmation)
-alias cr='cd /d/Dropbox/code/parachutelaw-blog && claude'
-
-# Parachute Law workspace — skip confirmations (auto-approve everything)
-alias cs='cd /d/Dropbox/code/parachutelaw-blog && claude --dangerously-skip-permissions'
+cd astro-site
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # dist/
+npm run preview
 ```
 
-Then reload your shell:
+The `/localhost` slash command does the same thing from inside Claude Code.
 
-```bash
-source ~/.bashrc
-```
+## Design system
 
-Now from any terminal:
-- `cr` — launches Claude Code here, confirms before acting
-- `cs` — launches Claude Code here, no confirmations
+- Palette: navy `#050615`, gold `#C4A470` (site chrome only), cream `#F8F3EA` (alternating section backgrounds)
+- Per-package accents exposed via `--pkg-accent` CSS variable on each package card/page:
+  - Confident Speaker — rust `#B5654A`
+  - Confident Pronunciation — sage `#6B8E85`
+  - Intensive 90-Minute Session — plum `#7A4E5E`
+- Typography: Playfair Display (serif) + Inter (sans)
+- Global rule: `border-radius: 0` on everything (set in `global.css`)
+- Icons: Solar set via `iconify-icon`, always the `-bold` (solid) variant
+- **Adjacent sections must always use different background colours** — enforced as a layout rule
 
----
+## Deploy
 
-## Commands
+- Hosted on Vercel, Project Root Directory = `astro-site`
+- Push to `main` triggers a deploy
+- Production URL (preview period): `https://authenticcommunicator-astro.vercel.app`
+- Planned primary: `https://www.authenticcommunicatorglobal.com` (DNS cut over when Alice signs off)
 
-### /prime
-Initialize a session with full context awareness.
+## Environment variables
 
-### /create-plan [request]
-Create a detailed implementation plan in `plans/`.
+Set in Vercel → Project → Settings → Environment Variables. See `.env.example`.
 
-### /implement [plan-path]
-Execute a plan step by step.
+| Key | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Resend API key for `/api/contact` |
+| `CONTACT_TO` | Address that receives form submissions |
+| `CONTACT_FROM` | Verified Resend sender |
 
----
+## Preview-period guards
 
-## Workflow
+During the client review period the site:
+- Is marked `noindex, nofollow` via a `<meta>` tag in `Base.astro` and a `Disallow: /` in `robots.txt`
+- Is gated by a simple client-side password (`alice2026wonderland`) held in `localStorage` — see `Base.astro`
 
-1. **Scout:** Gemini researches UK 2026 legal data using `prompts/research_dna.md`
-2. **Scribe:** Claude writes a 1,200-word article using `prompts/brand_voice.md`
-3. **Critic:** Gemini audits the draft for hallucinated laws or stats
-4. **Save:** Final article saved to `output/`
+Remove both when Alice signs off and DNS is cut over.
 
-Run: `python main.py --topic "Pension Sharing"`
+## Packages
 
----
+1. **Confident Speaker Package** — mastering public speaking
+2. **Confident Pronunciation Package** — confident UK English pronunciation
+3. **Intensive 90-Minute Session** — one focused session for a specific upcoming event
 
-## Demo Website
+## Maintenance
 
-A Flask-powered preview site mirroring parachutelaw.co.uk with a premium dark design.
-
-```bash
-pip install flask markdown
-python site/app.py
-# → http://localhost:5000
-```
-
-Pages: Home (`/`), Contact (`/contact`), News (`/news`), Article (`/news/<slug>`)
-
-The `/news` page auto-discovers `.md` files from `output/` — generate articles with the content engine and they appear instantly.
-
-The `/news` page also has a dropdown + "Generate Article" button that triggers article generation via API (`POST /api/generate`, `GET /api/generate/<task_id>`). A loading card appears at the top of the grid and resolves to a real card when generation completes.
-
----
-
-## Critical Instruction: Maintain This File
-
-Whenever Claude makes structural changes to the workspace, update this file to reflect the new state.
+Whenever you make structural changes to the workspace, update this file.
