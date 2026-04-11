@@ -89,7 +89,7 @@ import GoogleReview from '../components/GoogleReview.astro';
                         <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">{s.desc}</p>
                         <ul class="space-y-2 mb-8 text-sm text-gray-500 font-light">
                             {s.features.map(f => (
-                                <li class="flex items-start gap-2"><iconify-icon icon="solar:check-circle-bold" width="16" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>{f}</li>
+                                <li class="flex items-start gap-2"><iconify-icon icon="mdi:check" width="16" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>{f}</li>
                             ))}
                         </ul>
                         <a href={s.href} class="mt-auto self-start inline-flex items-center justify-center px-6 py-3 text-[10px] uppercase tracking-[0.2em] font-medium text-white bg-[var(--pkg-accent)] border-2 border-[var(--pkg-accent)] hover:bg-transparent hover:text-[var(--pkg-accent)] transition-all">{s.cta} &rarr;</a>
@@ -132,7 +132,7 @@ import GoogleReview from '../components/GoogleReview.astro';
                 <div class="flex items-center gap-3 mb-6"><iconify-icon icon="solar:close-circle-bold" width="24" class="text-red-400"></iconify-icon><h3 class="text-lg font-serif text-[#050615]">Without Coaching</h3></div>
                 <ul class="space-y-4 text-sm text-gray-700">
                     {['Nerves take over - your voice shakes, your mind goes blank', 'Your message gets lost in filler words and hesitation', "Audiences disengage - you feel it but can't fix it", 'Self-doubt holds you back from opportunities', 'You avoid speaking up in meetings and presentations'].map(t => (
-                        <li class="flex items-start gap-3"><iconify-icon icon="solar:close-circle-bold" width="18" class="text-red-400 mt-0.5 flex-shrink-0"></iconify-icon>{t}</li>
+                        <li class="flex items-start gap-3"><iconify-icon icon="mdi:close" width="18" class="text-red-400 mt-0.5 flex-shrink-0"></iconify-icon>{t}</li>
                     ))}
                 </ul>
             </div>
@@ -140,7 +140,7 @@ import GoogleReview from '../components/GoogleReview.astro';
                 <div class="flex items-center gap-3 mb-6"><iconify-icon icon="solar:check-circle-bold" width="24" class="text-[#C4A470]"></iconify-icon><h3 class="text-lg font-serif text-[#050615]">With Alice</h3></div>
                 <ul class="space-y-4 text-sm text-gray-700">
                     {['You speak with calm authority  - even under pressure', 'Your voice carries warmth, clarity and conviction', 'Audiences lean in  - you command the room naturally', 'Confidence becomes your default, not your exception', 'You become the speaker people remember'].map(t => (
-                        <li class="flex items-start gap-3"><iconify-icon icon="solar:check-circle-bold" width="18" class="text-[#C4A470] mt-0.5 flex-shrink-0"></iconify-icon>{t}</li>
+                        <li class="flex items-start gap-3"><iconify-icon icon="mdi:check" width="18" class="text-[#C4A470] mt-0.5 flex-shrink-0"></iconify-icon>{t}</li>
                     ))}
                 </ul>
             </div>
