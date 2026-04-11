@@ -1,0 +1,413 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Free Consultation">
+
+<!-- Hero Background -->
+<div class="fixed top-0 w-full h-screen -z-10">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/authentic-communicator-global-alice.jpg'); opacity: 0.8;"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#050615] via-[#050615]/90 to-[#050615]/60"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050615]/50 to-[#050615]"></div>
+</div>
+
+<!-- Hero -->
+<section class="pt-36 pb-16 lg:px-12 px-6">
+    <div class="max-w-[1200px] mx-auto text-center">
+        <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">No Obligation</span>
+        <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Free 30-Minute Assessment</h1>
+        <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Choose a date and time below to book your free consultation with Alice. No pressure, no commitment - just a friendly conversation about your voice and goals.</p>
+        <div class="mt-10 text-center">
+            <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-4">Trusted by professionals at</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12"><img src="/logos/blackrock.svg" alt="BlackRock" class="h-5 invert opacity-40"><img src="/logos/deloitte.svg" alt="Deloitte" class="h-5 invert opacity-40"><img src="/logos/jpmorgan.svg" alt="JP Morgan" class="h-5 invert opacity-40"><img src="/logos/google.svg" alt="Google" class="h-6 invert opacity-40"><img src="/logos/downing-street.svg" alt="10 Downing Street" class="h-4 invert opacity-40"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Section -->
+<section class="py-16 bg-white text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+            <!-- Calendar (5 cols) -->
+            <div class="lg:col-span-5">
+                <div class="border border-gray-200 rounded-sm overflow-hidden">
+                    <div class="bg-[#050615] px-6 py-5 flex items-center justify-between">
+                        <button id="cal-prev" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:border-[#C4A470] hover:text-[#C4A470] transition-colors">
+                            <iconify-icon icon="solar:arrow-left-linear" width="16"></iconify-icon>
+                        </button>
+                        <h2 id="cal-month" class="text-lg font-serif text-white"></h2>
+                        <button id="cal-next" class="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:border-[#C4A470] hover:text-[#C4A470] transition-colors">
+                            <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-7 bg-gray-50 border-b border-gray-200">
+                        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
+                            <div class="py-2.5 text-center text-[9px] uppercase tracking-widest text-gray-400 font-medium">{d}</div>
+                        ))}
+                    </div>
+                    <div id="cal-grid" class="grid grid-cols-7"></div>
+                </div>
+            </div>
+
+            <!-- Time Slots (4 cols) -->
+            <div class="lg:col-span-4">
+                <!-- No date selected -->
+                <div id="slots-empty" class="flex flex-col items-center justify-center h-full text-center py-12">
+                    <iconify-icon icon="solar:calendar-linear" width="48" class="text-gray-200 mb-4"></iconify-icon>
+                    <p class="text-gray-400 font-light">Select a date to see available times</p>
+                </div>
+
+                <!-- Date selected  - loading -->
+                <div id="slots-loading" class="hidden flex flex-col items-center justify-center h-full text-center py-12">
+                    <div class="w-8 h-8 border-2 border-[#C4A470] border-t-transparent rounded-full animate-spin mb-4"></div>
+                    <p class="text-gray-400 font-light text-sm">Loading available times&hellip;</p>
+                </div>
+
+                <!-- Date selected  - slots available -->
+                <div id="slots-panel" class="hidden">
+                    <h3 id="slots-date" class="font-serif text-lg text-[#050615] mb-1"></h3>
+                    <p class="text-xs text-gray-400 uppercase tracking-widest mb-5">Available times (GMT)</p>
+                    <div id="slots-grid" class="grid grid-cols-2 gap-2 mb-6"></div>
+
+                    <!-- Selected slot confirmation -->
+                    <div id="slot-confirm" class="hidden border border-[#C4A470]/30 bg-[#C4A470]/5 rounded-sm p-5 mt-4">
+                        <div class="flex items-center gap-3 mb-3">
+                            <iconify-icon icon="solar:clock-circle-linear" width="20" class="text-[#C4A470]"></iconify-icon>
+                            <p class="font-medium text-[#050615]" id="confirm-datetime"></p>
+                        </div>
+                        <p class="text-sm text-gray-500 font-light mb-4">30-minute video call via Zoom</p>
+
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">Name *</label>
+                                <input id="book-name" type="text" class="w-full bg-white border border-gray-200 p-2.5 text-sm text-black focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase tracking-widest text-gray-400 mb-1.5">Email *</label>
+                                <input id="book-email" type="email" class="w-full bg-white border border-gray-200 p-2.5 text-sm text-black focus:outline-none focus:border-[#C4A470] focus:ring-1 focus:ring-[#C4A470] transition-all rounded-sm">
+                            </div>
+                            <button id="book-submit" class="w-full bg-[#050615] text-white font-bold uppercase tracking-[0.15em] text-[11px] py-3.5 hover:bg-[#C4A470] transition-colors duration-300 rounded-sm mt-2">
+                                Confirm Booking
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- No API yet message (hidden once API connected) -->
+                    <div id="slots-no-api" class="hidden text-center py-4">
+                        <p class="text-xs text-gray-400 italic">Connect the Calendly API to show real-time availability</p>
+                    </div>
+                </div>
+
+                <!-- Date selected  - no slots -->
+                <div id="slots-none" class="hidden flex flex-col items-center justify-center h-full text-center py-12">
+                    <iconify-icon icon="solar:calendar-minimalistic-linear" width="48" class="text-gray-200 mb-4"></iconify-icon>
+                    <p class="text-gray-500 font-light mb-1">No availability on this date</p>
+                    <p class="text-sm text-gray-400 font-light">Try another day</p>
+                </div>
+            </div>
+
+            <!-- Info Panel (3 cols) -->
+            <div class="lg:col-span-3">
+                <div class="sticky top-32">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="/images/Alice-Deville.png" alt="Alice Deville" class="w-12 h-12 rounded-full object-cover flex-shrink-0">
+                        <div>
+                            <h3 class="font-serif text-[#050615]">Alice Deville</h3>
+                            <p class="text-xs text-gray-500 font-light">Voice & Communication Coach</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 mb-6 pb-6 border-b border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <iconify-icon icon="solar:clock-circle-linear" width="16" class="text-[#C4A470]"></iconify-icon>
+                            <span class="text-sm text-[#050615]">30 minutes</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <iconify-icon icon="solar:videocamera-record-linear" width="16" class="text-[#C4A470]"></iconify-icon>
+                            <span class="text-sm text-[#050615]">Zoom video call</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <iconify-icon icon="solar:tag-price-linear" width="16" class="text-[#C4A470]"></iconify-icon>
+                            <span class="text-sm text-[#050615]">Completely free</span>
+                        </div>
+                    </div>
+
+                    <h4 class="text-[10px] uppercase tracking-widest text-gray-400 font-medium mb-3">What to expect</h4>
+                    <div class="space-y-3">
+                        {[
+                            'A relaxed chat about your communication goals',
+                            'An honest assessment of how coaching can help',
+                            'A tailored recommendation for your needs',
+                            'Zero pressure  - no obligation whatsoever',
+                        ].map(item => (
+                            <div class="flex items-start gap-2">
+                                <iconify-icon icon="solar:check-circle-linear" width="14" class="text-[#C4A470] mt-0.5 flex-shrink-0"></iconify-icon>
+                                <p class="text-xs text-gray-500 font-light leading-relaxed">{item}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script is:inline>
+(function() {
+    // ═══════════════════════════════════════════════════════════════
+    // CALENDLY API CONFIG  - Replace these when you have the API key
+    // ═══════════════════════════════════════════════════════════════
+    const CALENDLY_API_KEY = ''; // ← Add your Calendly Personal Access Token here
+    const CALENDLY_EVENT_URI = ''; // ← Add event type URI (from /event_types API)
+    const USE_API = !!CALENDLY_API_KEY;
+    // ═══════════════════════════════════════════════════════════════
+
+    // Demo time slots (used when API is not connected)
+    const DEMO_SLOTS = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'];
+
+    let currentYear, currentMonth, selectedDate = null, selectedSlot = null;
+    const today = new Date();
+    currentYear = today.getFullYear();
+    currentMonth = today.getMonth();
+
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+
+    function $(id) { return document.getElementById(id); }
+
+    function showPanel(id) {
+        ['slots-empty', 'slots-loading', 'slots-panel', 'slots-none'].forEach(p => {
+            const el = $(p);
+            if (el) el.classList.toggle('hidden', p !== id);
+        });
+    }
+
+    function renderCalendar() {
+        const grid = $('cal-grid');
+        const monthLabel = $('cal-month');
+        if (!grid || !monthLabel) return;
+
+        monthLabel.textContent = monthNames[currentMonth] + ' ' + currentYear;
+        grid.innerHTML = '';
+
+        const firstDay = new Date(currentYear, currentMonth, 1);
+        let startDay = firstDay.getDay() - 1;
+        if (startDay < 0) startDay = 6;
+
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        const todayStr = today.toISOString().split('T')[0];
+
+        for (let i = 0; i < startDay; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'border-b border-r border-gray-100 p-1.5 min-h-[44px]';
+            grid.appendChild(cell);
+        }
+
+        for (let d = 1; d <= daysInMonth; d++) {
+            const cell = document.createElement('div');
+            const date = new Date(currentYear, currentMonth, d);
+            const dateStr = date.toISOString().split('T')[0];
+            const dayOfWeek = date.getDay();
+            const isPast = dateStr < todayStr;
+            const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+            const isToday = dateStr === todayStr;
+            const isSelected = selectedDate === dateStr;
+
+            cell.className = 'border-b border-r border-gray-100 p-1.5 min-h-[44px] flex items-center justify-center';
+
+            if (isPast || isWeekend) {
+                cell.innerHTML = '<span class="text-sm text-gray-200">' + d + '</span>';
+            } else {
+                const cls = isSelected
+                    ? 'bg-[#C4A470] text-white shadow-md'
+                    : isToday
+                        ? 'border-2 border-[#C4A470] text-[#050615] hover:bg-[#C4A470] hover:text-white'
+                        : 'text-[#050615] hover:bg-[#C4A470]/10';
+                cell.innerHTML = '<span class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200 cursor-pointer ' + cls + '">' + d + '</span>';
+                cell.style.cursor = 'pointer';
+                cell.addEventListener('click', function() { selectDate(dateStr); });
+            }
+
+            grid.appendChild(cell);
+        }
+    }
+
+    function selectDate(dateStr) {
+        selectedDate = dateStr;
+        selectedSlot = null;
+        renderCalendar();
+
+        const date = new Date(dateStr + 'T12:00:00');
+        const formatted = date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+        const dateLabel = $('slots-date');
+        if (dateLabel) dateLabel.textContent = formatted;
+
+        const confirm = $('slot-confirm');
+        if (confirm) confirm.classList.add('hidden');
+
+        if (USE_API) {
+            fetchSlots(dateStr);
+        } else {
+            renderDemoSlots(dateStr);
+        }
+    }
+
+    // ═══════════════════════════════════════════
+    // DEMO MODE  - shows placeholder time slots
+    // ═══════════════════════════════════════════
+    function renderDemoSlots(dateStr) {
+        showPanel('slots-panel');
+        const grid = $('slots-grid');
+        const noApi = $('slots-no-api');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        DEMO_SLOTS.forEach(function(time) {
+            const btn = document.createElement('button');
+            btn.className = 'py-2.5 px-3 border border-gray-200 rounded-sm text-sm font-medium text-[#050615] hover:border-[#C4A470] hover:bg-[#C4A470]/5 transition-all duration-200 text-center';
+            btn.textContent = time;
+            btn.addEventListener('click', function() { selectSlot(dateStr, time, btn); });
+            grid.appendChild(btn);
+        });
+
+        if (noApi) noApi.classList.remove('hidden');
+    }
+
+    function selectSlot(dateStr, time, btn) {
+        selectedSlot = time;
+
+        // Highlight selected
+        const grid = $('slots-grid');
+        if (grid) {
+            grid.querySelectorAll('button').forEach(function(b) {
+                if (b === btn) {
+                    b.className = 'py-2.5 px-3 border-2 border-[#C4A470] bg-[#C4A470]/10 rounded-sm text-sm font-bold text-[#050615] transition-all duration-200 text-center';
+                } else {
+                    b.className = 'py-2.5 px-3 border border-gray-200 rounded-sm text-sm font-medium text-[#050615] hover:border-[#C4A470] hover:bg-[#C4A470]/5 transition-all duration-200 text-center';
+                }
+            });
+        }
+
+        // Show confirmation
+        const confirm = $('slot-confirm');
+        const dt = $('confirm-datetime');
+        if (confirm && dt) {
+            const date = new Date(dateStr + 'T12:00:00');
+            dt.textContent = date.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }) + ' at ' + time;
+            confirm.classList.remove('hidden');
+            confirm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // CALENDLY API MODE  - Replace demo slots with real data
+    // Uncomment and configure when API key is available
+    // ═══════════════════════════════════════════════════════════
+    async function fetchSlots(dateStr) {
+        if (!USE_API) return;
+        showPanel('slots-loading');
+
+        try {
+            // Step 1: Get available times from Calendly API
+            const startTime = dateStr + 'T00:00:00.000000Z';
+            const endTime = dateStr + 'T23:59:59.000000Z';
+
+            const response = await fetch(
+                'https://calendly.com/api/booking/event_types/' + CALENDLY_EVENT_URI + '/calendar/range?' +
+                'timezone=Europe/London&diagnostics=false&range_start=' + startTime + '&range_end=' + endTime,
+                { headers: { 'Authorization': 'Bearer ' + CALENDLY_API_KEY } }
+            );
+
+            if (!response.ok) throw new Error('API error');
+
+            const data = await response.json();
+            const slots = data.days?.[0]?.spots || [];
+
+            if (slots.length === 0) {
+                showPanel('slots-none');
+                return;
+            }
+
+            showPanel('slots-panel');
+            const grid = $('slots-grid');
+            const noApi = $('slots-no-api');
+            if (noApi) noApi.classList.add('hidden');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            slots.forEach(function(slot) {
+                const time = new Date(slot.start_time).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                const btn = document.createElement('button');
+                btn.className = 'py-2.5 px-3 border border-gray-200 rounded-sm text-sm font-medium text-[#050615] hover:border-[#C4A470] hover:bg-[#C4A470]/5 transition-all duration-200 text-center';
+                btn.textContent = time;
+                btn.dataset.startTime = slot.start_time;
+                btn.addEventListener('click', function() { selectSlot(dateStr, time, btn); });
+                grid.appendChild(btn);
+            });
+
+        } catch (err) {
+            console.error('Calendly API error:', err);
+            // Fallback to demo slots
+            renderDemoSlots(dateStr);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // BOOKING SUBMISSION
+    // When API is connected, this will create the booking via API
+    // For now it shows a confirmation message
+    // ═══════════════════════════════════════════════════════════
+    function handleBooking() {
+        const name = $('book-name')?.value?.trim();
+        const email = $('book-email')?.value?.trim();
+
+        if (!name || !email) {
+            alert('Please enter your name and email.');
+            return;
+        }
+
+        if (!selectedDate || !selectedSlot) return;
+
+        if (USE_API) {
+            // TODO: POST to Calendly API to create the booking
+            // POST https://calendly.com/api/booking/invitees
+            // with event_type_uri, start_time, name, email
+            console.log('Would book via API:', { date: selectedDate, time: selectedSlot, name, email });
+        }
+
+        // Show success state
+        const btn = $('book-submit');
+        if (btn) {
+            btn.textContent = 'Booking Confirmed ✓';
+            btn.className = 'w-full bg-[#C4A470] text-white font-bold uppercase tracking-[0.15em] text-[11px] py-3.5 rounded-sm cursor-default';
+            btn.disabled = true;
+        }
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', function() {
+        renderCalendar();
+
+        $('cal-prev')?.addEventListener('click', function() {
+            currentMonth--;
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            const now = new Date();
+            if (currentYear < now.getFullYear() || (currentYear === now.getFullYear() && currentMonth < now.getMonth())) {
+                currentMonth = now.getMonth(); currentYear = now.getFullYear();
+            }
+            renderCalendar();
+        });
+
+        $('cal-next')?.addEventListener('click', function() {
+            currentMonth++;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar();
+        });
+
+        $('book-submit')?.addEventListener('click', handleBooking);
+    });
+})();
+</script>
+
+</Base>

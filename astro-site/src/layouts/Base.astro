@@ -1,0 +1,215 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Authentic Communicator Global' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>{title} | Voice & Communication Coaching</title>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js" async defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-[#050615] text-white antialiased selection:bg-white selection:text-black overflow-x-hidden">
+
+    <!-- Navigation -->
+    <header class="fixed transition-all duration-300 backdrop-blur-md z-50 w-full border-white/5 border-b top-0 bg-[#050615]/80" id="main-header">
+        <div class="lg:px-12 flex h-24 w-full mx-auto px-6 items-center justify-between">
+            <a href="/" class="flex-shrink-0 flex items-center gap-3 z-50">
+                <div class="flex flex-col">
+                    <span class="font-serif text-xl tracking-tight leading-none text-white font-medium">Authentic <span class="text-[#C4A470] italic">Communicator</span></span>
+                    <span class="text-[9px] tracking-[0.2em] uppercase text-gray-400 mt-1">Voice & Communication Coaching</span>
+                </div>
+            </a>
+
+            <nav class="hidden xl:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+                <a href="/" class="text-[11px] hover:text-[#C4A470] transition-colors uppercase font-medium text-gray-300 tracking-widest">Home</a>
+                <div class="relative group">
+                    <a href="/packages" class="text-[11px] hover:text-[#C4A470] transition-colors uppercase font-medium text-gray-300 tracking-widest flex items-center gap-1">
+                        Packages
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50"><path d="M6 9l6 6 6-6"/></svg>
+                    </a>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <div class="bg-[#1a1f35] border border-white/15 rounded-sm py-3 min-w-[260px] shadow-2xl">
+                            <a href="/packages/confident-speaker" class="block px-6 py-2.5 text-[11px] uppercase tracking-widest text-gray-400 hover:text-[#C4A470] hover:bg-white/5 transition-colors">Confident Speaker</a>
+                            <a href="/packages/confident-pronunciation" class="block px-6 py-2.5 text-[11px] uppercase tracking-widest text-gray-400 hover:text-[#C4A470] hover:bg-white/5 transition-colors">Confident Pronunciation</a>
+                            <a href="/packages/intensive-session" class="block px-6 py-2.5 text-[11px] uppercase tracking-widest text-gray-400 hover:text-[#C4A470] hover:bg-white/5 transition-colors">Intensive 90-Min Session</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="/about" class="text-[11px] hover:text-[#C4A470] transition-colors uppercase font-medium text-gray-300 tracking-widest">About</a>
+                <a href="/inspiration" class="text-[11px] hover:text-[#C4A470] transition-colors uppercase font-medium text-gray-300 tracking-widest">Inspiration</a>
+            </nav>
+
+            <div class="hidden xl:flex items-center gap-6 justify-end">
+                <a href="/contact" class="flex items-center gap-2 text-white hover:text-[#C4A470] transition-colors">
+                    <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center">
+                        <iconify-icon icon="solar:letter-linear" width="14"></iconify-icon>
+                    </div>
+                    <span class="text-sm font-medium">Get in Touch</span>
+                </a>
+                <a href="/free-consultation" class="btn-secondary btn-secondary-light">
+                    Free Consultation
+                </a>
+            </div>
+
+            <div class="xl:hidden text-white cursor-pointer ml-auto z-50 p-2" id="mobile-menu-trigger">
+                <iconify-icon icon="solar:hamburger-menu-linear" width="28" height="28"></iconify-icon>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-[99999] pointer-events-none opacity-0 invisible transition-all duration-300 xl:hidden">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" id="mobile-menu-backdrop"></div>
+        <div class="absolute top-0 right-0 h-full w-[300px] bg-[#0a0a0a] border-l border-white/10 transform translate-x-full transition-transform duration-300 flex flex-col" id="mobile-menu-panel">
+            <div class="flex justify-end p-6">
+                <div class="text-white cursor-pointer p-2" id="mobile-menu-close">
+                    <iconify-icon icon="solar:close-circle-linear" width="32"></iconify-icon>
+                </div>
+            </div>
+            <nav class="flex flex-col px-8 space-y-6 mt-4">
+                <a href="/" class="mobile-link text-sm uppercase tracking-widest font-medium text-white border-b border-white/10 pb-4">Home</a>
+                <div class="border-b border-white/10 pb-4">
+                    <a href="/packages" class="mobile-link text-sm uppercase tracking-widest font-medium text-white block mb-3">Packages</a>
+                    <div class="pl-4 space-y-2">
+                        <a href="/packages/confident-speaker" class="mobile-link block text-xs uppercase tracking-widest text-gray-500 hover:text-[#C4A470] transition-colors">Confident Speaker</a>
+                        <a href="/packages/confident-pronunciation" class="mobile-link block text-xs uppercase tracking-widest text-gray-500 hover:text-[#C4A470] transition-colors">Confident Pronunciation</a>
+                        <a href="/packages/intensive-session" class="mobile-link block text-xs uppercase tracking-widest text-gray-500 hover:text-[#C4A470] transition-colors">Intensive 90-Min Session</a>
+                    </div>
+                </div>
+                <a href="/about" class="mobile-link text-sm uppercase tracking-widest font-medium text-white border-b border-white/10 pb-4">About</a>
+                <a href="/inspiration" class="mobile-link text-sm uppercase tracking-widest font-medium text-white border-b border-white/10 pb-4">Inspiration</a>
+                <a href="/contact" class="mobile-link text-sm uppercase tracking-widest font-medium text-white border-b border-white/10 pb-4">Contact</a>
+            </nav>
+            <div class="mt-auto p-8 space-y-4">
+                <a href="/free-consultation" class="mobile-link block text-center text-xs uppercase font-bold text-[#050615] tracking-widest bg-white hover:bg-gray-200 transition-colors rounded-sm py-4 w-full">
+                    Free Consultation
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="relative z-10 flex flex-col">
+        <slot />
+
+        <!-- FOOTER -->
+        <footer class="bg-[#0a0e1f] border-t border-white/10 pt-16 pb-8">
+            <div class="max-w-[1400px] mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                    <div class="md:col-span-2">
+                        <h3 class="font-serif text-xl mb-3">Authentic <span class="text-[#C4A470] italic">Communicator</span></h3>
+                        <p class="text-gray-500 text-sm font-light leading-relaxed">Helping professionals find their authentic voice. Expert coaching from opera stage to boardroom.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest font-medium text-white mb-4">Packages</h4>
+                        <ul class="space-y-2 text-sm text-gray-500 font-light">
+                            <li><a href="/packages" class="hover:text-[#C4A470] transition-colors">Confident Speaker Package</a></li>
+                            <li><a href="/packages" class="hover:text-[#C4A470] transition-colors">Confident Pronunciation Package</a></li>
+                            <li><a href="/packages" class="hover:text-[#C4A470] transition-colors">Intensive 90-Minute Session</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-widest font-medium text-white mb-4"><a href="/contact" class="hover:text-[#C4A470] transition-colors">Get in Touch</a></h4>
+                        <ul class="space-y-3 text-sm text-gray-500 font-light">
+                            <li class="flex items-start gap-2">
+                                <iconify-icon icon="solar:map-point-linear" width="16" class="text-[#C4A470] mt-0.5"></iconify-icon>
+                                London, United Kingdom
+                            </li>
+                            <li><a href="/contact" class="hover:text-[#C4A470] transition-colors flex items-center gap-2"><iconify-icon icon="solar:chat-round-dots-linear" width="14" class="text-[#C4A470]"></iconify-icon>Contact Alice</a></li>
+                            <li><a href="/free-consultation" class="hover:text-[#C4A470] transition-colors flex items-center gap-2"><iconify-icon icon="solar:calendar-linear" width="14" class="text-[#C4A470]"></iconify-icon>Free Consultation</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+                <div class="border-t border-white/10 pt-8 text-center space-y-5">
+                    <div class="flex justify-center gap-6">
+                        <a href="#" class="text-gray-500 hover:text-[#C4A470] transition-colors"><iconify-icon icon="mdi:instagram" width="20"></iconify-icon></a>
+                        <a href="#" class="text-gray-500 hover:text-[#C4A470] transition-colors"><iconify-icon icon="mdi:linkedin" width="20"></iconify-icon></a>
+                        <a href="#" class="text-gray-500 hover:text-[#C4A470] transition-colors"><iconify-icon icon="mdi:youtube" width="20"></iconify-icon></a>
+                    </div>
+                    <div class="flex justify-center items-center gap-3 text-[10px] uppercase tracking-widest font-medium text-gray-500">
+                        <a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a>
+                        <span class="text-gray-700">|</span>
+                        <a href="/terms" class="hover:text-white transition-colors">Terms</a>
+                        <span class="text-gray-700">|</span>
+                        <a href="/contact" class="hover:text-white transition-colors">Contact</a>
+                    </div>
+                    <p class="text-[10px] uppercase tracking-widest text-gray-500">&copy; 2026 Authentic Communicator Global. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header?.classList.add('py-2');
+                header?.classList.remove('bg-[#050615]/80');
+                header?.classList.add('bg-[#050615]/95', 'shadow-lg');
+            } else {
+                header?.classList.remove('py-2', 'bg-[#050615]/95', 'shadow-lg');
+                header?.classList.add('bg-[#050615]/80');
+            }
+        });
+
+        const mobileTrigger = document.getElementById('mobile-menu-trigger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobilePanel = document.getElementById('mobile-menu-panel');
+        const mobileClose = document.getElementById('mobile-menu-close');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isOpen = !mobileMenu?.classList.contains('invisible');
+            if (isOpen) {
+                mobileMenu?.classList.add('opacity-0', 'invisible', 'pointer-events-none');
+                mobileMenu?.classList.remove('opacity-100', 'visible', 'pointer-events-auto');
+                mobilePanel?.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+            } else {
+                mobileMenu?.classList.remove('opacity-0', 'invisible', 'pointer-events-none');
+                mobileMenu?.classList.add('opacity-100', 'visible', 'pointer-events-auto');
+                mobilePanel?.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        mobileTrigger?.addEventListener('click', toggleMenu);
+        mobileClose?.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+        document.getElementById('mobile-menu-backdrop')?.addEventListener('click', toggleMenu);
+
+        // Reset videos to first frame when they end
+        document.querySelectorAll('video.video-reset').forEach(v => {
+            v.addEventListener('ended', () => { v.currentTime = 0; v.load(); });
+        });
+
+        // Accordion FAQs - close siblings when one opens
+        document.querySelectorAll('details').forEach(d => {
+            d.addEventListener('toggle', () => {
+                if (!d.open) return;
+                const parent = d.parentElement;
+                if (!parent) return;
+                parent.querySelectorAll('details[open]').forEach(other => {
+                    if (other !== d) other.open = false;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

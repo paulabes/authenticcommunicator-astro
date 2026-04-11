@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+
+const sections = [
+    { id: 'introduction', label: 'Introduction' },
+    { id: 'services', label: 'Services' },
+    { id: 'bookings', label: 'Bookings' },
+    { id: 'cancellation', label: 'Cancellation' },
+    { id: 'fees', label: 'Fees & Payment' },
+    { id: 'coaching', label: 'What Coaching Is' },
+    { id: 'confidentiality', label: 'Confidentiality' },
+    { id: 'ip', label: 'Intellectual Property' },
+    { id: 'liability', label: 'Liability' },
+    { id: 'website', label: 'Website Use' },
+    { id: 'third-party', label: 'Third-Party Links' },
+    { id: 'law', label: 'Governing Law' },
+    { id: 'changes', label: 'Changes' },
+    { id: 'contact', label: 'Contact' },
+];
+---
+
+<Base title="Terms & Conditions">
+
+<section class="pt-36 pb-16 lg:px-12 px-6">
+    <div class="max-w-[1200px] mx-auto text-center">
+        <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">Legal</span>
+        <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Terms & Conditions</h1>
+        <p class="text-gray-500 text-sm">Last updated: April 2026</p>
+    </div>
+</section>
+
+<section class="py-16 bg-white text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+            <!-- Sidebar -->
+            <aside class="lg:col-span-3">
+                <nav class="sticky top-32 space-y-1">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-400 font-medium mb-3">On this page</p>
+                    {sections.map(s => (
+                        <a href={`#${s.id}`} class="block py-2 px-3 text-sm text-gray-500 hover:text-[#C4A470] hover:bg-[#C4A470]/5 rounded transition-colors font-light">{s.label}</a>
+                    ))}
+                    <div class="border-t border-gray-200 mt-4 pt-4">
+                        <a href="/privacy" class="block py-2 px-3 text-sm text-gray-400 hover:text-[#C4A470] transition-colors font-light">Privacy Policy &rarr;</a>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <div class="lg:col-span-9 prose max-w-none">
+
+                <h2 id="introduction">1. Introduction</h2>
+                <p>These terms and conditions govern your use of the Authentic Communicator Global website (authenticcommunicatorglobal.com) and the coaching services provided by Alice Deville ("we", "us", "our"). By using this website or booking a service, you agree to these terms.</p>
+
+                <h2 id="services">2. Services</h2>
+                <p>We provide voice and communication coaching services including but not limited to:</p>
+                <ul>
+                    <li>Confident Speaker Package</li>
+                    <li>Confident Pronunciation Package</li>
+                    <li>Intensive 90-Minute Sessions</li>
+                    <li>Corporate and group coaching</li>
+                    <li>Free 30-minute assessment consultations</li>
+                </ul>
+                <p>All services are provided by Alice Deville or an approved associate. Sessions are delivered online via Zoom or in-person in London, as agreed.</p>
+
+                <h2 id="bookings">3. Bookings & Scheduling</h2>
+                <p>Sessions are booked via our website or by direct arrangement. By booking a session, you agree to:</p>
+                <ul>
+                    <li>Provide accurate contact information</li>
+                    <li>Attend at the agreed date and time</li>
+                    <li>Give at least 24 hours' notice if you need to reschedule or cancel</li>
+                </ul>
+
+                <h2 id="cancellation">4. Cancellation & Rescheduling</h2>
+                <ul>
+                    <li><strong>24+ hours' notice</strong> - sessions can be rescheduled at no charge</li>
+                    <li><strong>Less than 24 hours' notice</strong> - the session may be charged in full</li>
+                    <li><strong>No-shows</strong> - the full session fee applies</li>
+                </ul>
+                <p>We reserve the right to reschedule sessions with reasonable notice. In the event that we cancel, you will be offered an alternative time or a full refund.</p>
+
+                <h2 id="fees">5. Fees & Payment</h2>
+                <p>Fees for coaching packages and sessions are communicated prior to booking. Payment is due as agreed - either in advance or upon invoice. All fees are quoted in GBP unless otherwise stated.</p>
+                <p>Free consultations are genuinely free with no obligation to purchase further services.</p>
+
+                <h2 id="coaching">6. What Coaching Is (and Isn't)</h2>
+                <p>Voice and communication coaching is a professional development service. It is not therapy, medical treatment, or a substitute for professional mental health support. While coaching can help with performance anxiety and confidence, clients with clinical conditions should seek appropriate professional help.</p>
+
+                <h2 id="confidentiality">7. Confidentiality</h2>
+                <p>Everything discussed in coaching sessions is treated as confidential. We will not share details of your sessions with any third party without your express consent, except where required by law.</p>
+
+                <h2 id="ip">8. Intellectual Property</h2>
+                <p>All content on this website - including text, images, videos, and design - is the property of Authentic Communicator Global and is protected by copyright. You may not reproduce, distribute, or use any content without written permission.</p>
+                <p>Materials provided during coaching sessions (exercises, notes, recordings) are for your personal use only and may not be shared or distributed.</p>
+
+                <h2 id="liability">9. Liability</h2>
+                <p>We deliver our services with professional care and skill. However, results from coaching vary between individuals and we cannot guarantee specific outcomes. Our liability is limited to the fees paid for the relevant service.</p>
+                <p>We are not liable for any indirect, consequential, or incidental losses arising from the use of our services or website.</p>
+
+                <h2 id="website">10. Website Use</h2>
+                <p>You agree to use this website lawfully and not to:</p>
+                <ul>
+                    <li>Attempt to gain unauthorised access to the site or its systems</li>
+                    <li>Use the site for any unlawful purpose</li>
+                    <li>Submit false information through forms or booking systems</li>
+                </ul>
+
+                <h2 id="third-party">11. Third-Party Links</h2>
+                <p>Our website may contain links to third-party websites (e.g., Calendly, Zoom, social media). We are not responsible for the content or privacy practices of these external sites.</p>
+
+                <h2 id="law">12. Governing Law</h2>
+                <p>These terms are governed by and construed in accordance with the laws of England and Wales. Any disputes will be subject to the exclusive jurisdiction of the courts of England and Wales.</p>
+
+                <h2 id="changes">13. Changes to These Terms</h2>
+                <p>We may update these terms from time to time. Any changes will be posted on this page with an updated revision date. Continued use of the website or services constitutes acceptance of the revised terms.</p>
+
+                <h2 id="contact">14. Contact</h2>
+                <p>If you have any questions about these terms, please visit our <a href="/contact">contact page</a>.</p>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+</Base>

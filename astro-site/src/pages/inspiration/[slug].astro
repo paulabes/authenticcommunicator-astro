@@ -1,0 +1,140 @@
+---
+import Base from '../../layouts/Base.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export function getStaticPaths() {
+  const blogDir = path.resolve('./src/content/blog');
+  if (!fs.existsSync(blogDir)) return [];
+
+  const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md') && !f.endsWith('.editor.md'));
+  return files.map(file => {
+    const slug = file.replace(/^\d{4}-\d{2}-\d{2}-?/, '').replace('.md', '');
+    return { params: { slug }, props: { filename: file } };
+  });
+}
+
+const { filename } = Astro.props;
+const blogDir = path.resolve('./src/content/blog');
+const content = fs.readFileSync(path.join(blogDir, filename), 'utf-8');
+
+// Parse title
+const titleMatch = content.match(/^#\s+(.+)$/m);
+const title = titleMatch ? titleMatch[1] : filename.replace('.md', '');
+
+// Parse date
+const dateMatch = filename.match(/^(\d{4}-\d{2}-\d{2})/);
+const date = dateMatch ? new Date(dateMatch[1]) : new Date();
+const dateFormatted = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+
+// Category
+const titleLower = title.toLowerCase();
+const catRules: [string, string[]][] = [
+  ['Public Speaking', ['public speaking', 'keynote', 'presentation', 'ted talk']],
+  ['Voice Technique', ['vocal', 'voice technique', 'projection', 'resonance', 'breathing']],
+  ['Pronunciation', ['pronunciation', 'accent', 'articulation', 'intonation']],
+  ['Performance Anxiety', ['stage fright', 'nerves', 'anxiety', 'fear of speaking']],
+  ['Communication', ['communication', 'body language', 'non-verbal']],
+  ['Media Training', ['media training', 'interview', 'podcast']],
+];
+let category = 'Communication';
+for (const [cat, keywords] of catRules) {
+  if (keywords.some(kw => titleLower.includes(kw))) { category = cat; break; }
+}
+
+// Strip title from body and convert to HTML
+const body = content.replace(/^#\s+.+\n*/m, '').trim();
+
+// Simple markdown to HTML (basic conversion for common elements)
+function mdToHtml(md: string): string {
+  let html = md
+    // Headers
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    // Italic
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    // Links
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
+    // Unordered lists
+    .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
+    // Ordered lists
+    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
+    // Blockquotes
+    .replace(/^> (.+)$/gm, '<blockquote><p>$1</p></blockquote>');
+
+  // Wrap consecutive <li> in <ul>
+  html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul>${match}</ul>`);
+
+  // Paragraphs: wrap non-tag lines
+  html = html.split('\n\n').map(block => {
+    block = block.trim();
+    if (!block) return '';
+    if (block.startsWith('<')) return block;
+    return `<p>${block.replace(/\n/g, '<br>')}</p>`;
+  }).join('\n');
+
+  return html;
+}
+
+const htmlContent = mdToHtml(body);
+
+// Check for editor notes
+const editorFilename = filename.replace('.md', '.editor.md');
+const editorPath = path.join(blogDir, editorFilename);
+let editorHtml = '';
+if (fs.existsSync(editorPath)) {
+  let editorRaw = fs.readFileSync(editorPath, 'utf-8');
+  editorRaw = editorRaw.replace(/^#\s+Editor Notes:.*\n*/m, '').trim();
+  editorHtml = mdToHtml(editorRaw);
+}
+---
+
+<Base title={title}>
+
+<!-- Hero -->
+<section class="pt-36 pb-12 lg:px-12 px-6">
+    <div class="max-w-[800px] mx-auto">
+        <div class="mb-6 flex items-center gap-4">
+            <a href="/inspiration" class="text-[11px] tracking-[0.2em] text-gray-500 uppercase hover:text-[#C4A470] transition-colors">&larr; Back to Inspiration</a>
+            <span class="text-gray-700">|</span>
+            <span class="text-[10px] uppercase tracking-widest text-[#C4A470] font-medium">{category}</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">{title}</h1>
+        <p class="text-gray-500 text-sm">Published {dateFormatted} &middot; By Alice Deville</p>
+    </div>
+</section>
+
+<!-- Article -->
+<section class="py-12 bg-white text-[#050615]">
+    <div class="max-w-[800px] mx-auto px-6">
+        <article class="prose max-w-none" set:html={htmlContent} />
+    </div>
+</section>
+
+{editorHtml && (
+    <section class="py-12 bg-[#f8f7f5] text-[#050615] border-t border-gray-200">
+        <div class="max-w-[800px] mx-auto px-6">
+            <div class="mb-6 flex items-center gap-3">
+                <span class="w-10 h-[1px] bg-[#C4A470]"></span>
+                <span class="text-[10px] tracking-[0.25em] text-[#C4A470] uppercase font-medium">Editor Notes & Sources</span>
+            </div>
+            <div class="prose prose-sm max-w-none text-gray-600" set:html={editorHtml} />
+        </div>
+    </section>
+)}
+
+<!-- CTA -->
+<section class="py-16 bg-[#0c1a3a]">
+    <div class="max-w-[800px] mx-auto px-6 text-center">
+        <div class="w-16 h-[1px] bg-[#C4A470] mx-auto mb-8"></div>
+        <h2 class="text-3xl font-serif text-white mb-4">Ready to Transform Your Communication?</h2>
+        <p class="text-gray-400 font-light mb-8">Book a free discovery call with Alice and take the first step towards speaking with confidence.</p>
+        <div class="flex flex-col sm:flex-row gap-5 justify-center">
+            <a href="/free-consultation" class="btn-primary">Book a Free Discovery Call</a>
+        </div>
+    </div>
+</section>
+
+</Base>

@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Coaching Packages">
+
+<!-- Hero Background -->
+<div class="fixed top-0 w-full h-screen -z-10">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/authentic-communicator-global-alice.jpg'); opacity: 0.8;"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#050615] via-[#050615]/90 to-[#050615]/60"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050615]/50 to-[#050615]"></div>
+</div>
+
+<!-- Hero -->
+<section class="pt-36 pb-16 lg:px-12 px-6">
+    <div class="max-w-[1200px] mx-auto text-center">
+        <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">How I Can Help</span>
+        <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Coaching Packages</h1>
+        <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Whether you need to master public speaking, refine your pronunciation, or transform your confidence in a single session - there's a package designed for you.</p>
+        <div class="mt-10 text-center">
+            <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-4">Trusted by professionals at</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12"><img src="/logos/blackrock.svg" alt="BlackRock" class="h-5 invert opacity-40"><img src="/logos/deloitte.svg" alt="Deloitte" class="h-5 invert opacity-40"><img src="/logos/jpmorgan.svg" alt="JP Morgan" class="h-5 invert opacity-40"><img src="/logos/google.svg" alt="Google" class="h-6 invert opacity-40"><img src="/logos/downing-street.svg" alt="10 Downing Street" class="h-4 invert opacity-40"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Packages -->
+<section class="py-16 bg-white text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+                { icon: 'solar:microphone-3-linear', title: 'Confident Speaker Package', desc: 'Mastering the art of public speaking. A structured programme to build your confidence, refine your delivery, and help you connect with any audience.', features: ['Vocal technique & projection', 'Managing nerves & performance anxiety', 'Engaging storytelling & structure', 'Body language & presence'], img: '/images/confident-speaker-package.jpg', href: '/packages/confident-speaker', accent: '#B5654A' },
+                { icon: 'solar:chat-round-dots-linear', title: 'Confident Pronunciation Package', desc: 'Confident UK English pronunciation. Speak clearly and be understood with ease - whether English is your first language or an additional one.', features: ['Accent refinement & clarity', 'Articulation & intonation patterns', 'Professional vocabulary & phrasing', 'Personalised exercises & practice plans'], img: '/images/confident-pronunciation-package.jpg', href: '/packages/confident-pronunciation', accent: '#6B8E85' },
+                { icon: 'solar:clock-circle-linear', title: 'Intensive 90-Minute Session', desc: 'Transform your confidence in a single online session. Perfect for professionals preparing for an important presentation, interview, or media appearance.', features: ['Targeted coaching for your specific needs', 'Practical techniques you can use immediately', 'Online via Zoom - anywhere in the world', 'Follow-up notes & exercises included'], img: '/images/intensive-90-minute-session.jpg', href: '/packages/intensive-session', accent: '#7A4E5E' },
+            ].map(s => (
+                <a href={s.href} style={`--pkg-accent: ${s.accent}`} class="bg-[#FAFAF8] border border-gray-200 rounded-sm overflow-hidden group hover:shadow-2xl transition-all duration-500 block">
+                    <img src={s.img} alt={s.title} class="w-full">
+                    <div class="p-10">
+                        <div class="w-12 h-12 rounded-full border border-gray-200 group-hover:border-[var(--pkg-accent)] flex items-center justify-center text-[var(--pkg-accent)] mb-6 transition-colors">
+                            <iconify-icon icon={s.icon} width="24"></iconify-icon>
+                        </div>
+                        <h3 class="text-2xl font-serif mb-4 group-hover:text-[var(--pkg-accent)] transition-colors">{s.title}</h3>
+                        <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">{s.desc}</p>
+                        <ul class="space-y-2 mb-8 text-sm text-gray-500 font-light">
+                            {s.features.map(f => (
+                                <li class="flex items-start gap-2"><iconify-icon icon="solar:check-circle-linear" width="16" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>{f}</li>
+                            ))}
+                        </ul>
+                        <span class="text-[10px] uppercase tracking-[0.2em] font-medium text-[var(--pkg-accent)] group-hover:text-[#050615] transition-colors">Learn More &rarr;</span>
+                    </div>
+                </a>
+            ))}
+        </div>
+    </div>
+</section>
+
+<!-- Not Sure -->
+<section class="py-20 bg-[#050615]">
+    <div class="max-w-[800px] mx-auto px-6 text-center">
+        <h2 class="text-3xl font-serif text-white mb-4">Not sure which package is right for you?</h2>
+        <p class="text-gray-400 font-light mb-8">Book a free consultation and we'll find the best fit together.</p>
+        <a href="/free-consultation" class="btn-primary">Book Free Consultation</a>
+    </div>
+</section>
+
+</Base>

@@ -1,0 +1,116 @@
+---
+import Base from '../../layouts/Base.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Read markdown files from content/blog directory
+const blogDir = path.resolve('./src/content/blog');
+let posts: Array<{slug: string; title: string; date: string; dateFormatted: string; category: string; excerpt: string}> = [];
+
+if (fs.existsSync(blogDir)) {
+  const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md') && !f.endsWith('.editor.md'));
+
+  for (const file of files) {
+    const content = fs.readFileSync(path.join(blogDir, file), 'utf-8');
+
+    // Extract title from first H1
+    const titleMatch = content.match(/^#\s+(.+)$/m);
+    const title = titleMatch ? titleMatch[1] : file.replace('.md', '').replace(/-/g, ' ');
+
+    // Extract date from filename
+    const dateMatch = file.match(/^(\d{4}-\d{2}-\d{2})/);
+    const dateStr = dateMatch ? dateMatch[1] : '';
+    const date = dateStr ? new Date(dateStr) : new Date();
+    const dateFormatted = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+
+    // Slug from filename
+    const slug = file.replace(/^\d{4}-\d{2}-\d{2}-?/, '').replace('.md', '');
+
+    // Excerpt
+    const body = content.replace(/^#\s+.+\n*/m, '').trim();
+    const bodyText = body.replace(/[#*_\[\]()>`]/g, '');
+    const excerpt = bodyText.length > 150 ? bodyText.slice(0, 150).replace(/\s+\S*$/, '') + '...' : bodyText;
+
+    // Category detection
+    const titleLower = title.toLowerCase();
+    const catRules: [string, string[]][] = [
+      ['Public Speaking', ['public speaking', 'keynote', 'presentation', 'ted talk', 'storytelling']],
+      ['Voice Technique', ['vocal', 'voice technique', 'projection', 'resonance', 'breathing']],
+      ['Pronunciation', ['pronunciation', 'accent', 'articulation', 'intonation']],
+      ['Performance Anxiety', ['stage fright', 'nerves', 'anxiety', 'fear of speaking']],
+      ['Communication', ['communication', 'body language', 'non-verbal', 'listening']],
+      ['Media Training', ['media training', 'interview', 'podcast']],
+    ];
+    let category = 'Communication';
+    for (const [cat, keywords] of catRules) {
+      if (keywords.some(kw => titleLower.includes(kw))) { category = cat; break; }
+    }
+
+    posts.push({ slug, title, date: dateStr, dateFormatted, category, excerpt });
+  }
+
+  posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+}
+---
+
+<Base title="Blog & Insights">
+
+<!-- Hero Background -->
+<div class="fixed top-0 w-full h-screen -z-10">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/authentic-communicator-global-alice.jpg'); opacity: 0.8;"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#050615] via-[#050615]/90 to-[#050615]/60"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050615]/50 to-[#050615]"></div>
+</div>
+
+<!-- Hero -->
+<section class="pt-36 pb-16 lg:px-12 px-6">
+    <div class="max-w-[1200px] mx-auto text-center">
+        <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">Insights & Tips</span>
+        <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Inspiration</h1>
+        <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Practical advice on public speaking, voice technique, pronunciation, and authentic communication - written by Alice Deville.</p>
+        <div class="mt-10 text-center">
+            <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-4">Trusted by professionals at</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12"><img src="/logos/blackrock.svg" alt="BlackRock" class="h-5 invert opacity-40"><img src="/logos/deloitte.svg" alt="Deloitte" class="h-5 invert opacity-40"><img src="/logos/jpmorgan.svg" alt="JP Morgan" class="h-5 invert opacity-40"><img src="/logos/google.svg" alt="Google" class="h-6 invert opacity-40"><img src="/logos/downing-street.svg" alt="10 Downing Street" class="h-4 invert opacity-40"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Grid -->
+<section class="py-16 bg-white text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        {posts.length > 0 ? (
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {posts.map(post => (
+                    <a href={`/inspiration/${post.slug}`} class="group block bg-white border border-gray-200 rounded-sm overflow-hidden hover:shadow-xl transition-all duration-300">
+                        <div class="bg-[#050615] px-6 py-3 flex items-center justify-between">
+                            <span class="text-[10px] uppercase tracking-widest text-[#C4A470] font-medium">{post.category}</span>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-500">{post.dateFormatted}</span>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-xl font-serif text-[#050615] mb-4 group-hover:text-[#C4A470] transition-colors leading-tight">{post.title}</h3>
+                            <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">{post.excerpt}</p>
+                            <span class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#C4A470] group-hover:text-[#050615] transition-colors">Read Article &rarr;</span>
+                        </div>
+                    </a>
+                ))}
+            </div>
+        ) : (
+            <div class="text-center py-20">
+                <iconify-icon icon="solar:pen-new-round-linear" width="64" class="text-gray-300 mb-6"></iconify-icon>
+                <h3 class="text-2xl font-serif text-[#050615] mb-4">New Articles Coming Soon</h3>
+                <p class="text-gray-500 font-light max-w-md mx-auto">Alice is preparing insightful articles on public speaking, voice coaching, and authentic communication. Check back shortly.</p>
+            </div>
+        )}
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16 bg-[#0c1a3a]">
+    <div class="max-w-[800px] mx-auto px-6 text-center">
+        <h2 class="text-3xl font-serif text-white mb-4">Ready to transform your communication?</h2>
+        <p class="text-gray-400 font-light mb-8">Don't just read about it. Book a session with Alice and experience the difference.</p>
+        <a href="/free-consultation" class="btn-primary">Book a Free Discovery Call</a>
+    </div>
+</section>
+
+</Base>

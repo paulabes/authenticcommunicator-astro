@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import GoogleReview from '../components/GoogleReview.astro';
+---
+
+<Base title="About Alice Deville">
+
+<!-- Hero Background -->
+<div class="fixed top-0 w-full h-screen -z-10">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/authentic-communicator-global-alice.jpg'); opacity: 0.8;"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#050615] via-[#050615]/90 to-[#050615]/60"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050615]/50 to-[#050615]"></div>
+</div>
+
+<!-- Hero -->
+<section class="pt-36 pb-16 lg:px-12 px-6">
+    <div class="max-w-[1200px] mx-auto text-center">
+        <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">About Your Coach</span>
+        <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Alice Deville</h1>
+        <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Voice & communication coach. Opera singer. Helping professionals find their authentic voice for over a decade.</p>
+        <div class="mt-10 text-center">
+            <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-4">Trusted by professionals at</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12"><img src="/logos/blackrock.svg" alt="BlackRock" class="h-5 invert opacity-40"><img src="/logos/deloitte.svg" alt="Deloitte" class="h-5 invert opacity-40"><img src="/logos/jpmorgan.svg" alt="JP Morgan" class="h-5 invert opacity-40"><img src="/logos/google.svg" alt="Google" class="h-6 invert opacity-40"><img src="/logos/downing-street.svg" alt="10 Downing Street" class="h-4 invert opacity-40"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Bio -->
+<section class="py-16 bg-white text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            <div>
+                <div class="rounded-sm overflow-hidden mb-8">
+                    <video controls playsinline preload="metadata" class="w-full rounded-sm video-reset" style="aspect-ratio: 9/16; max-height: 700px; object-fit: cover;">
+                        <source src="/alice-intro.mp4" type="video/mp4">
+                    </video>
+                </div>
+
+                <!-- Client Logos -->
+            </div>
+            <div>
+                <h2 class="text-3xl font-serif text-[#050615] mb-8">I'm Alice Deville - Voice & Speaking Coach</h2>
+                <div class="space-y-6 text-gray-600 font-light leading-relaxed">
+                    <p>With over 10 years' experience as a voice and communication coach, my clients have included influential public speakers, top business executives from organisations such as <strong class="text-[#050615]">BlackRock, Deloitte, JP Morgan and Google</strong>, to leading speakers from the world of medicine, world-famous musicians, media stars and artists.</p>
+                    <p>I have coached both individuals and groups at prestigious venues including <strong class="text-[#050615]">10 Downing Street</strong>.</p>
+                    <h3 class="text-xl font-serif text-[#050615] pt-4">From the Opera Stage</h3>
+                    <p>I began my career at the <strong class="text-[#050615]">Guildhall School of Music and Drama</strong> where I trained as an opera singer. Over the course of a career that saw me perform across Europe on stages from <strong class="text-[#050615]">Glyndebourne to the Royal Albert Hall</strong>, I learned how to manage my performance anxiety and how to perform effectively and authentically, even when the pressure is on.</p>
+                    <h3 class="text-xl font-serif text-[#050615] pt-4">A Finely Tuned Ear</h3>
+                    <p>Throughout my career as an opera singer, I simultaneously coached voice and singing, where I honed my understanding of vocal technique and developed a finely tuned ear for voice, accent, articulation and intonation.</p>
+                    <h3 class="text-xl font-serif text-[#050615] pt-4">Depth of Experience</h3>
+                    <p>Furthering my training through my experiences coaching at <strong class="text-[#050615]">London Speech Workshop</strong>, <strong class="text-[#050615]">Culture of Learning</strong> and <strong class="text-[#050615]">Minding Manners</strong> and via the practical coaching of hundreds of private clients, I have built in-depth knowledge of all areas of communication including public speaking, media training and performance of all kinds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="py-16 bg-[#f5f0e8]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div><h4 class="text-4xl md:text-5xl font-serif text-[#C4A470] mb-2">10+</h4><p class="text-xs uppercase tracking-widest text-gray-500">Years Coaching</p></div>
+            <div><h4 class="text-4xl md:text-5xl font-serif text-[#C4A470] mb-2">100s</h4><p class="text-xs uppercase tracking-widest text-gray-500">Private Clients</p></div>
+            <div><h4 class="text-4xl md:text-5xl font-serif text-[#C4A470] mb-2">Global</h4><p class="text-xs uppercase tracking-widest text-gray-500">Client Base</p></div>
+            <div><h4 class="text-4xl md:text-5xl font-serif text-[#C4A470] mb-2">Opera</h4><p class="text-xs uppercase tracking-widest text-gray-500">Trained Voice</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- Expertise -->
+<section class="py-24 bg-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="text-center mb-16">
+            <span class="text-[10px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">Areas of Expertise</span>
+            <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">What I Coach</h2>
+            <div class="w-16 h-[1px] bg-[#C4A470] mx-auto"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+                { icon: 'solar:microphone-3-linear', title: 'Public Speaking', desc: 'From keynotes to boardroom presentations, I\'ll help you command any room with confidence and clarity.' },
+                { icon: 'solar:chat-round-dots-linear', title: 'Pronunciation & Accent', desc: 'Refine your UK English pronunciation and speak with clarity, whether English is your first or additional language.' },
+                { icon: 'solar:diploma-linear', title: 'Media Training', desc: 'Prepare for interviews, podcasts, and media appearances with techniques that keep you composed and compelling.' },
+                { icon: 'solar:music-note-2-linear', title: 'Vocal Technique', desc: 'Drawing on opera training, I\'ll help you develop projection, resonance, and a voice that carries authority.' },
+                { icon: 'solar:shield-check-linear', title: 'Performance Anxiety', desc: 'Practical, proven techniques to manage nerves and perform at your best when the stakes are highest.' },
+                { icon: 'solar:users-group-rounded-linear', title: 'Corporate & Group', desc: 'Bespoke workshops and group sessions for teams who want to elevate their collective communication.' },
+            ].map(e => (
+                <div class="border border-white/10 rounded-sm p-8 hover:border-[#C4A470]/30 transition-colors">
+                    <iconify-icon icon={e.icon} width="28" class="text-[#C4A470] mb-4"></iconify-icon>
+                    <h3 class="text-lg font-serif text-white mb-3">{e.title}</h3>
+                    <p class="text-sm text-gray-500 font-light leading-relaxed">{e.desc}</p>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<GoogleReview size="large" />
+
+<!-- CTA -->
+<section class="py-24 bg-white">
+    <div class="max-w-[800px] mx-auto px-6 text-center">
+        <div class="w-16 h-[1px] bg-[#C4A470] mx-auto mb-8"></div>
+        <h2 class="text-4xl font-serif text-[#050615] mb-6">Let's Find Your Voice</h2>
+        <p class="text-gray-500 font-light mb-8 max-w-lg mx-auto">Every voice is unique. Book a free discovery call and let's explore how coaching can help you communicate with confidence and authenticity.</p>
+        <a href="/free-consultation" class="btn-primary">Book a Free Discovery Call</a>
+    </div>
+</section>
+
+</Base>

@@ -1,0 +1,203 @@
+---
+import Base from '../layouts/Base.astro';
+import GoogleReview from '../components/GoogleReview.astro';
+---
+
+<Base title="Find Your Authentic Voice">
+
+<!-- Fixed Hero Background -->
+<div class="fixed top-0 w-full h-screen -z-10">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/images/authentic-communicator-global-alice.jpg'); opacity: 0.8;"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#050615] via-[#050615]/90 to-[#050615]/60"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#050615]/50 to-[#050615]"></div>
+</div>
+
+<!-- HERO -->
+<section class="min-h-screen flex flex-col lg:px-12 px-6 pt-32 pb-10">
+    <div class="flex-1 flex items-center justify-center w-full">
+        <div class="max-w-[1400px] w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+            <div class="lg:col-span-8 flex flex-col">
+                <div class="mb-8 pl-1 flex items-center gap-3">
+                    <span class="w-12 h-[1px] bg-[#C4A470]"></span>
+                    <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium">Voice & Communication Coaching</span>
+                </div>
+                <h1 class="leading-[1.1] text-5xl md:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] text-white tracking-tight font-serif mb-8">
+                    Speak With <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50 italic">Confidence.</span>
+                </h1>
+                <p class="text-base lg:text-lg text-gray-400 font-light leading-relaxed max-w-xl mb-10">
+                    From boardrooms to stages, I help professionals unlock their authentic voice. Whether you're preparing for a keynote, refining your pronunciation, or overcoming performance anxiety - I'll get you there.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-5">
+                    <a href="/free-consultation" class="btn-primary">Book a Free Discovery Call</a>
+                    <a href="/about" class="btn-secondary btn-secondary-light">Meet Alice</a>
+                </div>
+            </div>
+            <div class="hidden lg:flex lg:col-span-4 flex-col justify-end space-y-8 border-l border-white/10 pl-10 pb-4">
+                <div class="group cursor-pointer"><h3 class="text-white font-serif text-2xl mb-1 group-hover:text-[#C4A470] transition-colors">10+ Years</h3><p class="text-gray-500 text-xs uppercase tracking-widest">Coaching Experience</p></div>
+                <div class="group cursor-pointer"><h3 class="text-white font-serif text-2xl mb-1 group-hover:text-[#C4A470] transition-colors">Opera Trained</h3><p class="text-gray-500 text-xs uppercase tracking-widest">Guildhall School of Music & Drama</p></div>
+                <div class="group cursor-pointer"><h3 class="text-white font-serif text-2xl mb-1 group-hover:text-[#C4A470] transition-colors">Global Clients</h3><p class="text-gray-500 text-xs uppercase tracking-widest">BlackRock, Deloitte, Google & More</p></div>
+                <div class="group cursor-pointer"><h3 class="text-white font-serif text-2xl mb-1 group-hover:text-[#C4A470] transition-colors">Online & In-Person</h3><p class="text-gray-500 text-xs uppercase tracking-widest">Worldwide via Zoom</p></div>
+            </div>
+        </div>
+    </div>
+    <!-- Client logos: kept inside hero so they're visible above the fold -->
+    <div class="max-w-[1200px] mx-auto w-full pt-10 mt-6 border-t border-white/10">
+        <p class="text-[10px] uppercase tracking-widest text-gray-600 text-center mb-6">Trusted by professionals at</p>
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+            <img src="/logos/blackrock.svg" alt="BlackRock" class="h-6 invert opacity-50">
+            <img src="/logos/deloitte.svg" alt="Deloitte" class="h-6 invert opacity-50">
+            <img src="/logos/jpmorgan.svg" alt="JP Morgan" class="h-6 invert opacity-50">
+            <img src="/logos/google.svg" alt="Google" class="h-7 invert opacity-50">
+            <img src="/logos/downing-street.svg" alt="10 Downing Street" class="h-5 invert opacity-50">
+        </div>
+    </div>
+</section>
+
+<!-- TRUST STRIP (Mobile) -->
+<section class="lg:hidden py-8 border-t border-b border-white/10">
+    <div class="max-w-[1400px] mx-auto px-6 grid grid-cols-2 gap-6 text-center">
+        <div><p class="text-white font-serif text-xl">10+ Years</p><p class="text-gray-500 text-[10px] uppercase tracking-widest">Experience</p></div>
+        <div><p class="text-white font-serif text-xl">Opera Trained</p><p class="text-gray-500 text-[10px] uppercase tracking-widest">Guildhall School</p></div>
+        <div><p class="text-white font-serif text-xl">Global Clients</p><p class="text-gray-500 text-[10px] uppercase tracking-widest">Fortune 500</p></div>
+        <div><p class="text-white font-serif text-xl">Online & In-Person</p><p class="text-gray-500 text-[10px] uppercase tracking-widest">Worldwide</p></div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section id="packages" class="py-24 bg-white text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="text-center mb-20">
+            <span class="text-[10px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">How I Can Help</span>
+            <h2 class="text-4xl md:text-5xl font-serif text-[#050615] mb-6">Coaching Packages</h2>
+            <div class="w-16 h-[1px] bg-[#C4A470] mx-auto mb-6"></div>
+            <p class="text-gray-500 max-w-2xl mx-auto font-light leading-relaxed">Whether you need to master public speaking, refine your pronunciation, or transform your confidence in a single session - there's a package designed for you.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+                { icon: 'solar:microphone-3-linear', title: 'Confident Speaker Package', desc: 'Mastering the art of public speaking. A structured programme to build your confidence, refine your delivery, and help you connect with any audience.', features: ['Vocal technique & projection', 'Managing nerves & performance anxiety', 'Engaging storytelling & structure', 'Body language & presence'], img: '/images/confident-speaker-package.jpg', cta: 'Learn More', href: '/packages/confident-speaker', accent: '#B5654A' },
+                { icon: 'solar:chat-round-dots-linear', title: 'Confident Pronunciation Package', desc: 'Confident UK English pronunciation. Speak clearly and be understood with ease  - whether English is your first language or an additional one.', features: ['Accent refinement & clarity', 'Articulation & intonation patterns', 'Professional vocabulary & phrasing', 'Personalised exercises & practice plans'], img: '/images/confident-pronunciation-package.jpg', cta: 'Learn More', href: '/packages/confident-pronunciation', accent: '#6B8E85' },
+                { icon: 'solar:clock-circle-linear', title: 'Intensive 90-Minute Session', desc: 'Transform your confidence in a single online session. Perfect for professionals preparing for an important presentation, interview, or media appearance.', features: ['Targeted coaching for your specific needs', 'Practical techniques you can use immediately', 'Online via Zoom  - anywhere in the world', 'Follow-up notes & exercises included'], img: '/images/intensive-90-minute-session.jpg', cta: 'Book Now', href: '/packages/intensive-session', accent: '#7A4E5E' },
+            ].map(s => (
+                <div style={`--pkg-accent: ${s.accent}`} class="bg-[#FAFAF8] border border-gray-200 rounded-sm overflow-hidden group hover:shadow-2xl transition-all duration-500">
+                    <img src={s.img} alt={s.title} class="w-full">
+                    <div class="p-10">
+                        <div class="w-12 h-12 rounded-full border border-gray-200 group-hover:border-[var(--pkg-accent)] flex items-center justify-center text-[var(--pkg-accent)] mb-6 transition-colors">
+                            <iconify-icon icon={s.icon} width="24"></iconify-icon>
+                        </div>
+                        <h3 class="text-2xl font-serif mb-4 group-hover:text-[var(--pkg-accent)] transition-colors">{s.title}</h3>
+                        <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">{s.desc}</p>
+                        <ul class="space-y-2 mb-8 text-sm text-gray-500 font-light">
+                            {s.features.map(f => (
+                                <li class="flex items-start gap-2"><iconify-icon icon="solar:check-circle-linear" width="16" class="text-[var(--pkg-accent)] mt-0.5 flex-shrink-0"></iconify-icon>{f}</li>
+                            ))}
+                        </ul>
+                        <a href={s.href} class="text-[10px] uppercase tracking-[0.2em] font-medium text-[var(--pkg-accent)] hover:text-[#050615] transition-colors">{s.cta} &rarr;</a>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT ALICE -->
+<section class="py-24 bg-[#050615] relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-1/3 h-full bg-[#0a0c24] skew-x-12 -translate-x-32 hidden lg:block pointer-events-none"></div>
+    <div class="max-w-[1200px] mx-auto px-6 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <img src="/images/about-alice-deville.jpg" alt="Alice Deville - Voice & Communication Coach" class="w-full h-full object-cover rounded-sm">
+            <div>
+                <span class="text-[10px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">Meet Your Coach</span>
+                <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">Alice Deville</h2>
+                <div class="w-16 h-[1px] bg-[#C4A470] mb-8"></div>
+                <p class="text-gray-400 font-light leading-relaxed mb-6">With over 10 years' experience as a voice and communication coach, I've worked with influential public speakers, top executives from organisations like BlackRock, Deloitte, JP Morgan and Google, leading medical professionals, world-famous musicians, media stars and artists.</p>
+                <p class="text-gray-400 font-light leading-relaxed mb-6">I trained as an opera singer at the Guildhall School of Music and Drama, performing across Europe from Glyndebourne to the Royal Albert Hall.</p>
+                <p class="text-gray-400 font-light leading-relaxed mb-8">I've coached at prestigious venues including 10 Downing Street, and bring deep expertise in vocal technique, accent, articulation, and the art of connecting with any audience.</p>
+                <a href="/about" class="btn-secondary btn-secondary-light">Read Full Bio &rarr;</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY COACHING -->
+<section class="py-24 bg-white text-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="text-center mb-16">
+            <span class="text-[10px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">The Authentic Difference</span>
+            <h2 class="text-4xl md:text-5xl font-serif text-[#050615] mb-6">Why Work With a Voice Coach?</h2>
+            <div class="w-16 h-[1px] bg-[#C4A470] mx-auto"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <div class="border border-red-200/50 rounded-sm p-10 bg-red-50/50">
+                <div class="flex items-center gap-3 mb-6"><iconify-icon icon="solar:close-circle-linear" width="24" class="text-red-400"></iconify-icon><h3 class="text-lg font-serif text-[#050615]">Without Coaching</h3></div>
+                <ul class="space-y-4 text-sm text-gray-700">
+                    {['Nerves take over - your voice shakes, your mind goes blank', 'Your message gets lost in filler words and hesitation', "Audiences disengage - you feel it but can't fix it", 'Self-doubt holds you back from opportunities', 'You avoid speaking up in meetings and presentations'].map(t => (
+                        <li class="flex items-start gap-3"><span class="text-red-400 mt-0.5">&times;</span>{t}</li>
+                    ))}
+                </ul>
+            </div>
+            <div class="border border-[#C4A470]/30 rounded-sm p-10 bg-[#C4A470]/5">
+                <div class="flex items-center gap-3 mb-6"><iconify-icon icon="solar:check-circle-linear" width="24" class="text-[#C4A470]"></iconify-icon><h3 class="text-lg font-serif text-[#050615]">With Alice</h3></div>
+                <ul class="space-y-4 text-sm text-gray-700">
+                    {['You speak with calm authority  - even under pressure', 'Your voice carries warmth, clarity and conviction', 'Audiences lean in  - you command the room naturally', 'Confidence becomes your default, not your exception', 'You become the speaker people remember'].map(t => (
+                        <li class="flex items-start gap-3"><span class="text-[#C4A470] mt-0.5">&check;</span>{t}</li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<GoogleReview size="large" />
+
+<!-- FAQ -->
+<section class="py-24 bg-[#050615]">
+    <div class="max-w-[800px] mx-auto px-6">
+        <div class="text-center mb-16">
+            <span class="text-[10px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">FAQs</span>
+            <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">Frequently Asked Questions</h2>
+            <div class="w-16 h-[1px] bg-[#C4A470] mx-auto"></div>
+        </div>
+        <div class="space-y-6">
+            {[
+                { q: 'Who is voice coaching for?', a: 'Anyone who wants to communicate with more confidence and impact. My clients range from CEOs and senior executives to entrepreneurs, medical professionals, musicians, and anyone preparing for an important speaking moment.', link: '/free-consultation', cta: 'Book a Free Consultation' },
+                { q: 'Do I need to be a bad speaker to benefit from coaching?', a: "Not at all. Many of my clients are already accomplished communicators who want to refine their skills, prepare for a specific event, or take their presence to the next level." },
+                { q: 'How are sessions delivered?', a: 'Sessions are available online via Zoom (worldwide) or in-person in London. Online sessions are just as effective - most of my international clients work with me entirely via Zoom.' },
+                { q: 'How many sessions will I need?', a: "It depends on your goals. Some clients see a transformation in a single 90-minute intensive. Others prefer a structured programme over several weeks. Let's discuss what's right for you.", link: '/free-consultation', cta: 'Book a Free Consultation' },
+                { q: 'What makes your approach different?', a: "My background as an opera singer gives me a unique understanding of voice, performance anxiety, and what it takes to hold an audience's attention. I combine vocal technique with practical communication coaching in a way that's warm, supportive, and immediately applicable." },
+                { q: 'Is the consultation really free?', a: "Yes, completely. It's a 30-minute conversation with no obligation. I'll recommend the best path forward - even if that's not working with me.", link: '/free-consultation', cta: 'Book Your Free Consultation' },
+            ].map(faq => (
+                <details class="group border border-white/10 rounded-sm">
+                    <summary class="flex items-center justify-between p-6 cursor-pointer">
+                        <span class="font-medium text-white pr-4">{faq.q}</span>
+                        <iconify-icon icon="solar:alt-arrow-down-linear" width="16" class="text-[#C4A470] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
+                    </summary>
+                    <div class="px-6 pb-6 pt-0">
+                        <p class="text-sm text-gray-400 font-light leading-relaxed">{faq.a}</p>
+                        {faq.link && <a href={faq.link} class="inline-block mt-3 text-[10px] uppercase tracking-[0.15em] font-medium text-[#C4A470] hover:text-white transition-colors">{faq.cta} &rarr;</a>}
+                    </div>
+                </details>
+            ))}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- CTA -->
+<section id="book" class="py-24 bg-white relative overflow-hidden">
+    <div class="max-w-[1000px] mx-auto px-6 relative z-10">
+        <div class="text-center mb-12">
+            <span class="text-[10px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">Ready to Find Your Voice?</span>
+            <h2 class="text-4xl md:text-5xl font-serif text-[#050615] mb-6">Let's Talk</h2>
+            <div class="w-16 h-[1px] bg-[#C4A470] mx-auto mb-6"></div>
+            <p class="text-gray-500 font-light leading-relaxed max-w-lg mx-auto">Every voice is unique. Get in touch and let's explore how coaching can unlock your full potential as a communicator.</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-5 justify-center">
+            <a href="/free-consultation" class="btn-primary">Book Free Consultation</a>
+            <a href="/contact" class="btn-secondary btn-secondary-dark">Get in Touch</a>
+        </div>
+    </div>
+</section>
+
+</Base>
