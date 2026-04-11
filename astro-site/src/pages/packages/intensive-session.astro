@@ -92,19 +92,20 @@ import GoogleReview from '../../components/GoogleReview.astro';
 
 <!-- Row 2: What You'll Take Away (white) -->
 <section class="py-24 bg-white text-[#050615]">
-    <div class="max-w-[860px] mx-auto px-6">
-        <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-12 text-center">What You'll Take Away</h2>
-        <div class="divide-y divide-[var(--pkg-accent)]/25">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-6">What You'll Take Away</h2>
+            <div class="w-16 h-[1px] bg-[var(--pkg-accent)] mx-auto"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
                 { icon: 'solar:clock-circle-bold', title: 'Walk In Ready', desc: 'Leave with the exact tools you need for the specific moment ahead.' },
                 { icon: 'solar:heart-pulse-bold', title: 'Nerves Managed', desc: 'Practical in-the-moment techniques for when your heart starts pounding.' },
                 { icon: 'solar:notebook-bold', title: 'A Follow-Up Kit', desc: 'Written notes and exercises emailed so the work lives on past the session.' },
             ].map(o => (
-                <div class="flex gap-8 items-start py-8 first:pt-0 last:pb-0">
-                    <div class="w-20 h-20 shrink-0 flex items-center justify-center text-white bg-[var(--pkg-accent)]">
-                        <iconify-icon icon={o.icon} width="40"></iconify-icon>
-                    </div>
-                    <div class="flex-1 pt-1">
+                <div class="flex items-start gap-4">
+                    <iconify-icon icon={o.icon} width="24" class="text-[var(--pkg-accent)] mt-1 flex-shrink-0"></iconify-icon>
+                    <div>
                         <h3 class="font-serif text-xl text-[#050615] mb-2">{o.title}</h3>
                         <p class="text-gray-600 font-light leading-relaxed">{o.desc}</p>
                     </div>
@@ -124,7 +125,7 @@ import GoogleReview from '../../components/GoogleReview.astro';
                 <div class="grid grid-cols-2 gap-x-6 gap-y-3">
                     {['Keynote prep', 'Board presentations', 'Media appearances', 'Job interviews', 'Wedding speeches', 'Pitch rehearsals', 'Panel discussions', 'Conference talks'].map(item => (
                         <div class="flex items-center gap-2 text-sm text-gray-600 font-light">
-                            <iconify-icon icon="solar:arrow-right-bold" width="14" class="text-[var(--pkg-accent)]"></iconify-icon>
+                            <iconify-icon icon="solar:check-circle-bold" width="16" class="text-[var(--pkg-accent)] flex-shrink-0"></iconify-icon>
                             {item}
                         </div>
                     ))}

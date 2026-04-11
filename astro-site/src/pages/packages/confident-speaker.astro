@@ -92,19 +92,20 @@ import GoogleReview from '../../components/GoogleReview.astro';
 
 <!-- Row 2: What You'll Take Away (white) -->
 <section class="py-24 bg-white text-[#050615]">
-    <div class="max-w-[860px] mx-auto px-6">
-        <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-12 text-center">What You'll Take Away</h2>
-        <div class="divide-y divide-[var(--pkg-accent)]/25">
+    <div class="max-w-[1200px] mx-auto px-6">
+        <div class="text-center mb-14">
+            <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-6">What You'll Take Away</h2>
+            <div class="w-16 h-[1px] bg-[var(--pkg-accent)] mx-auto"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
                 { icon: 'solar:mountains-bold', title: 'Command the Room', desc: 'Stand, breathe, and own the space before you\'ve said a word.' },
                 { icon: 'solar:shield-check-bold', title: 'Steady Under Pressure', desc: 'Tools that hold up when the stakes and stress are high.' },
                 { icon: 'solar:star-fall-bold', title: 'Memorable Delivery', desc: 'Stories, structure and pacing audiences remember long after.' },
             ].map(o => (
-                <div class="flex gap-8 items-start py-8 first:pt-0 last:pb-0">
-                    <div class="w-20 h-20 shrink-0 flex items-center justify-center text-white bg-[var(--pkg-accent)]">
-                        <iconify-icon icon={o.icon} width="40"></iconify-icon>
-                    </div>
-                    <div class="flex-1 pt-1">
+                <div class="flex items-start gap-4">
+                    <iconify-icon icon={o.icon} width="24" class="text-[var(--pkg-accent)] mt-1 flex-shrink-0"></iconify-icon>
+                    <div>
                         <h3 class="font-serif text-xl text-[#050615] mb-2">{o.title}</h3>
                         <p class="text-gray-600 font-light leading-relaxed">{o.desc}</p>
                     </div>
