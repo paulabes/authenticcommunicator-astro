@@ -32,10 +32,6 @@ import { breadcrumbSchema } from '../data/site';
         <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">No Obligation</span>
         <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Free 30-Minute Assessment</h1>
         <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Choose a date and time below to book your free consultation with Alice. No pressure, no commitment - just a friendly conversation about your voice and goals.</p>
-        <div class="mt-10 text-center">
-            <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-4">Trusted by professionals at</p>
-            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12"><img src="/logos/blackrock.svg" alt="BlackRock" class="h-5 invert opacity-40"><img src="/logos/deloitte.svg" alt="Deloitte" class="h-5 invert opacity-40"><img src="/logos/jpmorgan.svg" alt="JP Morgan" class="h-5 invert opacity-40"><img src="/logos/google.svg" alt="Google" class="h-6 invert opacity-40"><img src="/logos/downing-street.svg" alt="10 Downing Street" class="h-4 invert opacity-40"></div>
-        </div>
     </div>
 </section>
 
@@ -128,8 +124,8 @@ import { breadcrumbSchema } from '../data/site';
     </div>
 </section>
 
-<!-- What to Expect (cream) -->
-<section class="py-24 bg-[#F8F3EA] text-[#050615]">
+<!-- What to Expect (navy) -->
+<section class="py-24 bg-[#050615] text-white">
     <div class="max-w-[1200px] mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {[
@@ -139,13 +135,13 @@ import { breadcrumbSchema } from '../data/site';
             ].map(stat => (
                 <div class="flex items-center justify-center gap-3">
                     <iconify-icon icon={stat.icon} width="22" class="text-[#C4A470] flex-shrink-0"></iconify-icon>
-                    <span class="text-[#050615]">{stat.label}</span>
+                    <span class="text-gray-200">{stat.label}</span>
                 </div>
             ))}
         </div>
 
         <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-serif text-[#050615] mb-6">What to Expect</h2>
+            <h2 class="text-3xl md:text-4xl font-serif text-white mb-6">What to Expect</h2>
             <div class="w-16 h-[1px] bg-[#C4A470] mx-auto"></div>
         </div>
         <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-5 max-w-[900px] mx-auto">
@@ -157,7 +153,7 @@ import { breadcrumbSchema } from '../data/site';
             ].map(item => (
                 <li class="flex items-start gap-3">
                     <iconify-icon icon="mdi:check" width="18" class="text-[#C4A470] mt-1 flex-shrink-0"></iconify-icon>
-                    <p class="text-gray-600 font-light leading-relaxed">{item}</p>
+                    <p class="text-gray-300 font-light leading-relaxed">{item}</p>
                 </li>
             ))}
         </ul>
