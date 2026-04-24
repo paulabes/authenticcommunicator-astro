@@ -142,6 +142,7 @@ export function orgSchema() {
     sameAs: [
       'https://www.instagram.com/authenticcommunicatorglobal',
       'https://www.linkedin.com/in/alice-deville-b73b6116a/',
+      'https://www.tiktok.com/@publicspeakingandvoice',
     ],
   };
 }
