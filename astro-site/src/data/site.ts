@@ -141,7 +141,7 @@ export function orgSchema() {
     email: business.email,
     sameAs: [
       'https://www.instagram.com/authenticcommunicatorglobal',
-      'https://www.linkedin.com/in/alice-deville',
+      'https://www.linkedin.com/in/alice-deville-b73b6116a/',
     ],
   };
 }
