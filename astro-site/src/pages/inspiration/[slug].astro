@@ -276,16 +276,70 @@ const jsonLd = articleSchema ? [articleSchema, breadcrumbSchema] : [breadcrumbSc
     </section>
 )}
 
-<!-- CTA -->
-<section class="py-16 bg-[#0c1a3a]">
-    <div class="max-w-[800px] mx-auto px-6 text-center">
-        <div class="w-16 h-[1px] bg-[#C4A470] mx-auto mb-8"></div>
-        <h2 class="text-3xl font-serif text-white mb-4">Ready to transform your communication?</h2>
-        <p class="text-gray-400 font-light mb-8">Book a free discovery call with Alice and take the first step towards speaking with confidence.</p>
-        <div class="flex flex-col sm:flex-row gap-5 justify-center">
-            <a href="/free-consultation" class="btn-primary">Book a Free Discovery Call</a>
+<!-- Share -->
+<section class="py-16 bg-[#050615]">
+    <div class="max-w-[1200px] mx-auto px-6 lg:px-12 text-center">
+        <p class="text-[10px] tracking-[0.25em] text-[#C4A470] uppercase font-medium mb-6">Share this article</p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+            <a
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${siteOrigin}/inspiration/${slug}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on LinkedIn"
+                class="inline-flex items-center gap-2 border border-white/20 text-white px-5 py-2.5 text-[11px] uppercase tracking-widest hover:bg-white hover:text-[#050615] transition-colors"
+            >
+                <iconify-icon icon="mdi:linkedin" width="16"></iconify-icon>LinkedIn
+            </a>
+            <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${siteOrigin}/inspiration/${slug}`)}&text=${encodeURIComponent(title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on X"
+                class="inline-flex items-center gap-2 border border-white/20 text-white px-5 py-2.5 text-[11px] uppercase tracking-widest hover:bg-white hover:text-[#050615] transition-colors"
+            >
+                <iconify-icon icon="mdi:twitter" width="16"></iconify-icon>X
+            </a>
+            <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${siteOrigin}/inspiration/${slug}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Share on Facebook"
+                class="inline-flex items-center gap-2 border border-white/20 text-white px-5 py-2.5 text-[11px] uppercase tracking-widest hover:bg-white hover:text-[#050615] transition-colors"
+            >
+                <iconify-icon icon="mdi:facebook" width="16"></iconify-icon>Facebook
+            </a>
+            <a
+                href={`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${siteOrigin}/inspiration/${slug}`)}`}
+                aria-label="Share by email"
+                class="inline-flex items-center gap-2 border border-white/20 text-white px-5 py-2.5 text-[11px] uppercase tracking-widest hover:bg-white hover:text-[#050615] transition-colors"
+            >
+                <iconify-icon icon="solar:letter-bold" width="16"></iconify-icon>Email
+            </a>
+            <button
+                type="button"
+                data-copy-link={`${siteOrigin}/inspiration/${slug}`}
+                aria-label="Copy link"
+                class="inline-flex items-center gap-2 border border-white/20 text-white px-5 py-2.5 text-[11px] uppercase tracking-widest hover:bg-white hover:text-[#050615] transition-colors"
+            >
+                <iconify-icon icon="solar:link-bold" width="16"></iconify-icon><span data-copy-label>Copy link</span>
+            </button>
         </div>
     </div>
 </section>
+
+<script is:inline>
+document.querySelectorAll('[data-copy-link]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const url = btn.getAttribute('data-copy-link');
+        const label = btn.querySelector('[data-copy-label]');
+        try {
+            await navigator.clipboard.writeText(url);
+            const original = label.textContent;
+            label.textContent = 'Copied';
+            setTimeout(() => { label.textContent = original; }, 1600);
+        } catch (e) {}
+    });
+});
+</script>
 
 </Base>
