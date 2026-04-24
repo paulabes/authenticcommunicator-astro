@@ -37,6 +37,43 @@ export const aliceBio = {
     'Former opera singer trained at the Guildhall School of Music and Drama. 10+ years coaching executives and professionals from BlackRock, Deloitte, JP Morgan, Google, and 10 Downing Street.',
 };
 
+import { reviews } from './reviews';
+
+export interface GoogleReview {
+  name: string;
+  text: string;
+  date: string;
+}
+
+/**
+ * Aggregate across all published reviews in reviews.ts.
+ * The set of reviews is manually curated from Google, all 5-star.
+ */
+export function aggregateRatingSchema() {
+  return {
+    '@type': 'AggregateRating',
+    ratingValue: '5.0',
+    bestRating: '5',
+    worstRating: '1',
+    ratingCount: reviews.length,
+    reviewCount: reviews.length,
+  };
+}
+
+export function reviewSchema(r: GoogleReview) {
+  return {
+    '@type': 'Review',
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: '5',
+      bestRating: '5',
+    },
+    author: { '@type': 'Person', name: r.name },
+    reviewBody: r.text,
+    itemReviewed: { '@id': `${siteOrigin}/#organization` },
+  };
+}
+
 export function orgSchema() {
   return {
     '@context': 'https://schema.org',
@@ -51,6 +88,8 @@ export function orgSchema() {
     priceRange: business.priceRange,
     currenciesAccepted: business.currenciesAccepted,
     paymentAccepted: business.paymentAccepted,
+    aggregateRating: aggregateRatingSchema(),
+    review: reviews.slice(0, 3).map(reviewSchema),
     founder: {
       '@type': 'Person',
       name: aliceBio.name,

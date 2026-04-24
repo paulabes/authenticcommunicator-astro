@@ -2,13 +2,14 @@
 import { reviews } from '../data/reviews';
 const { text, author, date } = Astro.props;
 const fixed = !!text;
+const reviewCount = reviews.length;
 ---
 
 <section class="py-24 bg-[#0c1a3a]" data-review-section={fixed ? undefined : ''}>
     <div class="max-w-[900px] mx-auto px-6 text-center">
         <div class="flex items-center justify-center gap-2 mb-4">
             <iconify-icon icon="mdi:google" width="20" class="text-white"></iconify-icon>
-            <span class="text-[10px] uppercase tracking-widest text-gray-400 font-medium">Google Review - 5.0 / 14 Reviews</span>
+            <span class="text-[10px] uppercase tracking-widest text-gray-400 font-medium">Google Review - 5.0 / {reviewCount} Reviews</span>
         </div>
         <div class="flex justify-center gap-1 mb-8">
             {Array(5).fill(0).map(() => <iconify-icon icon="solar:star-bold" width="24" class="text-[#C4A470]"></iconify-icon>)}
