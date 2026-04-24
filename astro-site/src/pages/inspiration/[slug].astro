@@ -2,114 +2,265 @@
 import Base from '../../layouts/Base.astro';
 import fs from 'node:fs';
 import path from 'node:path';
+import { holdingPosts } from '../../data/holdingPosts';
 
 export function getStaticPaths() {
   const blogDir = path.resolve('./src/content/blog');
-  if (!fs.existsSync(blogDir)) return [];
+  const paths: Array<{ params: { slug: string }, props: { filename?: string; holdingSlug?: string } }> = [];
 
-  const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md') && !f.endsWith('.editor.md'));
-  return files.map(file => {
-    const slug = file.replace(/^\d{4}-\d{2}-\d{2}-?/, '').replace('.md', '');
-    return { params: { slug }, props: { filename: file } };
-  });
+  if (fs.existsSync(blogDir)) {
+    const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md') && !f.endsWith('.editor.md'));
+    for (const file of files) {
+      const slug = file.replace(/^\d{4}-\d{2}-\d{2}-?/, '').replace('.md', '');
+      paths.push({ params: { slug }, props: { filename: file } });
+    }
+  }
+
+  const realSlugs = new Set(paths.map(p => p.params.slug));
+  for (const h of holdingPosts) {
+    if (!realSlugs.has(h.slug)) {
+      paths.push({ params: { slug: h.slug }, props: { holdingSlug: h.slug } });
+    }
+  }
+
+  return paths;
 }
 
-const { filename } = Astro.props;
+function parseFrontmatter(src: string): { meta: Record<string, string>; body: string } {
+  const match = src.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  if (!match) return { meta: {}, body: src };
+  const meta: Record<string, string> = {};
+  for (const line of match[1].split('\n')) {
+    const m = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
+    if (!m) continue;
+    meta[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
+  }
+  return { meta, body: match[2] };
+}
+
+function detectCategory(title: string): string {
+  const t = title.toLowerCase();
+  const rules: [string, string[]][] = [
+    ['Public Speaking', ['public speaking', 'keynote', 'presentation', 'ted talk', 'pitch']],
+    ['Voice Technique', ['vocal', 'voice technique', 'projection', 'resonance', 'breathing']],
+    ['Pronunciation', ['pronunciation', 'accent', 'articulation', 'intonation']],
+    ['Performance Anxiety', ['stage fright', 'nerves', 'anxiety', 'fear of speaking']],
+    ['Communication', ['communication', 'body language', 'non-verbal']],
+    ['Media Training', ['media training', 'interview', 'podcast']],
+  ];
+  for (const [cat, keywords] of rules) {
+    if (keywords.some(kw => t.includes(kw))) return cat;
+  }
+  return 'Communication';
+}
+
+const { filename, holdingSlug } = Astro.props;
+const slug = Astro.params.slug as string;
+const holding = holdingSlug ? holdingPosts.find(p => p.slug === holdingSlug) : null;
 const blogDir = path.resolve('./src/content/blog');
-const content = fs.readFileSync(path.join(blogDir, filename), 'utf-8');
+const raw = !holding && filename ? fs.readFileSync(path.join(blogDir, filename), 'utf-8') : '';
+const { meta, body } = parseFrontmatter(raw);
 
-// Parse title
-const titleMatch = content.match(/^#\s+(.+)$/m);
-const title = titleMatch ? titleMatch[1] : filename.replace('.md', '');
+const titleMatch = body.match(/^#\s+(.+)$/m);
+const title = holding
+  ? holding.title
+  : (meta.title || (titleMatch ? titleMatch[1] : (filename ?? '').replace('.md', '')));
 
-// Parse date
-const dateMatch = filename.match(/^(\d{4}-\d{2}-\d{2})/);
-const date = dateMatch ? new Date(dateMatch[1]) : new Date();
-const dateFormatted = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+const dateMatch = filename ? filename.match(/^(\d{4}-\d{2}-\d{2})/) : null;
+const dateIso = meta.date || (dateMatch ? dateMatch[1] : '');
+const date = dateIso ? new Date(dateIso) : new Date();
+const dateFormatted = holding
+  ? 'Coming soon'
+  : (dateIso ? date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }) : '');
 
-// Category
-const titleLower = title.toLowerCase();
-const catRules: [string, string[]][] = [
-  ['Public Speaking', ['public speaking', 'keynote', 'presentation', 'ted talk']],
-  ['Voice Technique', ['vocal', 'voice technique', 'projection', 'resonance', 'breathing']],
-  ['Pronunciation', ['pronunciation', 'accent', 'articulation', 'intonation']],
-  ['Performance Anxiety', ['stage fright', 'nerves', 'anxiety', 'fear of speaking']],
-  ['Communication', ['communication', 'body language', 'non-verbal']],
-  ['Media Training', ['media training', 'interview', 'podcast']],
-];
-let category = 'Communication';
-for (const [cat, keywords] of catRules) {
-  if (keywords.some(kw => titleLower.includes(kw))) { category = cat; break; }
+const category = holding ? holding.category : (meta.category || detectCategory(title));
+const image = holding ? holding.image : meta.image;
+
+// Excerpt for meta description
+let excerpt = holding ? holding.excerpt : (meta.excerpt || '');
+if (!excerpt && body) {
+  const bodyText = body.replace(/^#\s+.+\n*/m, '').replace(/[#*_\[\]()>`]/g, '').trim();
+  excerpt = bodyText.length > 155 ? bodyText.slice(0, 155).replace(/\s+\S*$/, '') + '...' : bodyText;
 }
+
+const metaTitle = meta.metaTitle || `${title} | Alice Deville`;
+const metaDescription = meta.metaDescription || excerpt;
 
 // Strip title from body and convert to HTML
-const body = content.replace(/^#\s+.+\n*/m, '').trim();
+const bodyWithoutTitle = body.replace(/^#\s+.+\n*/m, '').trim();
 
-// Simple markdown to HTML (basic conversion for common elements)
-function mdToHtml(md: string): string {
-  let html = md
-    // Headers
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    // Bold
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    // Italic
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // Links
-    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
-    // Unordered lists
-    .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
-    // Ordered lists
-    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
-    // Blockquotes
-    .replace(/^> (.+)$/gm, '<blockquote><p>$1</p></blockquote>');
-
-  // Wrap consecutive <li> in <ul>
-  html = html.replace(/(<li>.*<\/li>\n?)+/g, (match) => `<ul>${match}</ul>`);
-
-  // Paragraphs: wrap non-tag lines
-  html = html.split('\n\n').map(block => {
-    block = block.trim();
-    if (!block) return '';
-    if (block.startsWith('<')) return block;
-    return `<p>${block.replace(/\n/g, '<br>')}</p>`;
-  }).join('\n');
-
-  return html;
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
-const htmlContent = mdToHtml(body);
+function mdToHtml(md: string): string {
+  // Normalise line endings
+  let src = md.replace(/\r\n/g, '\n');
+
+  // Split into blocks by blank lines
+  const blocks = src.split(/\n{2,}/);
+  const out: string[] = [];
+
+  for (const rawBlock of blocks) {
+    const block = rawBlock.trim();
+    if (!block) continue;
+
+    // Headers
+    if (/^###\s+/.test(block)) { out.push(`<h3>${inline(block.replace(/^###\s+/, ''))}</h3>`); continue; }
+    if (/^##\s+/.test(block)) { out.push(`<h2>${inline(block.replace(/^##\s+/, ''))}</h2>`); continue; }
+
+    // Blockquote (all lines start with >)
+    if (block.split('\n').every(l => /^>\s?/.test(l))) {
+      const text = block.split('\n').map(l => l.replace(/^>\s?/, '')).join(' ');
+      out.push(`<blockquote><p>${inline(text)}</p></blockquote>`);
+      continue;
+    }
+
+    // Unordered list (all lines start with -, *, or •)
+    if (block.split('\n').every(l => /^\s*[-*•]\s+/.test(l))) {
+      const items = block.split('\n').map(l => `<li>${inline(l.replace(/^\s*[-*•]\s+/, ''))}</li>`).join('');
+      out.push(`<ul>${items}</ul>`);
+      continue;
+    }
+
+    // Ordered list (all lines start with N.)
+    if (block.split('\n').every(l => /^\s*\d+\.\s+/.test(l))) {
+      const items = block.split('\n').map(l => `<li>${inline(l.replace(/^\s*\d+\.\s+/, ''))}</li>`).join('');
+      out.push(`<ol>${items}</ol>`);
+      continue;
+    }
+
+    // Paragraph with <br> for single line-breaks
+    const lines = block.split('\n').map(l => inline(l)).join('<br>');
+    out.push(`<p>${lines}</p>`);
+  }
+
+  return out.join('\n');
+}
+
+function inline(s: string): string {
+  let t = escapeHtml(s);
+  // Bold **text**
+  t = t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Italic *text* (not already converted)
+  t = t.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // Links [text](url)
+  t = t.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>');
+  return t;
+}
+
+const htmlContent = holding ? '' : mdToHtml(bodyWithoutTitle);
 
 // Check for editor notes
-const editorFilename = filename.replace('.md', '.editor.md');
-const editorPath = path.join(blogDir, editorFilename);
 let editorHtml = '';
-if (fs.existsSync(editorPath)) {
-  let editorRaw = fs.readFileSync(editorPath, 'utf-8');
-  editorRaw = editorRaw.replace(/^#\s+Editor Notes:.*\n*/m, '').trim();
-  editorHtml = mdToHtml(editorRaw);
+if (!holding && filename) {
+  const editorFilename = filename.replace('.md', '.editor.md');
+  const editorPath = path.join(blogDir, editorFilename);
+  if (fs.existsSync(editorPath)) {
+    let editorRaw = fs.readFileSync(editorPath, 'utf-8');
+    editorRaw = editorRaw.replace(/^#\s+Editor Notes:.*\n*/m, '').trim();
+    editorHtml = mdToHtml(editorRaw);
+  }
 }
+
+const siteOrigin = 'https://www.authenticcommunicatorglobal.com';
+const articleSchema = !holding ? {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: metaDescription,
+  image: image ? new URL(image, siteOrigin).toString() : undefined,
+  datePublished: dateIso || undefined,
+  dateModified: meta.modified || dateIso || undefined,
+  author: {
+    '@type': 'Person',
+    name: 'Alice Deville',
+    jobTitle: 'Voice and Communication Coach',
+    url: `${siteOrigin}/about`,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Authentic Communicator Global',
+    url: siteOrigin,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteOrigin}/favicon.svg`,
+    },
+  },
+  articleSection: category,
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${siteOrigin}/inspiration/${slug}`,
+  },
+} : undefined;
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: siteOrigin },
+    { '@type': 'ListItem', position: 2, name: 'Inspiration', item: `${siteOrigin}/inspiration` },
+    { '@type': 'ListItem', position: 3, name: title, item: `${siteOrigin}/inspiration/${slug}` },
+  ],
+};
+
+const jsonLd = articleSchema ? [articleSchema, breadcrumbSchema] : [breadcrumbSchema];
 ---
 
-<Base title={title}>
+<Base
+    title={metaTitle}
+    description={metaDescription}
+    image={image || '/images/authentic-communicator-global-alice.jpg'}
+    type="article"
+    publishedTime={dateIso || undefined}
+    noTitleSuffix={true}
+    jsonLd={jsonLd}
+>
 
 <!-- Hero -->
 <section class="pt-36 pb-12 lg:px-12 px-6">
-    <div class="max-w-[800px] mx-auto">
-        <div class="mb-6 flex items-center gap-4">
-            <a href="/inspiration" class="text-[11px] tracking-[0.2em] text-gray-500 uppercase hover:text-[#C4A470] transition-colors">&larr; Back to Inspiration</a>
-            <span class="text-gray-700">|</span>
-            <span class="text-[10px] uppercase tracking-widest text-[#C4A470] font-medium">{category}</span>
-        </div>
+    <div class="max-w-[960px] mx-auto">
+        <nav aria-label="Breadcrumb" class="mb-6 flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase">
+            <a href="/" class="text-gray-500 hover:text-[#C4A470] transition-colors">Home</a>
+            <span class="text-gray-700">/</span>
+            <a href="/inspiration" class="text-gray-500 hover:text-[#C4A470] transition-colors">Inspiration</a>
+            <span class="text-gray-700">/</span>
+            <span class="text-[#C4A470] font-medium">{category}</span>
+        </nav>
         <h1 class="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">{title}</h1>
-        <p class="text-gray-500 text-sm">Published {dateFormatted} &middot; By Alice Deville</p>
+        <p class="text-gray-500 text-sm">{holding ? 'By Alice Deville' : (dateFormatted ? `Published ${dateFormatted} · By Alice Deville` : 'By Alice Deville')}</p>
     </div>
 </section>
 
+{image && (
+    <section class="pb-6 lg:px-12 px-6">
+        <div class="max-w-[960px] mx-auto">
+            <div class="relative aspect-[16/9] overflow-hidden">
+                <img src={image} alt={title} width="1600" height="1000" loading="eager" class="w-full h-full object-cover" />
+            </div>
+        </div>
+    </section>
+)}
+
 <!-- Article -->
-<section class="py-12 bg-white text-[#050615]">
-    <div class="max-w-[800px] mx-auto px-6">
-        <article class="prose max-w-none" set:html={htmlContent} />
+<section class="py-16 bg-white text-[#050615]">
+    <div class="max-w-[760px] mx-auto px-6">
+        {holding ? (
+            <div class="text-center">
+                <p class="text-lg font-serif italic text-gray-600 leading-relaxed mb-10 max-w-xl mx-auto">{holding.excerpt}</p>
+                <div class="w-12 h-[1px] bg-[#C4A470] mx-auto mb-10"></div>
+                <div class="inline-flex items-center gap-3 bg-[#F8F3EA] px-6 py-4 mb-8">
+                    <iconify-icon icon="solar:pen-new-round-bold" width="18" class="text-[#C4A470]"></iconify-icon>
+                    <span class="text-[11px] uppercase tracking-[0.2em] font-medium text-[#050615]">Full article coming soon</span>
+                </div>
+                <p class="text-sm text-gray-500 font-light max-w-md mx-auto leading-relaxed">Alice is finalising this piece. Sign up below for the Pitch Audit Checklist and you'll be first to read it when it goes live.</p>
+            </div>
+        ) : (
+            <article class="prose max-w-none" set:html={htmlContent} />
+        )}
     </div>
 </section>
 
@@ -129,7 +280,7 @@ if (fs.existsSync(editorPath)) {
 <section class="py-16 bg-[#0c1a3a]">
     <div class="max-w-[800px] mx-auto px-6 text-center">
         <div class="w-16 h-[1px] bg-[#C4A470] mx-auto mb-8"></div>
-        <h2 class="text-3xl font-serif text-white mb-4">Ready to Transform Your Communication?</h2>
+        <h2 class="text-3xl font-serif text-white mb-4">Ready to transform your communication?</h2>
         <p class="text-gray-400 font-light mb-8">Book a free discovery call with Alice and take the first step towards speaking with confidence.</p>
         <div class="flex flex-col sm:flex-row gap-5 justify-center">
             <a href="/free-consultation" class="btn-primary">Book a Free Discovery Call</a>

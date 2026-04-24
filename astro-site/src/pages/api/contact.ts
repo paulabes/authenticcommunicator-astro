@@ -46,7 +46,7 @@ export const POST: APIRoute = async ({ request }) => {
   const from = import.meta.env.CONTACT_FROM || 'Authentic Communicator <contact@authenticcommunicatorglobal.com>';
 
   const resend = new Resend(apiKey);
-  const subjectService = service && !/select/i.test(service) ? ` — ${service}` : '';
+  const subjectService = service && !/select/i.test(service) ? ` - ${service}` : '';
 
   try {
     await resend.emails.send({

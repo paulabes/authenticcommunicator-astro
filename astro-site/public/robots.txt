@@ -1,2 +1,10 @@
+# Preview period - site is not yet open to search engines.
+# Once Alice signs off and DNS is cut over, replace with:
+#   User-agent: *
+#   Allow: /
+#   Sitemap: https://www.authenticcommunicatorglobal.com/sitemap-index.xml
+
 User-agent: *
 Disallow: /
+
+Sitemap: https://www.authenticcommunicatorglobal.com/sitemap-index.xml
