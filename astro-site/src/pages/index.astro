@@ -1,9 +1,33 @@
 ---
 import Base from '../layouts/Base.astro';
 import GoogleReview from '../components/GoogleReview.astro';
+import { orgSchema, personSchema, websiteSchema, siteNavigationSchema, faqPageSchema, siteOrigin } from '../data/site';
+
+const description = 'Premium 1:1 voice and communication coaching with Alice Deville, London. Guildhall-trained opera singer and coach to BlackRock, Deloitte, JP Morgan, Google and 10 Downing Street.';
+
+const faqs = [
+  { q: 'Who is voice coaching for?', a: 'Anyone who wants to communicate with more confidence and impact. My clients range from CEOs and senior executives to entrepreneurs, medical professionals, musicians, and anyone preparing for an important speaking moment.', link: '/free-consultation', cta: 'Book a Free Consultation' },
+  { q: 'Do I need to be a bad speaker to benefit from coaching?', a: "Not at all. Many of my clients are already accomplished communicators who want to refine their skills, prepare for a specific event, or take their presence to the next level." },
+  { q: 'How are sessions delivered?', a: 'Sessions are available online via Zoom (worldwide) or in-person in London. Online sessions are just as effective - most of my international clients work with me entirely via Zoom.' },
+  { q: 'How many sessions will I need?', a: "It depends on your goals. Some clients see a transformation in a single 90-minute intensive. Others prefer a structured programme over several weeks. Let's discuss what's right for you.", link: '/free-consultation', cta: 'Book a Free Consultation' },
+  { q: 'What makes your approach different?', a: "My background as an opera singer gives me a unique understanding of voice, performance anxiety, and what it takes to hold an audience's attention. I combine vocal technique with practical communication coaching in a way that's warm, supportive, and immediately applicable." },
+  { q: 'Is the consultation really free?', a: "Yes, completely. It's a 30-minute conversation with no obligation. I'll recommend the best path forward - even if that's not working with me.", link: '/free-consultation', cta: 'Book Your Free Consultation' },
+];
+
+const jsonLd = [
+  orgSchema(),
+  personSchema(),
+  websiteSchema(),
+  siteNavigationSchema(),
+  faqPageSchema(faqs, `${siteOrigin}/`),
+];
 ---
 
-<Base title="Find Your Authentic Voice">
+<Base
+    title="Find Your Authentic Voice"
+    description={description}
+    jsonLd={jsonLd}
+>
 
 <!-- Fixed Hero Background -->
 <div class="fixed top-0 w-full h-screen -z-10">
@@ -152,28 +176,21 @@ import GoogleReview from '../components/GoogleReview.astro';
 
 <!-- FAQ -->
 <section class="py-24 bg-[#050615]">
-    <div class="max-w-[800px] mx-auto px-6">
+    <div class="max-w-[960px] mx-auto px-6">
         <div class="text-center mb-16">
             <span class="text-[10px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">FAQs</span>
             <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">Frequently Asked Questions</h2>
             <div class="w-16 h-[1px] bg-[#C4A470] mx-auto"></div>
         </div>
-        <div class="space-y-6">
-            {[
-                { q: 'Who is voice coaching for?', a: 'Anyone who wants to communicate with more confidence and impact. My clients range from CEOs and senior executives to entrepreneurs, medical professionals, musicians, and anyone preparing for an important speaking moment.', link: '/free-consultation', cta: 'Book a Free Consultation' },
-                { q: 'Do I need to be a bad speaker to benefit from coaching?', a: "Not at all. Many of my clients are already accomplished communicators who want to refine their skills, prepare for a specific event, or take their presence to the next level." },
-                { q: 'How are sessions delivered?', a: 'Sessions are available online via Zoom (worldwide) or in-person in London. Online sessions are just as effective - most of my international clients work with me entirely via Zoom.' },
-                { q: 'How many sessions will I need?', a: "It depends on your goals. Some clients see a transformation in a single 90-minute intensive. Others prefer a structured programme over several weeks. Let's discuss what's right for you.", link: '/free-consultation', cta: 'Book a Free Consultation' },
-                { q: 'What makes your approach different?', a: "My background as an opera singer gives me a unique understanding of voice, performance anxiety, and what it takes to hold an audience's attention. I combine vocal technique with practical communication coaching in a way that's warm, supportive, and immediately applicable." },
-                { q: 'Is the consultation really free?', a: "Yes, completely. It's a 30-minute conversation with no obligation. I'll recommend the best path forward - even if that's not working with me.", link: '/free-consultation', cta: 'Book Your Free Consultation' },
-            ].map(faq => (
-                <details class="group border border-white/10 rounded-sm">
+        <div class="space-y-6" itemscope itemtype="https://schema.org/FAQPage">
+            {faqs.map((faq: any) => (
+                <details class="group border border-white/10 rounded-sm" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     <summary class="flex items-center justify-between p-6 cursor-pointer">
-                        <span class="font-medium text-white pr-4">{faq.q}</span>
+                        <span class="font-medium text-white pr-4" itemprop="name">{faq.q}</span>
                         <iconify-icon icon="solar:alt-arrow-down-bold" width="16" class="text-[#C4A470] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
                     </summary>
-                    <div class="px-6 pb-6 pt-0">
-                        <p class="text-sm text-gray-400 font-light leading-relaxed">{faq.a}</p>
+                    <div class="px-6 pb-6 pt-0" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                        <p class="text-sm text-gray-400 font-light leading-relaxed" data-faq-answer itemprop="text">{faq.a}</p>
                         {faq.link && <a href={faq.link} class="inline-block mt-3 text-[10px] uppercase tracking-[0.15em] font-medium text-[#C4A470] hover:text-white transition-colors">{faq.cta} &rarr;</a>}
                     </div>
                 </details>

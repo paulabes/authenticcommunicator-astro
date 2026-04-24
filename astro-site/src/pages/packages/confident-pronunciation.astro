@@ -1,9 +1,39 @@
 ---
 import Base from '../../layouts/Base.astro';
 import GoogleReview from '../../components/GoogleReview.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { serviceSchema, breadcrumbSchema, faqPageSchema, siteOrigin } from '../../data/site';
+
+const description = 'The Confident Pronunciation Package is a targeted 1:1 UK English pronunciation and accent clarity programme with Alice Deville. Build clarity, rhythm, and ease in professional English without losing your identity.';
+
+const faqs = [
+  { q: 'Is this only for non-native English speakers?', a: 'No. I work with both native and non-native speakers. Native speakers often want to sharpen articulation, soften a regional accent for professional settings, or develop a more authoritative vocal quality.' },
+  { q: 'Will I lose my accent completely?', a: "That's not the goal. Your accent is part of your identity. We focus on clarity and confidence so you're understood easily, while keeping what makes your voice uniquely yours.", link: '/free-consultation', cta: 'Book a Free Consultation' },
+  { q: 'How quickly will I see results?', a: 'Most clients notice a difference within the first few sessions. Pronunciation work requires practice between sessions, so I provide personalised exercises to reinforce what we cover.' },
+  { q: "What's different about your approach?", a: "As an opera-trained singer, I have a finely tuned ear for voice, articulation, and intonation that goes far beyond typical pronunciation coaching. I hear things others miss.", link: '/contact', cta: 'Get in Touch' },
+];
 ---
 
-<Base title="Confident Pronunciation Package">
+<Base
+    title="Confident Pronunciation Package"
+    description={description}
+    image="/images/confident-pronunciation-package.jpg"
+    jsonLd={[
+      serviceSchema({
+        name: 'Confident Pronunciation Package',
+        slug: 'confident-pronunciation',
+        serviceType: 'UK English pronunciation and accent clarity coaching',
+        description,
+        image: '/images/confident-pronunciation-package.jpg',
+      }),
+      breadcrumbSchema([
+        { name: 'Home', url: '/' },
+        { name: 'Packages', url: '/packages' },
+        { name: 'Confident Pronunciation', url: '/packages/confident-pronunciation' },
+      ]),
+      faqPageSchema(faqs, `${siteOrigin}/packages/confident-pronunciation`),
+    ]}
+>
 
 <style>
   .pkg { --pkg-accent: #6B8E85; }
@@ -21,6 +51,13 @@ import GoogleReview from '../../components/GoogleReview.astro';
 <!-- Hero -->
 <section class="pt-36 pb-16 lg:px-12 px-6">
     <div class="max-w-[1200px] mx-auto text-center">
+        <div class="flex justify-center mb-5">
+            <Breadcrumbs items={[
+                { name: 'Home', url: '/' },
+                { name: 'Packages', url: '/packages' },
+                { name: 'Confident Pronunciation' },
+            ]} />
+        </div>
         <span class="text-[11px] tracking-[0.25em] text-[var(--pkg-accent)] uppercase font-medium block mb-4">Coaching Package</span>
         <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Confident Pronunciation Package</h1>
         <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Confident UK English pronunciation. Speak clearly and be understood with ease - whether English is your first language or an additional one.</p>
@@ -132,26 +169,21 @@ import GoogleReview from '../../components/GoogleReview.astro';
 
 <!-- FAQ -->
 <section class="py-20 bg-[#050615]">
-    <div class="max-w-[800px] mx-auto px-6">
+    <div class="max-w-[960px] mx-auto px-6">
         <div class="text-center mb-12">
             <span class="text-[10px] tracking-[0.25em] text-[var(--pkg-accent)] uppercase font-medium block mb-4">FAQs</span>
             <h2 class="text-3xl md:text-4xl font-serif text-white mb-6">Frequently Asked Questions</h2>
             <div class="w-16 h-[1px] bg-[var(--pkg-accent)] mx-auto"></div>
         </div>
-        <div class="space-y-4">
-            {[
-                { q: 'Is this only for non-native English speakers?', a: 'No. I work with both native and non-native speakers. Native speakers often want to sharpen articulation, soften a regional accent for professional settings, or develop a more authoritative vocal quality.' },
-                { q: 'Will I lose my accent completely?', a: "That's not the goal. Your accent is part of your identity. We focus on clarity and confidence so you're understood easily, while keeping what makes your voice uniquely yours.", link: '/free-consultation', cta: 'Book a Free Consultation' },
-                { q: 'How quickly will I see results?', a: 'Most clients notice a difference within the first few sessions. Pronunciation work requires practice between sessions, so I provide personalised exercises to reinforce what we cover.' },
-                { q: "What's different about your approach?", a: "As an opera-trained singer, I have a finely tuned ear for voice, articulation, and intonation that goes far beyond typical pronunciation coaching. I hear things others miss.", link: '/contact', cta: 'Get in Touch' },
-            ].map(faq => (
-                <details class="group border border-white/10 rounded-sm">
+        <div class="space-y-4" itemscope itemtype="https://schema.org/FAQPage">
+            {faqs.map((faq: any) => (
+                <details class="group border border-white/10 rounded-sm" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     <summary class="flex items-center justify-between p-6 cursor-pointer">
-                        <span class="font-medium text-white pr-4">{faq.q}</span>
+                        <span class="font-medium text-white pr-4" itemprop="name">{faq.q}</span>
                         <iconify-icon icon="solar:alt-arrow-down-bold" width="16" class="text-[var(--pkg-accent)] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
                     </summary>
-                    <div class="px-6 pb-6 pt-0">
-                        <p class="text-sm text-gray-400 font-light leading-relaxed">{faq.a}</p>
+                    <div class="px-6 pb-6 pt-0" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                        <p class="text-sm text-gray-400 font-light leading-relaxed" data-faq-answer itemprop="text">{faq.a}</p>
                         {faq.link && <a href={faq.link} class="inline-block mt-3 text-[10px] uppercase tracking-[0.15em] font-medium text-[var(--pkg-accent)] hover:text-white transition-colors">{faq.cta} &rarr;</a>}
                     </div>
                 </details>

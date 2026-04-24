@@ -1,8 +1,17 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../../data/site';
 ---
 
-<Base title="Coaching Packages">
+<Base
+    title="Coaching Packages"
+    description="Three 1:1 coaching packages with Alice Deville: Confident Speaker, Confident Pronunciation, and a focused 90-minute Intensive Session. All designed around your specific voice, role, and upcoming stakes."
+    jsonLd={[breadcrumbSchema([
+      { name: 'Home', url: '/' },
+      { name: 'Packages', url: '/packages' },
+    ])]}
+>
 
 <!-- Hero Background -->
 <div class="fixed top-0 w-full h-screen -z-10">
@@ -14,6 +23,12 @@ import Base from '../../layouts/Base.astro';
 <!-- Hero -->
 <section class="pt-36 pb-16 lg:px-12 px-6">
     <div class="max-w-[1200px] mx-auto text-center">
+        <div class="flex justify-center mb-5">
+            <Breadcrumbs items={[
+                { name: 'Home', url: '/' },
+                { name: 'Packages' },
+            ]} />
+        </div>
         <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">How I Can Help</span>
         <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Coaching Packages</h1>
         <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Whether you need to master public speaking, refine your pronunciation, or transform your confidence in a single session - there's a package designed for you.</p>

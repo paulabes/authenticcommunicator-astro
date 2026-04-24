@@ -1,9 +1,39 @@
 ---
 import Base from '../../layouts/Base.astro';
 import GoogleReview from '../../components/GoogleReview.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { serviceSchema, breadcrumbSchema, faqPageSchema, siteOrigin } from '../../data/site';
+
+const description = 'The Confident Speaker Package is a bespoke 1:1 public speaking coaching programme with Alice Deville. Build body-level speaking confidence, remove avoidance patterns, and own the room at your next keynote or pitch.';
+
+const faqs = [
+  { q: 'How many sessions are in the package?', a: "The programme is tailored to your needs. Most clients do 4-8 sessions, but we'll design the right plan for you.", link: '/free-consultation', cta: 'Discuss in a Free Consultation' },
+  { q: 'Can you help with a specific upcoming event?', a: 'Absolutely. Many clients come to me with a keynote, board presentation, or conference talk to prepare for. We can focus entirely on that.', link: '/contact', cta: 'Get in Touch' },
+  { q: "I get very nervous before speaking. Can coaching really help?", a: "Yes. As a former opera performer, I've spent years managing my own performance anxiety. I'll give you practical techniques that work in the moment, not just in theory." },
+  { q: 'Are sessions online or in-person?', a: 'Both. Sessions are available worldwide via Zoom or in-person in London. Online sessions are equally effective.' },
+];
 ---
 
-<Base title="Confident Speaker Package">
+<Base
+    title="Confident Speaker Package"
+    description={description}
+    image="/images/confident-speaker-package.jpg"
+    jsonLd={[
+      serviceSchema({
+        name: 'Confident Speaker Package',
+        slug: 'confident-speaker',
+        serviceType: 'Public speaking coaching',
+        description,
+        image: '/images/confident-speaker-package.jpg',
+      }),
+      breadcrumbSchema([
+        { name: 'Home', url: '/' },
+        { name: 'Packages', url: '/packages' },
+        { name: 'Confident Speaker', url: '/packages/confident-speaker' },
+      ]),
+      faqPageSchema(faqs, `${siteOrigin}/packages/confident-speaker`),
+    ]}
+>
 
 <style>
   .pkg { --pkg-accent: #B5654A; }
@@ -21,6 +51,13 @@ import GoogleReview from '../../components/GoogleReview.astro';
 <!-- Hero -->
 <section class="pt-36 pb-16 lg:px-12 px-6">
     <div class="max-w-[1200px] mx-auto text-center">
+        <div class="flex justify-center mb-5">
+            <Breadcrumbs items={[
+                { name: 'Home', url: '/' },
+                { name: 'Packages', url: '/packages' },
+                { name: 'Confident Speaker' },
+            ]} />
+        </div>
         <span class="text-[11px] tracking-[0.25em] text-[var(--pkg-accent)] uppercase font-medium block mb-4">Coaching Package</span>
         <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Confident Speaker Package</h1>
         <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Mastering the art of public speaking. A structured programme to build your confidence, refine your delivery, and help you connect with any audience.</p>
@@ -132,26 +169,21 @@ import GoogleReview from '../../components/GoogleReview.astro';
 
 <!-- FAQ -->
 <section class="py-20 bg-[#050615]">
-    <div class="max-w-[800px] mx-auto px-6">
+    <div class="max-w-[960px] mx-auto px-6">
         <div class="text-center mb-12">
             <span class="text-[10px] tracking-[0.25em] text-[var(--pkg-accent)] uppercase font-medium block mb-4">FAQs</span>
             <h2 class="text-3xl md:text-4xl font-serif text-white mb-6">Frequently Asked Questions</h2>
             <div class="w-16 h-[1px] bg-[var(--pkg-accent)] mx-auto"></div>
         </div>
-        <div class="space-y-4">
-            {[
-                { q: 'How many sessions are in the package?', a: "The programme is tailored to your needs. Most clients do 4-8 sessions, but we'll design the right plan for you.", link: '/free-consultation', cta: 'Discuss in a Free Consultation' },
-                { q: 'Can you help with a specific upcoming event?', a: 'Absolutely. Many clients come to me with a keynote, board presentation, or conference talk to prepare for. We can focus entirely on that.', link: '/contact', cta: 'Get in Touch' },
-                { q: "I get very nervous before speaking. Can coaching really help?", a: "Yes. As a former opera performer, I've spent years managing my own performance anxiety. I'll give you practical techniques that work in the moment, not just in theory." },
-                { q: 'Are sessions online or in-person?', a: 'Both. Sessions are available worldwide via Zoom or in-person in London. Online sessions are equally effective.' },
-            ].map(faq => (
-                <details class="group border border-white/10 rounded-sm">
+        <div class="space-y-4" itemscope itemtype="https://schema.org/FAQPage">
+            {faqs.map((faq: any) => (
+                <details class="group border border-white/10 rounded-sm" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     <summary class="flex items-center justify-between p-6 cursor-pointer">
-                        <span class="font-medium text-white pr-4">{faq.q}</span>
+                        <span class="font-medium text-white pr-4" itemprop="name">{faq.q}</span>
                         <iconify-icon icon="solar:alt-arrow-down-bold" width="16" class="text-[var(--pkg-accent)] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
                     </summary>
-                    <div class="px-6 pb-6 pt-0">
-                        <p class="text-sm text-gray-400 font-light leading-relaxed">{faq.a}</p>
+                    <div class="px-6 pb-6 pt-0" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                        <p class="text-sm text-gray-400 font-light leading-relaxed" data-faq-answer itemprop="text">{faq.a}</p>
                         {faq.link && <a href={faq.link} class="inline-block mt-3 text-[10px] uppercase tracking-[0.15em] font-medium text-[var(--pkg-accent)] hover:text-white transition-colors">{faq.cta} &rarr;</a>}
                     </div>
                 </details>

@@ -1,9 +1,39 @@
 ---
 import Base from '../../layouts/Base.astro';
 import GoogleReview from '../../components/GoogleReview.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { serviceSchema, breadcrumbSchema, faqPageSchema, siteOrigin } from '../../data/site';
+
+const description = 'The Intensive 90-Minute Session is a single, deep coaching session with Alice Deville, designed around one specific upcoming event. Pitch, keynote, interview, or TED talk - leave with a plan, not a guess.';
+
+const faqs = [
+  { q: 'What can I cover in 90 minutes?', a: "A lot. We'll focus on your specific needs - whether that's a presentation you're rehearsing, managing nerves, vocal technique, or general confidence. You'll walk away with practical tools you can use immediately.", link: '/free-consultation', cta: 'Book Your Session' },
+  { q: 'Do I need to prepare anything?', a: "If you have specific content to work on (a speech, presentation, or pitch), share it in advance so we can hit the ground running. If not, we'll work on your general communication skills." },
+  { q: 'Is one session really enough?', a: "For many clients, yes. A focused 90-minute session can be genuinely transformative. If you want ongoing support after, we can discuss a package - but there's no pressure.", link: '/contact', cta: 'Get in Touch' },
+  { q: 'How does the online session work?', a: "We meet on Zoom. I'll send you a link after booking. All you need is a quiet space, a stable internet connection, and a device with a camera and microphone." },
+];
 ---
 
-<Base title="Intensive 90-Minute Session">
+<Base
+    title="Intensive 90-Minute Session"
+    description={description}
+    image="/images/intensive-90-minute-session.jpg"
+    jsonLd={[
+      serviceSchema({
+        name: 'Intensive 90-Minute Session',
+        slug: 'intensive-session',
+        serviceType: '90-minute 1:1 coaching for a specific high-stakes event',
+        description,
+        image: '/images/intensive-90-minute-session.jpg',
+      }),
+      breadcrumbSchema([
+        { name: 'Home', url: '/' },
+        { name: 'Packages', url: '/packages' },
+        { name: 'Intensive 90-Minute Session', url: '/packages/intensive-session' },
+      ]),
+      faqPageSchema(faqs, `${siteOrigin}/packages/intensive-session`),
+    ]}
+>
 
 <style>
   .pkg { --pkg-accent: #7A4E5E; }
@@ -21,6 +51,13 @@ import GoogleReview from '../../components/GoogleReview.astro';
 <!-- Hero -->
 <section class="pt-36 pb-16 lg:px-12 px-6">
     <div class="max-w-[1200px] mx-auto text-center">
+        <div class="flex justify-center mb-5">
+            <Breadcrumbs items={[
+                { name: 'Home', url: '/' },
+                { name: 'Packages', url: '/packages' },
+                { name: 'Intensive 90-Minute Session' },
+            ]} />
+        </div>
         <span class="text-[11px] tracking-[0.25em] text-[var(--pkg-accent)] uppercase font-medium block mb-4">Coaching Package</span>
         <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Intensive 90-Minute Session</h1>
         <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Transform your confidence in a single online session. Focused, practical, and immediately applicable.</p>
@@ -138,26 +175,21 @@ import GoogleReview from '../../components/GoogleReview.astro';
 
 <!-- FAQ -->
 <section class="py-20 bg-[#050615]">
-    <div class="max-w-[800px] mx-auto px-6">
+    <div class="max-w-[960px] mx-auto px-6">
         <div class="text-center mb-12">
             <span class="text-[10px] tracking-[0.25em] text-[var(--pkg-accent)] uppercase font-medium block mb-4">FAQs</span>
             <h2 class="text-3xl md:text-4xl font-serif text-white mb-6">Frequently Asked Questions</h2>
             <div class="w-16 h-[1px] bg-[var(--pkg-accent)] mx-auto"></div>
         </div>
-        <div class="space-y-4">
-            {[
-                { q: 'What can I cover in 90 minutes?', a: "A lot. We'll focus on your specific needs - whether that's a presentation you're rehearsing, managing nerves, vocal technique, or general confidence. You'll walk away with practical tools you can use immediately.", link: '/free-consultation', cta: 'Book Your Session' },
-                { q: 'Do I need to prepare anything?', a: "If you have specific content to work on (a speech, presentation, or pitch), share it in advance so we can hit the ground running. If not, we'll work on your general communication skills." },
-                { q: 'Is one session really enough?', a: "For many clients, yes. A focused 90-minute session can be genuinely transformative. If you want ongoing support after, we can discuss a package - but there's no pressure.", link: '/contact', cta: 'Get in Touch' },
-                { q: 'How does the online session work?', a: "We meet on Zoom. I'll send you a link after booking. All you need is a quiet space, a stable internet connection, and a device with a camera and microphone." },
-            ].map(faq => (
-                <details class="group border border-white/10 rounded-sm">
+        <div class="space-y-4" itemscope itemtype="https://schema.org/FAQPage">
+            {faqs.map((faq: any) => (
+                <details class="group border border-white/10 rounded-sm" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     <summary class="flex items-center justify-between p-6 cursor-pointer">
-                        <span class="font-medium text-white pr-4">{faq.q}</span>
+                        <span class="font-medium text-white pr-4" itemprop="name">{faq.q}</span>
                         <iconify-icon icon="solar:alt-arrow-down-bold" width="16" class="text-[var(--pkg-accent)] flex-shrink-0 transition-transform duration-200 group-open:rotate-180"></iconify-icon>
                     </summary>
-                    <div class="px-6 pb-6 pt-0">
-                        <p class="text-sm text-gray-400 font-light leading-relaxed">{faq.a}</p>
+                    <div class="px-6 pb-6 pt-0" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                        <p class="text-sm text-gray-400 font-light leading-relaxed" data-faq-answer itemprop="text">{faq.a}</p>
                         {faq.link && <a href={faq.link} class="inline-block mt-3 text-[10px] uppercase tracking-[0.15em] font-medium text-[var(--pkg-accent)] hover:text-white transition-colors">{faq.cta} &rarr;</a>}
                     </div>
                 </details>

@@ -1,8 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../data/site';
 ---
 
-<Base title="Free Consultation">
+<Base
+    title="Free Consultation"
+    description="Book a free 20-minute discovery call with Alice Deville. See if 1:1 voice and communication coaching is the right fit for your next pitch, keynote, or career moment."
+    jsonLd={[breadcrumbSchema([
+      { name: 'Home', url: '/' },
+      { name: 'Free Consultation', url: '/free-consultation' },
+    ])]}
+>
 
 <!-- Hero Background -->
 <div class="fixed top-0 w-full h-screen -z-10">
@@ -14,6 +23,12 @@ import Base from '../layouts/Base.astro';
 <!-- Hero -->
 <section class="pt-36 pb-16 lg:px-12 px-6">
     <div class="max-w-[1200px] mx-auto text-center">
+        <div class="flex justify-center mb-5">
+            <Breadcrumbs items={[
+                { name: 'Home', url: '/' },
+                { name: 'Free Consultation' },
+            ]} />
+        </div>
         <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">No Obligation</span>
         <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Free 30-Minute Assessment</h1>
         <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Choose a date and time below to book your free consultation with Alice. No pressure, no commitment - just a friendly conversation about your voice and goals.</p>

@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../data/site';
 
 const sections = [
     { id: 'who-we-are', label: 'Who We Are' },
@@ -15,10 +17,23 @@ const sections = [
 ];
 ---
 
-<Base title="Privacy Policy">
+<Base
+    title="Privacy Policy"
+    description="Privacy policy for Authentic Communicator Global. How we handle the personal data of clients and website visitors, including our use of Resend, Calendly, and MailerLite."
+    jsonLd={[breadcrumbSchema([
+      { name: 'Home', url: '/' },
+      { name: 'Privacy Policy', url: '/privacy' },
+    ])]}
+>
 
 <section class="pt-36 pb-16 lg:px-12 px-6">
     <div class="max-w-[1200px] mx-auto text-center">
+        <div class="flex justify-center mb-5">
+            <Breadcrumbs items={[
+                { name: 'Home', url: '/' },
+                { name: 'Privacy Policy' },
+            ]} />
+        </div>
         <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">Legal</span>
         <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Privacy Policy</h1>
         <p class="text-gray-500 text-sm">Last updated: April 2026</p>

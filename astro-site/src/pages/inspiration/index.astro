@@ -1,59 +1,99 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { breadcrumbSchema } from '../../data/site';
 import fs from 'node:fs';
 import path from 'node:path';
+import { holdingPosts } from '../../data/holdingPosts';
 
-// Read markdown files from content/blog directory
+interface PostMeta {
+  slug: string;
+  title: string;
+  date: string;
+  dateFormatted: string;
+  category: string;
+  excerpt: string;
+  image?: string;
+}
+
+function parseFrontmatter(src: string): { meta: Record<string, string>; body: string } {
+  const match = src.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  if (!match) return { meta: {}, body: src };
+  const meta: Record<string, string> = {};
+  for (const line of match[1].split('\n')) {
+    const m = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
+    if (!m) continue;
+    meta[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
+  }
+  return { meta, body: match[2] };
+}
+
+function detectCategory(title: string): string {
+  const t = title.toLowerCase();
+  const rules: [string, string[]][] = [
+    ['Public Speaking', ['public speaking', 'keynote', 'presentation', 'ted talk', 'storytelling', 'pitch']],
+    ['Voice Technique', ['vocal', 'voice technique', 'projection', 'resonance', 'breathing']],
+    ['Pronunciation', ['pronunciation', 'accent', 'articulation', 'intonation']],
+    ['Performance Anxiety', ['stage fright', 'nerves', 'anxiety', 'fear of speaking']],
+    ['Communication', ['communication', 'body language', 'non-verbal', 'listening']],
+    ['Media Training', ['media training', 'interview', 'podcast']],
+  ];
+  for (const [cat, keywords] of rules) {
+    if (keywords.some(kw => t.includes(kw))) return cat;
+  }
+  return 'Communication';
+}
+
 const blogDir = path.resolve('./src/content/blog');
-let posts: Array<{slug: string; title: string; date: string; dateFormatted: string; category: string; excerpt: string}> = [];
+const posts: PostMeta[] = [];
 
 if (fs.existsSync(blogDir)) {
   const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md') && !f.endsWith('.editor.md'));
 
   for (const file of files) {
-    const content = fs.readFileSync(path.join(blogDir, file), 'utf-8');
+    const raw = fs.readFileSync(path.join(blogDir, file), 'utf-8');
+    const { meta, body } = parseFrontmatter(raw);
 
-    // Extract title from first H1
-    const titleMatch = content.match(/^#\s+(.+)$/m);
-    const title = titleMatch ? titleMatch[1] : file.replace('.md', '').replace(/-/g, ' ');
+    const titleMatch = body.match(/^#\s+(.+)$/m);
+    const title = meta.title || (titleMatch ? titleMatch[1] : file.replace('.md', '').replace(/-/g, ' '));
 
-    // Extract date from filename
     const dateMatch = file.match(/^(\d{4}-\d{2}-\d{2})/);
-    const dateStr = dateMatch ? dateMatch[1] : '';
+    const dateStr = meta.date || (dateMatch ? dateMatch[1] : '');
     const date = dateStr ? new Date(dateStr) : new Date();
-    const dateFormatted = date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+    const dateFormatted = dateStr
+      ? date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })
+      : '';
 
-    // Slug from filename
     const slug = file.replace(/^\d{4}-\d{2}-\d{2}-?/, '').replace('.md', '');
 
-    // Excerpt
-    const body = content.replace(/^#\s+.+\n*/m, '').trim();
-    const bodyText = body.replace(/[#*_\[\]()>`]/g, '');
-    const excerpt = bodyText.length > 150 ? bodyText.slice(0, 150).replace(/\s+\S*$/, '') + '...' : bodyText;
-
-    // Category detection
-    const titleLower = title.toLowerCase();
-    const catRules: [string, string[]][] = [
-      ['Public Speaking', ['public speaking', 'keynote', 'presentation', 'ted talk', 'storytelling']],
-      ['Voice Technique', ['vocal', 'voice technique', 'projection', 'resonance', 'breathing']],
-      ['Pronunciation', ['pronunciation', 'accent', 'articulation', 'intonation']],
-      ['Performance Anxiety', ['stage fright', 'nerves', 'anxiety', 'fear of speaking']],
-      ['Communication', ['communication', 'body language', 'non-verbal', 'listening']],
-      ['Media Training', ['media training', 'interview', 'podcast']],
-    ];
-    let category = 'Communication';
-    for (const [cat, keywords] of catRules) {
-      if (keywords.some(kw => titleLower.includes(kw))) { category = cat; break; }
+    let excerpt = meta.excerpt || '';
+    if (!excerpt) {
+      const bodyText = body.replace(/^#\s+.+\n*/m, '').replace(/[#*_\[\]()>`]/g, '').trim();
+      excerpt = bodyText.length > 160 ? bodyText.slice(0, 160).replace(/\s+\S*$/, '') + '...' : bodyText;
     }
 
-    posts.push({ slug, title, date: dateStr, dateFormatted, category, excerpt });
+    const category = meta.category || detectCategory(title);
+    const image = meta.image || undefined;
+
+    posts.push({ slug, title, date: dateStr, dateFormatted, category, excerpt, image });
   }
 
   posts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 }
+
+const displayPosts: PostMeta[] = posts.length > 0
+  ? posts
+  : holdingPosts.map(p => ({ ...p, date: '' }));
 ---
 
-<Base title="Blog & Insights">
+<Base
+    title="Inspiration"
+    description="Practical articles on public speaking, voice technique, performance anxiety, and authentic communication by London-based coach Alice Deville."
+    jsonLd={[breadcrumbSchema([
+      { name: 'Home', url: '/' },
+      { name: 'Inspiration', url: '/inspiration' },
+    ])]}
+>
 
 <!-- Hero Background -->
 <div class="fixed top-0 w-full h-screen -z-10">
@@ -65,9 +105,15 @@ if (fs.existsSync(blogDir)) {
 <!-- Hero -->
 <section class="pt-36 pb-16 lg:px-12 px-6">
     <div class="max-w-[1200px] mx-auto text-center">
+        <div class="flex justify-center mb-5">
+            <Breadcrumbs items={[
+                { name: 'Home', url: '/' },
+                { name: 'Inspiration' },
+            ]} />
+        </div>
         <span class="text-[11px] tracking-[0.25em] text-[#C4A470] uppercase font-medium block mb-4">Insights & Tips</span>
         <h1 class="text-5xl md:text-6xl font-serif text-white mb-6">Inspiration</h1>
-        <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Practical advice on public speaking, voice technique, pronunciation, and authentic communication - written by Alice Deville.</p>
+        <p class="text-gray-400 font-light max-w-xl text-lg leading-relaxed mx-auto">Practical articles on public speaking, voice technique, performance anxiety, and authentic communication - written by Alice Deville.</p>
         <div class="mt-10 text-center">
             <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-4">Trusted by professionals at</p>
             <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12"><img src="/logos/blackrock.svg" alt="BlackRock" class="h-5 invert opacity-40"><img src="/logos/deloitte.svg" alt="Deloitte" class="h-5 invert opacity-40"><img src="/logos/jpmorgan.svg" alt="JP Morgan" class="h-5 invert opacity-40"><img src="/logos/google.svg" alt="Google" class="h-6 invert opacity-40"><img src="/logos/downing-street.svg" alt="10 Downing Street" class="h-4 invert opacity-40"></div>
@@ -78,29 +124,30 @@ if (fs.existsSync(blogDir)) {
 <!-- Blog Grid -->
 <section class="py-16 bg-white text-[#050615]">
     <div class="max-w-[1200px] mx-auto px-6">
-        {posts.length > 0 ? (
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {posts.map(post => (
-                    <a href={`/inspiration/${post.slug}`} class="group block bg-white border border-gray-200 rounded-sm overflow-hidden hover:shadow-xl transition-all duration-300">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {displayPosts.map(post => (
+                <a href={`/inspiration/${post.slug}`} class="group block bg-white border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col">
+                    {post.image && (
+                        <div class="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                            <img src={post.image} alt={post.title} width="800" height="600" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <span class="absolute top-4 left-4 bg-[#050615] text-[#C4A470] text-[9px] uppercase tracking-widest font-medium px-3 py-1.5">{post.category}</span>
+                        </div>
+                    )}
+                    {!post.image && (
                         <div class="bg-[#050615] px-6 py-3 flex items-center justify-between">
                             <span class="text-[10px] uppercase tracking-widest text-[#C4A470] font-medium">{post.category}</span>
                             <span class="text-[10px] uppercase tracking-widest text-gray-500">{post.dateFormatted}</span>
                         </div>
-                        <div class="p-8">
-                            <h3 class="text-xl font-serif text-[#050615] mb-4 group-hover:text-[#C4A470] transition-colors leading-tight">{post.title}</h3>
-                            <p class="text-sm text-gray-500 font-light leading-relaxed mb-6">{post.excerpt}</p>
-                            <span class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#C4A470] group-hover:text-[#050615] transition-colors">Read Article &rarr;</span>
-                        </div>
-                    </a>
-                ))}
-            </div>
-        ) : (
-            <div class="text-center py-20">
-                <iconify-icon icon="solar:pen-new-round-bold" width="64" class="text-gray-300 mb-6"></iconify-icon>
-                <h3 class="text-2xl font-serif text-[#050615] mb-4">New Articles Coming Soon</h3>
-                <p class="text-gray-500 font-light max-w-md mx-auto">Alice is preparing insightful articles on public speaking, voice coaching, and authentic communication. Check back shortly.</p>
-            </div>
-        )}
+                    )}
+                    <div class="p-8 flex flex-col flex-1">
+                        {post.image && <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-3">{post.dateFormatted}</p>}
+                        <h2 class="text-xl font-serif text-[#050615] mb-4 group-hover:text-[#C4A470] transition-colors leading-tight">{post.title}</h2>
+                        <p class="text-sm text-gray-500 font-light leading-relaxed mb-6 flex-1">{post.excerpt}</p>
+                        <span class="text-[10px] uppercase tracking-[0.2em] font-medium text-[#C4A470] group-hover:text-[#050615] transition-colors">Read more &rarr;</span>
+                    </div>
+                </a>
+            ))}
+        </div>
     </div>
 </section>
 
